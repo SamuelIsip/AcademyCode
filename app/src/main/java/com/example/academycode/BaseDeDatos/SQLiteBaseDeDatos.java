@@ -17,20 +17,22 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
 
         db.execSQL("create table usuario(" +
                 "email text primary key," +
-                "password text)");
+                "password text," +
+                "nombreUsuario text)");
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table if exists user");
+        db.execSQL("drop table if exists usuario");
     }
 
-    public boolean insertUsuario(String email, String password){
+    public boolean insertUsuario(String email, String password, String nombreUsu){
         SQLiteDatabase baseDatos = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("email", email);
         contentValues.put("password",password);
+        contentValues.put("nombreUsuario",nombreUsu);
         long insert = baseDatos.insert("usuario", null, contentValues);
 
         if (insert == -1)
@@ -47,6 +49,16 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
             return false;
         else
             return true;
+    }
+
+    //comprobar si el usuario y la contraseña son correctos
+    public boolean checkUserPasswd (String nombreUsu, String passwd){
+        SQLiteDatabase baseDatos = this.getReadableDatabase();
+        Cursor cursor = baseDatos.rawQuery("Select * from usuario where nombreUsuario=? and password=?",new String[]{nombreUsu,passwd});
+        if (cursor.getCount()==1)
+            return true;
+        else
+            return false;
     }
 
 }
