@@ -51,6 +51,16 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
             return true;
     }
 
+    //comprobar si el nombreUsuario existe
+    public boolean checkUserName(String nomUser){
+        SQLiteDatabase baseDatos = this.getReadableDatabase();
+        Cursor cursor = baseDatos.rawQuery("Select * from usuario where nombreUsuario=?",new String[]{nomUser});
+        if (cursor.getCount()>0)
+            return false;
+        else
+            return true;
+    }
+
     //comprobar si el usuario y la contraseña son correctos
     public boolean checkUserPasswd (String nombreUsu, String passwd){
         SQLiteDatabase baseDatos = this.getReadableDatabase();

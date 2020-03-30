@@ -13,7 +13,7 @@ import com.example.academycode.BaseDeDatos.SQLiteBaseDeDatos;
 import com.example.academycode.MainActivity;
 import com.example.academycode.R;
 
-public class LoginApp extends AppCompatActivity {
+public class IniciarSesion extends AppCompatActivity {
 
     SQLiteBaseDeDatos db;
     EditText e1NUsuario, e2Pswrd;
@@ -26,7 +26,7 @@ public class LoginApp extends AppCompatActivity {
 
         db = new SQLiteBaseDeDatos(this);
 
-        e1NUsuario = findViewById(R.id.edTxtEmail);
+        e1NUsuario = findViewById(R.id.edTxtNUs);
         e2Pswrd = findViewById(R.id.edTxtPsw);
         b1Registrar = findViewById(R.id.btnRegistrar);
         b2Acceder = findViewById(R.id.btnAcceder);
@@ -42,10 +42,11 @@ public class LoginApp extends AppCompatActivity {
                     if (db.checkUserPasswd(nombreUsu, passwU)) {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
+                        finish();
                     } else
-                        Toast.makeText(LoginApp.this, "¡Usuario/Contraseña incorrecto!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(IniciarSesion.this, "¡Usuario/Contraseña incorrecto!", Toast.LENGTH_LONG).show();
                 }else
-                    Toast.makeText(LoginApp.this, "¡Debe rellenar todos los campos!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(IniciarSesion.this, "¡Debe rellenar todos los campos!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -54,6 +55,7 @@ public class LoginApp extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), RegistrarUsuario.class);
                 startActivity(intent);
+                finish();
             }
         });
 

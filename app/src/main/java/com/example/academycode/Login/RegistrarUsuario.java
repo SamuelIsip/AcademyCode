@@ -15,7 +15,7 @@ import com.example.academycode.R;
 public class RegistrarUsuario extends AppCompatActivity {
 
     SQLiteBaseDeDatos db;
-    Button btnRegistrarU;
+    Button btnRegistrarU, btnVolverInicioS;
     EditText edTextEmail, edTextNUs, edTxtPasw1, edTxtPasw2;
 
     @Override
@@ -26,8 +26,9 @@ public class RegistrarUsuario extends AppCompatActivity {
         db = new SQLiteBaseDeDatos(this);
 
         btnRegistrarU = findViewById(R.id.btnRegistrarU);
-        edTextEmail = findViewById(R.id.edTxtEmail);
-        edTextNUs = findViewById(R.id.edTxtNUs);
+        btnVolverInicioS = findViewById(R.id.btnVolverIniciarSesion);
+        edTextEmail = findViewById(R.id.edTxtNUs);
+        edTextNUs = findViewById(R.id.edTxtNomUs);
         edTxtPasw1 = findViewById(R.id.edTxtPasw1);
         edTxtPasw2 = findViewById(R.id.edTxtPasw2);
 
@@ -43,14 +44,15 @@ public class RegistrarUsuario extends AppCompatActivity {
                     if (emailU.equals("") || nombreUsu.equals("") || passwrdU.equals("") || edTxtPasw2.getText().toString().equals("")) {
                         Toast.makeText(RegistrarUsuario.this, "¡Debe rellenar todos los campos!", Toast.LENGTH_SHORT).show();
                     } else {
-                        if (db.checkEmail(emailU)) {
-                            if (db.insertUsuario(emailU, passwrdU,nombreUsu)) {
+                        if (db.checkEmail(emailU) && db.checkUserName(nombreUsu)) {
+                            if (db.insertUsuario(emailU, passwrdU, nombreUsu)) {
                                 Toast.makeText(RegistrarUsuario.this, "¡Registrado con éxito!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), LoginApp.class);
+                                Intent intent = new Intent(getApplicationContext(), IniciarSesion.class);
                                 startActivity(intent);
+                                finish();
                             }
                         } else
-                            Toast.makeText(RegistrarUsuario.this, "¡Email ya existente!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegistrarUsuario.this, "¡Nombre Usuario/Email ya existente!", Toast.LENGTH_SHORT).show();
                     }
                 }else
                     Toast.makeText(RegistrarUsuario.this, "¡Las contraseñas no coinciden!", Toast.LENGTH_SHORT).show();
@@ -59,6 +61,13 @@ public class RegistrarUsuario extends AppCompatActivity {
         });
 
 
+        btnVolverInicioS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),IniciarSesion.class));
+                finish();
+            }
+        });
 
     }
 }
