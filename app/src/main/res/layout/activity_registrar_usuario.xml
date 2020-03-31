@@ -60,6 +60,25 @@
             android:hint="Nombre Usuario"
             android:inputType="textPersonName"/>
 
+
+        <EditText
+            android:id="@+id/edTxtTlf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/disenio_input"
+            android:hint="Nr. Teléfono (opcional)"
+            android:inputType="phone"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="#fff"
+            android:textColorHint="#ccc" />
+
+
         <EditText
             android:id="@+id/edTxtPasw1"
             android:layout_width="match_parent"
@@ -74,7 +93,7 @@
             android:paddingTop="10dp"
             android:background="@drawable/disenio_input"
             android:paddingBottom="10dp"
-            android:hint="Password"
+            android:hint="Password (length > 8)"
             android:inputType="textPassword"/>
 
         <EditText

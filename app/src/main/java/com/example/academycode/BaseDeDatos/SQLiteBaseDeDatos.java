@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
 
     public SQLiteBaseDeDatos(Context context){
@@ -18,7 +21,9 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
         db.execSQL("create table usuario(" +
                 "email text primary key," +
                 "password text," +
-                "nombreUsuario text)");
+                "nombreUsuario text," +
+                "telefono text," +
+                "fechaCreacion text)");
 
     }
 
@@ -27,18 +32,27 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
         db.execSQL("drop table if exists usuario");
     }
 
-    public boolean insertUsuario(String email, String password, String nombreUsu){
+    //LOGIN
+    public boolean insertUsuario(String email, String password, String nombreUsu, String telefUsu){
         SQLiteDatabase baseDatos = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("email", email);
         contentValues.put("password",password);
         contentValues.put("nombreUsuario",nombreUsu);
+        contentValues.put("telefono",telefUsu);
+        contentValues.put("fechaCreacion",fechaSistema());
+
         long insert = baseDatos.insert("usuario", null, contentValues);
 
-        if (insert == -1)
-            return false;
-        else
-            return true;
+        if (insert == -1) return false;
+        else return true;
+    }
+
+    public String fechaSistema(){
+        Date fecha = new Date();
+        SimpleDateFormat objSDF = new SimpleDateFormat("dd-MM-yyyy");
+
+        return objSDF.format(fecha);
     }
 
     //comprobar si el email existe

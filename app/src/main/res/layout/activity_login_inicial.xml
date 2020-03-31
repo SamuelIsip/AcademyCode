@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Login.LoginInicial">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/f"
+        android:scaleType="centerCrop"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#d8000000"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginBottom="70dp"
+            android:background="@drawable/circulo_imagen"
+            android:padding="10dp"
+            android:src="@drawable/logo"/>
+
+       <Button
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginBottom="20dp"
+           android:text="Iniciar Sesión"
+           android:layout_marginLeft="20dp"
+           android:elevation="5dp"
+           android:textSize="16dp"
+           android:textColor="#403f3f"
+           android:background="@drawable/btn_redondeado_white"
+           android:layout_marginRight="20dp"
+           android:id="@+id/ir_login"
+           />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:id="@+id/inicar_facebook"
+            android:background="@drawable/btn_redondeado_rojo"
+            android:layout_marginLeft="20dp"
+            android:textColor="#fff"
+            android:elevation="5dp"
+            android:layout_marginBottom="30dp"
+            android:textSize="16dp"
+            android:text="Inciar con Google"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
+</RelativeLayout>
