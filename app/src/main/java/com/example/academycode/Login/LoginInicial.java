@@ -3,30 +3,33 @@ package com.example.academycode.Login;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.os.Handler;
+import android.view.WindowManager;
 
 import com.example.academycode.R;
 
 public class LoginInicial extends AppCompatActivity {
 
-    Button btn_ir_iniciarsesion;
+    private final int DURACION_SPLASH = 2500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_inicial);
 
-        btn_ir_iniciarsesion = findViewById(R.id.ir_login);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        btn_ir_iniciarsesion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),IniciarSesion.class);
+        setContentView(R.layout.activity_login_inicial);
+
+        new Handler().postDelayed(new Runnable(){
+            public void run(){
+                Intent intent = new Intent(LoginInicial.this, IniciarSesion.class);
                 startActivity(intent);
                 finish();
-            }
-        });
+            };
+        }, DURACION_SPLASH);
     }
 }

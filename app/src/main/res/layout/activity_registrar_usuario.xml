@@ -22,9 +22,9 @@
 
         <ImageView
             android:layout_width="200dp"
-            android:layout_height="100dp"
-            android:src="@drawable/logohoriszontal"
-            android:layout_marginBottom="50dp"></ImageView>
+            android:layout_height="125dp"
+            android:src="@drawable/codigo"
+            android:layout_marginBottom="10dp"></ImageView>
 
         <EditText
             android:id="@+id/edTxtNUs"
@@ -41,6 +41,7 @@
             android:background="@drawable/disenio_input"
             android:paddingBottom="10dp"
             android:hint="Email"
+            android:fontFamily="@font/amethysta"
             android:inputType="textPersonName" />
 
         <EditText
@@ -58,6 +59,7 @@
             android:background="@drawable/disenio_input"
             android:paddingBottom="10dp"
             android:hint="Nombre Usuario"
+            android:fontFamily="@font/amethysta"
             android:inputType="textPersonName"/>
 
 
@@ -76,6 +78,7 @@
             android:paddingRight="10dp"
             android:paddingBottom="10dp"
             android:textColor="#fff"
+            android:fontFamily="@font/amethysta"
             android:textColorHint="#ccc" />
 
 
@@ -94,13 +97,14 @@
             android:background="@drawable/disenio_input"
             android:paddingBottom="10dp"
             android:hint="Password (length > 8)"
+            android:fontFamily="@font/amethysta"
             android:inputType="textPassword"/>
 
         <EditText
             android:id="@+id/edTxtPasw2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="20dp"
             android:textColor="#fff"
             android:textColorHint="#ccc"
             android:layout_marginLeft="20dp"
@@ -111,20 +115,23 @@
             android:background="@drawable/disenio_input"
             android:paddingBottom="10dp"
             android:hint="Repite Password"
+            android:fontFamily="@font/amethysta"
             android:inputType="textPassword"/>
 
         <Button
             android:id="@+id/btnRegistrarU"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="Registrar Usuario"
-            android:layout_marginLeft="20dp"
-            android:elevation="5dp"
-            android:textSize="16dp"
-            android:textColor="#fff"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/btn_redondeado_verde"
-            android:layout_marginRight="20dp"/>
+            android:elevation="5dp"
+            android:fontFamily="sans-serif"
+            android:text="Registrar Usuario"
+            android:textColor="#fff"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
 
         <LinearLayout
@@ -141,17 +148,19 @@
                 android:text="¿Ya tienes cuenta?"
                 android:textSize="16dp"
                 android:textColor="#fff"
+                android:fontFamily="@font/amethysta"
                 ></TextView>
 
             <Button
                 android:id="@+id/btnVolverIniciarSesion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="INICIAR SESIÓN"
-                android:background="@android:color/transparent"
-                android:textColor="#fff"
                 android:layout_marginLeft="10dp"
-                />
+                android:background="@android:color/transparent"
+                android:fontFamily="sans-serif"
+                android:text="INICIAR SESIÓN"
+                android:textColor="#fff"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>
