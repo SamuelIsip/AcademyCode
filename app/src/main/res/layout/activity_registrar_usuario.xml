@@ -38,9 +38,10 @@
             android:paddingLeft="20dp"
             android:paddingRight="10dp"
             android:paddingTop="10dp"
+            android:drawableLeft="@drawable/ic_gmail"
             android:background="@drawable/disenio_input"
             android:paddingBottom="10dp"
-            android:hint="Email"
+            android:hint=" Email"
             android:fontFamily="@font/amethysta"
             android:inputType="textPersonName" />
 
@@ -56,9 +57,10 @@
             android:paddingLeft="20dp"
             android:paddingRight="10dp"
             android:paddingTop="10dp"
+            android:drawableLeft="@drawable/ic_user"
             android:background="@drawable/disenio_input"
             android:paddingBottom="10dp"
-            android:hint="Nombre Usuario"
+            android:hint=" Nombre Usuario"
             android:fontFamily="@font/amethysta"
             android:inputType="textPersonName"/>
 
@@ -71,8 +73,9 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="15dp"
             android:background="@drawable/disenio_input"
-            android:hint="Nr. Teléfono (opcional)"
+            android:hint=" Nr. Teléfono (opcional)"
             android:inputType="phone"
+            android:drawableLeft="@drawable/ic_tlf"
             android:paddingLeft="20dp"
             android:paddingTop="10dp"
             android:paddingRight="10dp"
@@ -94,9 +97,10 @@
             android:paddingLeft="20dp"
             android:paddingRight="10dp"
             android:paddingTop="10dp"
+            android:drawableLeft="@drawable/ic_passw"
             android:background="@drawable/disenio_input"
             android:paddingBottom="10dp"
-            android:hint="Password (length > 8)"
+            android:hint=" Password (length > 8)"
             android:fontFamily="@font/amethysta"
             android:inputType="textPassword"/>
 
@@ -114,7 +118,8 @@
             android:paddingTop="10dp"
             android:background="@drawable/disenio_input"
             android:paddingBottom="10dp"
-            android:hint="Repite Password"
+            android:drawableLeft="@drawable/ic_passw"
+            android:hint=" Repite Password"
             android:fontFamily="@font/amethysta"
             android:inputType="textPassword"/>
 
