@@ -1,7 +1,6 @@
 package com.example.academycode.Login;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -10,9 +9,9 @@ import android.view.WindowManager;
 
 import com.example.academycode.R;
 
-public class LoginInicial extends AppCompatActivity {
+public class SplashScreen extends AppCompatActivity {
 
-    private final int DURACION_SPLASH = 2500;
+    private final int DURACION_SPLASH = 2500; //tiempo duración splash screen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +25,7 @@ public class LoginInicial extends AppCompatActivity {
 
         new Handler().postDelayed(new Runnable(){
             public void run(){
-                Intent intent = new Intent(LoginInicial.this, IniciarSesion.class);
+                Intent intent = new Intent(SplashScreen.this, IniciarSesion.class);
                 startActivity(intent);
                 finish();
             };

@@ -1,4 +1,5 @@
 package com.example.academycode.Login;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -44,14 +45,14 @@ public class RegistrarUsuario extends AppCompatActivity {
                 String nombreUsu = edTextNUs.getText().toString();
                 String telefono = edTxtTelef.getText().toString();
 
-
+                //Comprobar los datos introducidos, antes de guardar en BD
                 if (passwrdU.equals(edTxtPasw2.getText().toString())) {
                     if (emailU.equals("") || nombreUsu.equals("") || passwrdU.equals("") || edTxtPasw2.getText().toString().equals("")) {
                         Toast.makeText(RegistrarUsuario.this, "¡Debe rellenar todos los campos!", Toast.LENGTH_SHORT).show();
                     } else {
                         if (db.checkEmail(emailU) && db.checkUserName(nombreUsu))
                             if (emailValido(emailU) && passValida(passwrdU))
-                                if (db.insertUsuario(emailU, passwrdU, nombreUsu,telefono))
+                                if (db.insertUsuario(emailU, passwrdU, nombreUsu,telefono)) //Se inserta en la BD
                                     usuarioRegistrado();
                         else
                             Toast.makeText(RegistrarUsuario.this, "¡Nombre Usuario/Email ya existente!", Toast.LENGTH_SHORT).show();
@@ -61,7 +62,7 @@ public class RegistrarUsuario extends AppCompatActivity {
             }
         });
 
-
+        //Botón volver a inicio
         btnVolverInicioS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +73,8 @@ public class RegistrarUsuario extends AppCompatActivity {
 
     }
 
+    //*********************************
+    //Métodos comprobación al registrar
     public void usuarioRegistrado(){
         Toast.makeText(RegistrarUsuario.this, "¡Registrado con éxito!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getApplicationContext(), IniciarSesion.class);
@@ -87,7 +90,7 @@ public class RegistrarUsuario extends AppCompatActivity {
     public boolean emailValido(String email){
 
         boolean valido = false;
-
+        //Patrón de email basado en el de Google(gmail)
         Pattern patronEmail = Pattern.compile("([a-z0-9]+(\\.?[a-z0-9])*)+@(([a-z]+)\\.([a-z]+))+");
 
         Matcher mEmail = patronEmail.matcher(email.toLowerCase());
@@ -112,6 +115,6 @@ public class RegistrarUsuario extends AppCompatActivity {
             return false;
         }
     }
-
+    //*********************************
 
 }

@@ -2,14 +2,12 @@ package com.example.academycode;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.academycode.Login.IniciarSesion;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -38,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         email = findViewById(R.id.textViewEm);
         btn = findViewById(R.id.button);
 
+        //Solicitamos cuenta con email
         gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -47,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
                 .build();
 
+        //Botón para cerrar sesión de google
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         new ResultCallback<Status>() {
                             @Override
                             public void onResult(Status status) {
-                                if (status.isSuccess()){
+                                if (status.isSuccess()){ //Si se cierra sesion
                                     startActivity(new Intent(MainActivity.this, IniciarSesion.class));
                                     finish();
                                 }else{
@@ -68,15 +68,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     }
 
+    //************************************
+    //Métodos para gestionar cuenta Google
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
+        //Mantener Cuenta de google conectada
         OptionalPendingResult<GoogleSignInResult> opr= Auth.GoogleSignInApi.silentSignIn(googleApiClient);
         if(opr.isDone()){
             GoogleSignInResult result=opr.get();
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 
+    //Recoger datos de la cuenta google
     private void handleSignInResult(GoogleSignInResult result){
         if(result.isSuccess()){
             GoogleSignInAccount account=result.getSignInAccount();
@@ -100,6 +103,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             Toast.makeText(this, "NADA", Toast.LENGTH_SHORT).show();
         }
     }
-    
+    //************************************
     
 }

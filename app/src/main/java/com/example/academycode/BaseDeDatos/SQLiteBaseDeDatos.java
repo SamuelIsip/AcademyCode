@@ -6,30 +6,31 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Base64;
-
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
 
 public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
 
+    //Constructor
     public SQLiteBaseDeDatos(Context context){
-        super(context, "AcademyBD", null, 1);
+        super(context, "AcademyBD", null, 1); //Nombre y versión de la BD
     }
 
+    //Creación de las tablas de la BD
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+        //USUARIO
         db.execSQL("create table usuario(" +
                 "email text primary key," +
                 "password text," +
                 "nombreUsuario text," +
                 "telefono text," +
-                "fechaCreacion text)");
+                "fechaCreacion text," +
+                "fotoPerfil text)");
 
     }
 
@@ -38,12 +39,13 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
         db.execSQL("drop table if exists usuario");
     }
 
-    //LOGIN
+    //Insertar en tabla Usuario
     public boolean insertUsuario(String email, String password, String nombreUsu, String telefUsu){
+
         SQLiteDatabase baseDatos = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("email", encriptar(nombreUsu,email));
-        contentValues.put("password",encriptar(nombreUsu,password));
+        contentValues.put("email", encriptar(nombreUsu,email)); //se encripta email
+        contentValues.put("password",encriptar(nombreUsu,password)); //se encripta password
         contentValues.put("nombreUsuario",nombreUsu);
         contentValues.put("telefono",telefUsu);
         contentValues.put("fechaCreacion",fechaSistema());
@@ -55,6 +57,7 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
 
     }
 
+    //Fecha del sistema
     public String fechaSistema(){
         Date fecha = new Date();
         SimpleDateFormat objSDF = new SimpleDateFormat("dd-MM-yyyy");
@@ -62,7 +65,7 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
         return objSDF.format(fecha);
     }
 
-    //comprobar si el email existe
+    //Comprobar si el email existe
     public boolean checkEmail(String email){
         SQLiteDatabase baseDatos = this.getReadableDatabase();
         Cursor cursor = baseDatos.rawQuery("Select * from usuario where email=?",new String[]{email});
@@ -72,7 +75,7 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
             return true;
     }
 
-    //comprobar si el nombreUsuario existe
+    //Comprobar si el nombreUsuario existe
     public boolean checkUserName(String nomUser){
         SQLiteDatabase baseDatos = this.getReadableDatabase();
         Cursor cursor = baseDatos.rawQuery("Select * from usuario where nombreUsuario=?",new String[]{nomUser});
@@ -82,10 +85,11 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
             return true;
     }
 
-    //comprobar si el usuario y la contraseña son correctos
+    //Comprobar si el usuario y la contraseña son correctos
     public boolean checkUserPasswd (String nombreUsu, String passwd){
         SQLiteDatabase baseDatos = this.getReadableDatabase();
-        Cursor cursor = baseDatos.rawQuery("Select * from usuario where nombreUsuario=? and password=?",new String[]{nombreUsu,encriptar(nombreUsu,passwd)});
+        Cursor cursor = baseDatos.rawQuery("Select * from usuario where nombreUsuario=? and password=?"
+                ,new String[]{nombreUsu,encriptar(nombreUsu,passwd)});
 
         if (cursor.getCount()==1)
             return true;
@@ -93,7 +97,7 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
             return false;
     }
 
-    //Encriptar datos
+    //Encriptar datos con método AES
     private String encriptar(String nombreUsu, String datoAencriptar){
         String datosEncriptadosString = "";
 
@@ -112,6 +116,7 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
         return datosEncriptadosString;
     }
 
+    //Crear la key de encriptación
     private SecretKeySpec generateKey(String datoAencriptar) throws Exception{
         MessageDigest sha = MessageDigest.getInstance("SHA-256");
         byte[] key = datoAencriptar.getBytes("UTF-8");
@@ -121,6 +126,7 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
         return secretKey;
     }
 
+    //Desencriptar datos
     private String desencriptar(String nombreUsu){
         String datosDesencriptadosString = "";
 
