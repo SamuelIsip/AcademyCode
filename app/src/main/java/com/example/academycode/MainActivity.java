@@ -1,9 +1,15 @@
 package com.example.academycode;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,11 +24,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, NavigationView.OnNavigationItemSelectedListener {
 
     TextView nomb,email;
-    Button btn;
+
+    Toolbar toolbar;
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
 
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions gso;
@@ -32,9 +42,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        nomb= findViewById(R.id.textViewN);
-        email = findViewById(R.id.textViewEm);
-        btn = findViewById(R.id.button);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.menu_desplegable);
+        navigationView.setNavigationItemSelectedListener(this); //Para click en items del menu desplegable
+
+        //Acceder a los elementos de la cabecera del menu desplegable
+        nomb = navigationView.getHeaderView(0).findViewById(R.id.nombre_user_menu);
+        email = navigationView.getHeaderView(0).findViewById(R.id.email_user_menu);
+
+        //Para que aparezca el icono de menu en el toolbar
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
         //Solicitamos cuenta con email
         gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -46,26 +68,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
                 .build();
 
-        //Botón para cerrar sesión de google
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
-                        new ResultCallback<Status>() {
-                            @Override
-                            public void onResult(Status status) {
-                                if (status.isSuccess()){ //Si se cierra sesion
-                                    startActivity(new Intent(MainActivity.this, IniciarSesion.class));
-                                    finish();
-                                }else{
-                                    Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
-            }
-        });
 
+    }
 
+    //Método seleccion del item del menu desplegable
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case R.id.cerrar_sesion:
+                cerrarSesionGoogle();
+                break;
+        }
+        drawer.closeDrawer(GravityCompat.START);
+        return true; //fue seleccionado
+    }
+
+    @Override
+    public void onBackPressed(){
+        if (drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        }else
+            super.onBackPressed();
     }
 
     //************************************
@@ -102,6 +125,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }else{
             Toast.makeText(this, "NADA", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void cerrarSesionGoogle(){
+        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+            new ResultCallback<Status>() {
+                @Override
+                public void onResult(Status status) {
+                    if (status.isSuccess()){ //Si se cierra sesion
+                        startActivity(new Intent(MainActivity.this, IniciarSesion.class));
+                        finish();
+                    }else{
+                        Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
     }
     //************************************
     

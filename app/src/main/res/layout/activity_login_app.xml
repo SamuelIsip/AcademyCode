@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/f"
+        app:srcCompat="@drawable/f"
         android:scaleType="centerCrop"
         />
 
@@ -23,7 +23,7 @@
         <ImageView
             android:layout_width="300dp"
             android:layout_height="200dp"
-            android:src="@drawable/academycode"
+            app:srcCompat="@drawable/academycode"
             android:layout_marginBottom="30dp"></ImageView>
 
         <EditText

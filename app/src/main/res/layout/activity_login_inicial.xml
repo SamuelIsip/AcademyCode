@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/f"
+        app:srcCompat="@drawable/f"
         android:scaleType="centerCrop"
         />
 
@@ -25,7 +25,7 @@
             android:layout_height="300dp"
             android:layout_marginBottom="70dp"
             android:padding="10dp"
-            android:src="@drawable/academycode"/>
+            app:srcCompat="@drawable/academycode"/>
 
         <TextView
             android:layout_width="wrap_content"
