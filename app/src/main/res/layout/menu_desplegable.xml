@@ -2,30 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="176dp"
-    android:background="@drawable/f"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/fondmenu"
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:civ_border_color="#EEEEEE"
+        app:civ_border_width="1dp"
+        app:civ_shadow="true"
+        app:civ_shadow_radius="8"
+        app:civ_shadow_color="#000"
         android:id="@+id/imagen_usuario_menu"
         android:src="@mipmap/ic_launcher_round" />
 
     <TextView
+        android:id="@+id/nombre_user_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/nombre_user_menu"
+        android:elevation="5dp"
         android:paddingTop="8dp"
         android:text="Nombre Usuario"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/email_user_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/email_user_menu"
-        android:text="Email Usuario" />
+        android:elevation="5dp"
+        android:text="Email Usuario"
+        android:textStyle="bold" />
 
 </LinearLayout>

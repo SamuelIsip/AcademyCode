@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.academycode.Login.IniciarSesion;
@@ -25,10 +26,13 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.material.navigation.NavigationView;
+import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, NavigationView.OnNavigationItemSelectedListener {
 
     TextView nomb,email;
+    CircularImageView fotoPerfilUser;
 
     Toolbar toolbar;
     private DrawerLayout drawer;
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         //Acceder a los elementos de la cabecera del menu desplegable
         nomb = navigationView.getHeaderView(0).findViewById(R.id.nombre_user_menu);
         email = navigationView.getHeaderView(0).findViewById(R.id.email_user_menu);
+        fotoPerfilUser = navigationView.getHeaderView(0).findViewById(R.id.imagen_usuario_menu);
 
         //Para que aparezca el icono de menu en el toolbar
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -122,8 +127,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             GoogleSignInAccount account=result.getSignInAccount();
             nomb.setText(account.getDisplayName());
             email.setText(account.getEmail());
-        }else{
-            Toast.makeText(this, "NADA", Toast.LENGTH_SHORT).show();
+            //Foto de perfil
+            Picasso.get().load(account.getPhotoUrl()).placeholder(R.mipmap.ic_launcher).into(fotoPerfilUser);
         }
     }
 
