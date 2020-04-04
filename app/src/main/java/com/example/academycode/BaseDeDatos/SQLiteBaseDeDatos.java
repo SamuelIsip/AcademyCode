@@ -39,6 +39,18 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
         db.execSQL("drop table if exists usuario");
     }
 
+    public String recuperarEmial(String nombUsuario){
+        SQLiteDatabase baseDatos = this.getReadableDatabase();
+        Cursor cursor = baseDatos.rawQuery("Select email from usuario where nombreUsuario=?",new String[]{nombUsuario});
+
+        String email = "";
+        if (cursor.moveToFirst()){
+            email = cursor.getString(0);
+        }
+
+        return desencriptar(nombUsuario);
+    }
+
     //Insertar en tabla Usuario
     public boolean insertUsuario(String email, String password, String nombreUsu, String telefUsu){
 
@@ -127,11 +139,11 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
     }
 
     //Desencriptar datos
-    private String desencriptar(String nombreUsu){
+    private String desencriptar(String datoSinDesencriptar){
         String datosDesencriptadosString = "";
 
         SQLiteDatabase baseDatos = this.getReadableDatabase();
-        Cursor fila = baseDatos.rawQuery("Select password from usuario where nombreUsuario=?",new String[]{nombreUsu});
+        Cursor fila = baseDatos.rawQuery("Select email from usuario where nombreUsuario=?",new String[]{datoSinDesencriptar});
 
         String datoAdesencriptar = "";
 
@@ -140,7 +152,7 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
         }
 
         try{
-            SecretKeySpec secretKey = generateKey(nombreUsu);
+            SecretKeySpec secretKey = generateKey(datoSinDesencriptar);
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             byte[] datosDescodificados = Base64.decode(datoAdesencriptar, Base64.DEFAULT);
@@ -150,6 +162,7 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
             c.printStackTrace();
         }
 
+        System.out.println(datosDesencriptadosString);
         return datosDesencriptadosString;
     }
 

@@ -55,6 +55,8 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                 if (!nombreUsu.equals("") || !passwU.equals("")) {
                     if (db.checkUserPasswd(nombreUsu, passwU)) {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra("nombreUsuario", nombreUsu);
+                        intent.putExtra("emailUsuario", db.recuperarEmial(nombreUsu));
                         startActivity(intent);
                         finish();
                     } else

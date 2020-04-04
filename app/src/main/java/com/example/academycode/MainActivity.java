@@ -106,6 +106,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     protected void onStart() {
         super.onStart();
+
+        Bundle datos = this.getIntent().getExtras();
+        if (!datos.isEmpty()) {
+            nomb.setText(datos.getString("nombreUsuario"));
+            email.setText(datos.getString("emailUsuario"));
+        }
         //Mantener Cuenta de google conectada
         OptionalPendingResult<GoogleSignInResult> opr= Auth.GoogleSignInApi.silentSignIn(googleApiClient);
         if(opr.isDone()){
