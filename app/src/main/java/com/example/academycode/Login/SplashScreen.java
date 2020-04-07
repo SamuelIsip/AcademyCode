@@ -1,8 +1,13 @@
 package com.example.academycode.Login;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
@@ -30,5 +35,7 @@ public class SplashScreen extends AppCompatActivity {
                 finish();
             };
         }, DURACION_SPLASH);
+
+
     }
 }

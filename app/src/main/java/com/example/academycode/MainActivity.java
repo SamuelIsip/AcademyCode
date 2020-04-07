@@ -1,20 +1,34 @@
 package com.example.academycode;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.example.academycode.BaseDeDatos.SQLiteBaseDeDatos;
 import com.example.academycode.Login.IniciarSesion;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -29,10 +43,14 @@ import com.google.android.material.navigation.NavigationView;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, NavigationView.OnNavigationItemSelectedListener {
 
     TextView nomb,email;
     CircularImageView fotoPerfilUser;
+
+    SQLiteBaseDeDatos db;
 
     Toolbar toolbar;
     private DrawerLayout drawer;
@@ -46,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        db =  new SQLiteBaseDeDatos(this);
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -56,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         nomb = navigationView.getHeaderView(0).findViewById(R.id.nombre_user_menu);
         email = navigationView.getHeaderView(0).findViewById(R.id.email_user_menu);
         fotoPerfilUser = navigationView.getHeaderView(0).findViewById(R.id.imagen_usuario_menu);
+
 
         //Para que aparezca el icono de menu en el toolbar
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -73,8 +94,138 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
                 .build();
 
+        fotoPerfilUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarOpciones();
+            }
+        });
+
 
     }
+
+    //****************************************
+    //Controlar la foto de perfil del usuario
+
+    //MOSTRAR VENTANA CON OPCIONES
+    private void mostrarOpciones() {
+        final CharSequence[] option = {"Tomar foto", "Elegir de galeria", "Cancelar"};
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Eleige una opción");
+        builder.setItems(option, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(option[which] == "Tomar foto"){
+                    tomarFoto();
+                }else if(option[which] == "Elegir de galeria"){
+                    seleccionarImagen();
+                }else {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        builder.show();
+    }
+
+    private Uri photoURI;
+    String rutaFoto = "";
+
+    private String CARPETA_RAIZ = "AcademyCodePhotos";
+    private String CARPETAS_IMAGENES = "photos";
+    private String RUTA_IMAGEN = CARPETA_RAIZ + CARPETAS_IMAGENES;
+    private static String path;
+    private String nombreImagen = "";
+
+    //HACER FOTO
+    public void tomarFoto() {
+        File fileImagen = new File(Environment.getExternalStorageDirectory(), RUTA_IMAGEN);
+        boolean isCreada = fileImagen.exists();
+
+        if(isCreada == false) {
+            isCreada = fileImagen.mkdirs();
+        }
+
+        if(isCreada == true) {
+            nombreImagen = (System.currentTimeMillis() / 1000) + ".jpg";
+        }
+
+        path = Environment.getExternalStorageDirectory()+File.separator+RUTA_IMAGEN+File.separator+nombreImagen;
+        File imagen = new File(path);
+
+        Intent intent = null;
+        intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            String authorities = this.getPackageName()+".provider";
+            Uri imageUri = FileProvider.getUriForFile(this, authorities, imagen);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        } else {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagen));
+        }
+
+        startActivityForResult(intent, 100);
+    }
+
+    //SELECCIONAR LA IMÁGEN DE LA GALERÍA
+    public void seleccionarImagen() {
+        Intent galeria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(galeria, 200);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK && requestCode == 200) {//Para seleccionar foto
+            photoURI = data.getData();
+            fotoPerfilUser.setImageURI(photoURI);
+            //Guardar uri en BD
+            try {
+                rutaFoto = getRealPathFromURI(photoURI);
+                db.insertarFotoUser(rutaFoto, email.getText().toString(),nomb.getText().toString());
+            } catch (Exception e) {
+                System.out.println("ERROR AL GUARDAR FOTO SELECCIONADA EN BD");
+                e.printStackTrace();
+            }
+        } else if(resultCode == RESULT_OK && requestCode == 100) {//Para hacer foto
+            try{
+                MediaScannerConnection.scanFile(MainActivity.this, new String[]{path}, null, new MediaScannerConnection.OnScanCompletedListener() {
+                    @Override
+                    public void onScanCompleted(String s, Uri uri) {
+
+                    }
+                });
+
+                Glide.with(this)
+                        .load(path)
+                        .into(fotoPerfilUser);
+                //Guardar path en BD
+                db.insertarFotoUser(path, email.getText().toString(), nomb.getText().toString());
+            } catch (Exception e) {
+                System.out.println("ERROR EN CARGAR LA FOTO");
+                e.printStackTrace();
+            }
+            /*Bitmap bitmap = BitmapFactory.decodeFile(path);
+            img.setImageBitmap(bitmap);*/
+        }
+    }
+
+    //Conseguir el path de la imagen pasándole la URI
+    private String getRealPathFromURI(Uri contentURI) throws Exception{
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+    //**************************************
 
     //Método seleccion del item del menu desplegable
     @Override
@@ -108,9 +259,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onStart();
 
         Bundle datos = this.getIntent().getExtras();
-        if (!datos.isEmpty()) {
+        if (datos != null) {
             nomb.setText(datos.getString("nombreUsuario"));
             email.setText(datos.getString("emailUsuario"));
+
+            String fotoPerfil = db.recuperarFotoUser(nomb.getText().toString());
+            if (!fotoPerfil.equals("")){
+                //Mostrar foto perfil accedido
+                Glide.with(this)
+                        .load(fotoPerfil) //conseguir fotoUsuario de BD
+                        .into(fotoPerfilUser);
+            }
+
         }
         //Mantener Cuenta de google conectada
         OptionalPendingResult<GoogleSignInResult> opr= Auth.GoogleSignInApi.silentSignIn(googleApiClient);

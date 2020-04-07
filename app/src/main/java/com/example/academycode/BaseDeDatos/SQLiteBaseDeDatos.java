@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Base64;
+import android.widget.Toast;
+
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -51,6 +53,18 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
         return desencriptar(nombUsuario);
     }
 
+    public String recuperarFotoUser(String nombUsuario){
+        SQLiteDatabase baseDatos = this.getReadableDatabase();
+        Cursor cursor = baseDatos.rawQuery("Select fotoPerfil from usuario where nombreUsuario=?",new String[]{nombUsuario});
+
+        String foto = "";
+        if (cursor.moveToFirst()){
+            foto = cursor.getString(0);
+        }
+
+        return foto;
+    }
+
     //Insertar en tabla Usuario
     public boolean insertUsuario(String email, String password, String nombreUsu, String telefUsu){
 
@@ -66,6 +80,22 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
 
         if (insert == -1) return false;
         else return true;
+
+    }
+
+    //Insertar foto perfil de usuario en bd
+    public void insertarFotoUser(String path_uri, String emailU, String nombreU){
+        SQLiteDatabase baseDatos = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("fotoPerfil", path_uri);
+
+        int cantidad = baseDatos.update("usuario", contentValues,"email = ?",new String[]{encriptar(nombreU,emailU)});
+
+        if (cantidad == 1){
+            System.out.println("FOTO GUARDADA CORRECTAMENTE");
+        }else{
+            System.out.println("FOTO NO GUARDADA CORRECTAMENTE");
+        }
 
     }
 
@@ -162,7 +192,6 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
             c.printStackTrace();
         }
 
-        System.out.println(datosDesencriptadosString);
         return datosDesencriptadosString;
     }
 

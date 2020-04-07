@@ -1,6 +1,8 @@
 package com.example.academycode.Login;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +10,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.example.academycode.BaseDeDatos.SQLiteBaseDeDatos;
 import com.example.academycode.MainActivity;
 import com.example.academycode.R;
@@ -42,6 +47,12 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
         b2Acceder = findViewById(R.id.btnAcceder);
         btnGoogle = findViewById(R.id.inicar_google);
 
+        //permiso de escritura en memoria
+        if(ContextCompat.checkSelfPermission(IniciarSesion.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(IniciarSesion.this,
+                    new String[]{Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+        }
 
         //Botón Iniciar Sesión normal
         b2Acceder.setOnClickListener(new View.OnClickListener() {
