@@ -14,7 +14,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.academycode.BaseDeDatos.SQLiteBaseDeDatos;
-import com.example.academycode.MainActivity;
+import com.example.academycode.MenuPrincipal.MainActivity;
 import com.example.academycode.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;

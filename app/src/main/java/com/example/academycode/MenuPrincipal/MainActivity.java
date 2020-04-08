@@ -1,16 +1,13 @@
-package com.example.academycode;
+package com.example.academycode.MenuPrincipal;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -22,14 +19,13 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.example.academycode.BaseDeDatos.SQLiteBaseDeDatos;
 import com.example.academycode.Login.IniciarSesion;
+import com.example.academycode.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -42,7 +38,6 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.material.navigation.NavigationView;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
-
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, NavigationView.OnNavigationItemSelectedListener {
@@ -51,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     CircularImageView fotoPerfilUser;
 
     SQLiteBaseDeDatos db;
+
+    ImageButton btnAbrirMenu;
 
     Toolbar toolbar;
     private DrawerLayout drawer;
@@ -66,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         db =  new SQLiteBaseDeDatos(this);
 
-        toolbar = findViewById(R.id.toolbar);
+        //toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.menu_desplegable);
@@ -77,12 +74,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         email = navigationView.getHeaderView(0).findViewById(R.id.email_user_menu);
         fotoPerfilUser = navigationView.getHeaderView(0).findViewById(R.id.imagen_usuario_menu);
 
-
         //Para que aparezca el icono de menu en el toolbar
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+        /*ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        toggle.syncState();*/
+        btnAbrirMenu = findViewById(R.id.btnAbrirMenu);
+        btnAbrirMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.openDrawer(GravityCompat.START);
+            }
+        });
 
         //Solicitamos cuenta con email
         gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
