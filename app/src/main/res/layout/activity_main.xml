@@ -91,19 +91,21 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
-                                android:paddingBottom="20dp"
+                                android:paddingBottom="10dp"
                                 android:orientation="vertical"
-                                android:padding="16dp">
+                                >
 
                                 <ImageView
-                                    android:layout_width="80dp"
-                                    android:layout_height="80dp"
-                                    android:src="@drawable/contact"/>
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="200dp"
+                                    android:adjustViewBounds="true"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/libros2"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp"
+                                    android:layout_marginTop="10dp"
                                     android:text="TEORÍA"
                                     android:textColor="#6f6f6f"
                                     android:textSize="20sp"
@@ -126,18 +128,20 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
-                                android:orientation="vertical"
-                                android:padding="16dp">
+                                android:paddingBottom="10dp"
+                                android:orientation="vertical">
 
                                 <ImageView
-                                    android:layout_width="80dp"
-                                    android:layout_height="80dp"
-                                    android:src="@drawable/contact"/>
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="200dp"
+                                    android:adjustViewBounds="true"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/ejercicios"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp"
+                                    android:layout_marginTop="10dp"
                                     android:textColor="#6f6f6f"
                                     android:textSize="20sp"
                                     android:textStyle="bold"
@@ -161,18 +165,20 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
-                                android:orientation="vertical"
-                                android:padding="16dp">
+                                android:paddingBottom="10dp"
+                                android:orientation="vertical">
 
                                 <ImageView
-                                    android:layout_width="80dp"
-                                    android:layout_height="80dp"
-                                    android:src="@drawable/contact"/>
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="210dp"
+                                    android:adjustViewBounds="true"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/videotuto"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp"
+                                    android:layout_marginTop="10dp"
                                     android:textColor="#6f6f6f"
                                     android:textSize="20sp"
                                     android:textStyle="bold"
@@ -196,13 +202,15 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
-                                android:orientation="vertical"
-                                android:padding="16dp">
+                                android:paddingBottom="10dp"
+                                android:orientation="vertical">
 
                                 <ImageView
-                                    android:layout_width="80dp"
-                                    android:layout_height="80dp"
-                                    android:src="@drawable/contact"/>
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="210dp"
+                                    android:adjustViewBounds="true"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/foro"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
