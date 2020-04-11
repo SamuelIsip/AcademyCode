@@ -46,19 +46,22 @@ public class RegistrarUsuario extends AppCompatActivity {
                 String telefono = edTxtTelef.getText().toString();
 
                 //Comprobar los datos introducidos, antes de guardar en BD
-                if (passwrdU.equals(edTxtPasw2.getText().toString())) {
+
                     if (emailU.equals("") || nombreUsu.equals("") || passwrdU.equals("") || edTxtPasw2.getText().toString().equals("")) {
                         Toast.makeText(RegistrarUsuario.this, "¡Debe rellenar todos los campos!", Toast.LENGTH_SHORT).show();
                     } else {
-                        if (db.checkEmail(emailU) && db.checkUserName(nombreUsu))
-                            if (emailValido(emailU) && passValida(passwrdU))
-                                if (db.insertUsuario(emailU, passwrdU, nombreUsu,telefono)) //Se inserta en la BD
-                                    usuarioRegistrado();
-                        else
+                        if (db.checkEmail(emailU) && db.checkUserName(nombreUsu)) {
+                            if (emailValido(emailU) && passValida(passwrdU)) {
+                                if (passwrdU.equals(edTxtPasw2.getText().toString()))
+                                    if (db.insertUsuario(emailU, passwrdU, nombreUsu, telefono)) //Se inserta en la BD
+                                        usuarioRegistrado();
+                                    else
+                                        passwNoCoinciden();
+                            }
+                        }else
                             Toast.makeText(RegistrarUsuario.this, "¡Nombre Usuario/Email ya existente!", Toast.LENGTH_SHORT).show();
                     }
-                }else
-                    passwNoCoinciden();
+
             }
         });
 

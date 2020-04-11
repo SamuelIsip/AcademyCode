@@ -110,11 +110,21 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
     //Comprobar si el email existe
     public boolean checkEmail(String email){
         SQLiteDatabase baseDatos = this.getReadableDatabase();
-        Cursor cursor = baseDatos.rawQuery("Select * from usuario where email=?",new String[]{email});
-        if (cursor.getCount()>0)
-            return false;
-        else
-            return true;
+        Cursor cursor = baseDatos.rawQuery("Select nombreUsuario from usuario",null);
+
+        boolean encontrado = true;
+
+        //Aseguramos que exista el menos un registro
+        if (cursor.moveToFirst()){
+            do{
+                if (desencriptar(cursor.getString(0)).equals(email)){ //Compruebo si el email pasado es igual a los ya existentes desencriptados, pasando la key(nombreUsuario)
+                    encontrado = false;
+                }
+            }while(cursor.moveToNext());
+        }
+
+        return encontrado;
+
     }
 
     //Comprobar si el nombreUsuario existe
@@ -169,11 +179,11 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
     }
 
     //Desencriptar datos
-    private String desencriptar(String datoSinDesencriptar){
+    private String desencriptar(String nombUserDesencript){
         String datosDesencriptadosString = "";
 
         SQLiteDatabase baseDatos = this.getReadableDatabase();
-        Cursor fila = baseDatos.rawQuery("Select email from usuario where nombreUsuario=?",new String[]{datoSinDesencriptar});
+        Cursor fila = baseDatos.rawQuery("Select email from usuario where nombreUsuario=?",new String[]{nombUserDesencript});
 
         String datoAdesencriptar = "";
 
@@ -182,7 +192,7 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
         }
 
         try{
-            SecretKeySpec secretKey = generateKey(datoSinDesencriptar);
+            SecretKeySpec secretKey = generateKey(nombUserDesencript);
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             byte[] datosDescodificados = Base64.decode(datoAdesencriptar, Base64.DEFAULT);
@@ -194,6 +204,7 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
 
         return datosDesencriptadosString;
     }
+
 
 
 

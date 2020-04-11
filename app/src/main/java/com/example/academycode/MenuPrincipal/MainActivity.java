@@ -267,10 +267,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             email.setText(datos.getString("emailUsuario"));
 
             String fotoPerfil = db.recuperarFotoUser(nomb.getText().toString());
-            if (!fotoPerfil.equals("")){
+            System.out.println("FOTOOOOOOOOOOO: "+fotoPerfil);
+            if (fotoPerfil!=null){
                 //Mostrar foto perfil accedido
                 Glide.with(this)
                         .load(fotoPerfil) //conseguir fotoUsuario de BD
+                        .into(fotoPerfilUser);
+            }else{
+                Glide.with(this)
+                        .load(R.mipmap.ic_launcher_round)
                         .into(fotoPerfilUser);
             }
 
