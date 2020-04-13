@@ -41,7 +41,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MenuPrincipal.MainActivity"
+        <activity android:name=".MenuPrincipal.MenuPrincipal"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,6 +1,8 @@
 package com.example.academycode.Login;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -119,5 +121,11 @@ public class RegistrarUsuario extends AppCompatActivity {
         }
     }
     //*********************************
+
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(RegistrarUsuario.this, IniciarSesion.class));
+        finish();
+    }
 
 }

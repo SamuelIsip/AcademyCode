@@ -40,7 +40,7 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 import java.io.File;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, NavigationView.OnNavigationItemSelectedListener {
+public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, NavigationView.OnNavigationItemSelectedListener {
 
     TextView nomb,email;
     CircularImageView fotoPerfilUser;
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     //MOSTRAR VENTANA CON OPCIONES
     private void mostrarOpciones() {
         final CharSequence[] option = {"Tomar foto", "Elegir de galeria", "Cancelar"};
-        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MenuPrincipal.this);
         builder.setTitle("Eleige una opción");
         builder.setItems(option, new DialogInterface.OnClickListener() {
             @Override
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         } else if(resultCode == RESULT_OK && requestCode == 100) {//Para hacer foto
             try{
-                MediaScannerConnection.scanFile(MainActivity.this, new String[]{path}, null, new MediaScannerConnection.OnScanCompletedListener() {
+                MediaScannerConnection.scanFile(MenuPrincipal.this, new String[]{path}, null, new MediaScannerConnection.OnScanCompletedListener() {
                     @Override
                     public void onScanCompleted(String s, Uri uri) {
 
@@ -246,8 +246,30 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public void onBackPressed(){
         if (drawer.isDrawerOpen(GravityCompat.START)){
             drawer.closeDrawer(GravityCompat.START);
-        }else
-            super.onBackPressed();
+        }else {
+            salirAplicacion();
+        }
+    }
+
+    private void salirAplicacion() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        startActivity(new Intent(MenuPrincipal.this, IniciarSesion.class));
+                        finish();
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        dialog.dismiss();
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("¿Seguro que quieres salir de la aplicación?").setPositiveButton("SI", dialogClickListener)
+                .setNegativeButton("NO", dialogClickListener).show();
+
     }
 
     //************************************
@@ -255,44 +277,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        Bundle datos = this.getIntent().getExtras();
-        if (datos != null) {
-            nomb.setText(datos.getString("nombreUsuario"));
-            email.setText(datos.getString("emailUsuario"));
-
-            String fotoPerfil = db.recuperarFotoUser(nomb.getText().toString());
-            System.out.println("FOTOOOOOOOOOOO: "+fotoPerfil);
-            if (fotoPerfil!=null){
-                //Mostrar foto perfil accedido
-                Glide.with(this)
-                        .load(fotoPerfil) //conseguir fotoUsuario de BD
-                        .into(fotoPerfilUser);
-            }else{
-                Glide.with(this)
-                        .load(R.mipmap.ic_launcher_round)
-                        .into(fotoPerfilUser);
-            }
-
-        }
-        //Mantener Cuenta de google conectada
-        OptionalPendingResult<GoogleSignInResult> opr= Auth.GoogleSignInApi.silentSignIn(googleApiClient);
-        if(opr.isDone()){
-            GoogleSignInResult result=opr.get();
-            handleSignInResult(result);
-        }else{
-            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-                @Override
-                public void onResult(@NonNull GoogleSignInResult googleSignInResult) {
-                    handleSignInResult(googleSignInResult);
-                }
-            });
-        }
     }
 
     //Recoger datos de la cuenta google
@@ -312,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 @Override
                 public void onResult(Status status) {
                     if (status.isSuccess()){ //Si se cierra sesion
-                        startActivity(new Intent(MainActivity.this, IniciarSesion.class));
+                        startActivity(new Intent(MenuPrincipal.this, IniciarSesion.class));
                         finish();
                     }else{
                         Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
@@ -321,5 +305,51 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             });
     }
     //************************************
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Bundle datos = this.getIntent().getExtras();
+        if (datos != null) {
+            nomb.setText(datos.getString("nombreUsuario"));
+            email.setText(datos.getString("emailUsuario"));
+
+            String fotoPerfil = db.recuperarFotoUser(nomb.getText().toString());
+
+            if (fotoPerfil!=null){
+                //Mostrar foto perfil accedido
+                Glide.with(this)
+                        .load(fotoPerfil) //conseguir fotoUsuario de BD
+                        .into(fotoPerfilUser);
+            }else{
+                Glide.with(this)
+                        .load(R.mipmap.ic_launcher_round)
+                        .into(fotoPerfilUser);
+            }
+
+        }
+
+        //Mantener Cuenta de google conectada
+        OptionalPendingResult<GoogleSignInResult> opr= Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+        if(opr.isDone()){
+            GoogleSignInResult result=opr.get();
+            handleSignInResult(result);
+        }else{
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(@NonNull GoogleSignInResult googleSignInResult) {
+                    handleSignInResult(googleSignInResult);
+                }
+            });
+        }
+    }
+
+
+    @Override protected void onStop() {
+        Auth.GoogleSignInApi.signOut(googleApiClient);
+        super.onStop();
+    }
+
     
 }

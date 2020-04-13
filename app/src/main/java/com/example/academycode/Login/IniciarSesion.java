@@ -14,7 +14,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.academycode.BaseDeDatos.SQLiteBaseDeDatos;
-import com.example.academycode.MenuPrincipal.MainActivity;
+import com.example.academycode.MenuPrincipal.MenuPrincipal;
 import com.example.academycode.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -65,7 +65,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                 //Comprobamos si los datos del login son correctos
                 if (!nombreUsu.equals("") || !passwU.equals("")) {
                     if (db.checkUserPasswd(nombreUsu, passwU)) {
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), MenuPrincipal.class);
                         intent.putExtra("nombreUsuario", nombreUsu);
                         intent.putExtra("emailUsuario", db.recuperarEmial(nombreUsu));
                         startActivity(intent);
@@ -122,7 +122,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
 
             if (result.isSuccess())
             {
-                startActivity(new Intent(IniciarSesion.this, MainActivity.class));
+                startActivity(new Intent(IniciarSesion.this, MenuPrincipal.class));
                 finish();
             }else
                 Toast.makeText(this, "¡Login Failed!", Toast.LENGTH_SHORT).show();
