@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -39,6 +40,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -196,7 +199,6 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
                 MediaScannerConnection.scanFile(MenuPrincipal.this, new String[]{path}, null, new MediaScannerConnection.OnScanCompletedListener() {
                     @Override
                     public void onScanCompleted(String s, Uri uri) {
-
                     }
                 });
 
@@ -279,10 +281,11 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
 
     }
 
+    GoogleSignInAccount account;
     //Recoger datos de la cuenta google
     private void handleSignInResult(GoogleSignInResult result){
         if(result.isSuccess()){
-            GoogleSignInAccount account=result.getSignInAccount();
+            account=result.getSignInAccount();
             nomb.setText(account.getDisplayName());
             email.setText(account.getEmail());
             //Foto de perfil
@@ -351,5 +354,26 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         super.onStop();
     }
 
-    
+    //******************************************************
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("nomb", nomb.getText().toString());
+        outState.putString("email" , email.getText().toString());
+        
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        nomb.setText(savedInstanceState.getString("nomb"));
+        email.setText(savedInstanceState.getString("email"));
+
+        Glide.with(this)
+                .load(db.recuperarFotoUser(savedInstanceState.getString("nomb")))
+                .into(fotoPerfilUser);
+    }
+    //******************************************************
+
 }
