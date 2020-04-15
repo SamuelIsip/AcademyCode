@@ -16,6 +16,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
 
+    Context context;
     //Constructor
     public SQLiteBaseDeDatos(Context context){
         super(context, "AcademyBD", null, 1); //Nombre y versión de la BD
@@ -76,9 +77,12 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
         contentValues.put("telefono",telefUsu);
         contentValues.put("fechaCreacion",fechaSistema());
 
-        long insert = baseDatos.insert("usuario", null, contentValues);
+        long insert = baseDatos.insertOrThrow("usuario", null, contentValues);
 
-        if (insert == -1) return false;
+        if (insert == -1){
+            Toast.makeText(context, "NO SE HA GUARDADO", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         else return true;
 
     }

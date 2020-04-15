@@ -44,29 +44,7 @@ public class RegistrarUsuario extends AppCompatActivity {
         btnRegistrarU.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String emailU = edTextEmail.getText().toString();
-                String passwrdU = edTxtPasw1.getText().toString();
-                String nombreUsu = edTextNUs.getText().toString();
-                String telefono = edTxtTelef.getText().toString();
-
-                //Comprobar los datos introducidos, antes de guardar en BD
-
-                    if (emailU.equals("") || nombreUsu.equals("") || passwrdU.equals("") || edTxtPasw2.getText().toString().equals("")) {
-                        Toast.makeText(RegistrarUsuario.this, "¡Debe rellenar todos los campos!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (db.checkEmail(emailU) && db.checkUserName(nombreUsu)) {
-                            if (emailValido(emailU) && passValida(passwrdU)) {
-                                if (passwrdU.equals(edTxtPasw2.getText().toString()))
-                                    if (db.insertUsuario(emailU, passwrdU, nombreUsu, telefono)) //Se inserta en la BD
-                                        usuarioRegistrado();
-                                    else
-                                        passwNoCoinciden();
-                            }
-                        }else
-                            Toast.makeText(RegistrarUsuario.this, "¡Nombre Usuario/Email ya existente!", Toast.LENGTH_SHORT).show();
-                    }
-
+                insertarUsuarioComprobado();
             }
         });
 
@@ -83,10 +61,34 @@ public class RegistrarUsuario extends AppCompatActivity {
 
     //*********************************
     //Métodos comprobación al registrar
+    public void insertarUsuarioComprobado(){
+        String emailU = edTextEmail.getText().toString();
+        String passwrdU = edTxtPasw1.getText().toString();
+        String nombreUsu = edTextNUs.getText().toString();
+        String telefono = edTxtTelef.getText().toString();
+        String passwrdU2 = edTxtPasw2.getText().toString();
+
+        //Comprobar los datos introducidos, antes de guardar en BD
+        if (emailU.equals("") || nombreUsu.equals("") || passwrdU.equals("") || passwrdU2.equals("")) {
+            Toast.makeText(RegistrarUsuario.this, "¡Debe rellenar todos los campos obligatorios!", Toast.LENGTH_SHORT).show();
+        } else {
+            if (emailValido(emailU) && passValida(passwrdU)) {
+                if (db.checkEmail(emailU) && db.checkUserName(nombreUsu)) {
+                    if (passwrdU.equals(passwrdU2)) {
+                        if (db.insertUsuario(emailU, passwrdU, nombreUsu, telefono)) //Se inserta en la BD
+                            usuarioRegistrado();
+                    }else
+                        passwNoCoinciden();
+                }else
+                    Toast.makeText(RegistrarUsuario.this, "¡Nombre Usuario/Email ya existente!", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+
     public void usuarioRegistrado(){
         Toast.makeText(RegistrarUsuario.this, "¡Registrado con éxito!", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(getApplicationContext(), IniciarSesion.class);
-        startActivity(intent);
+        startActivity(new Intent(getApplicationContext(), IniciarSesion.class));
         finish();
     }
 

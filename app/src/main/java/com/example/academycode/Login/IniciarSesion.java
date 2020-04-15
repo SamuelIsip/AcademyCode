@@ -128,7 +128,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                 account=result.getSignInAccount();
                 try{
                     if (db.checkEmail(account.getEmail()) == true){ //Si es la primera vez que se conecta con google, que se guarde en BD
-                        db.insertUsuario(account.getEmail(),"",account.getDisplayName(), "");
+                        db.insertUsuario(account.getEmail(),String.valueOf((Math.random())),account.getDisplayName(), "");
                         db.insertarFotoUser(account.getPhotoUrl().toString(),account.getEmail(),account.getDisplayName());
                     }
                 }catch (Exception e){

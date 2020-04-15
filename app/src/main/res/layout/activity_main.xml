@@ -50,7 +50,7 @@
                         android:paddingRight="25dp"
                         android:layout_height="match_parent"
                         android:background="@android:color/transparent"
-                        android:src="@android:drawable/ic_menu_sort_by_size" />
+                        android:src="@drawable/ic_menu_black_24dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
