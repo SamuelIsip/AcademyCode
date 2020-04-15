@@ -289,8 +289,11 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
             nomb.setText(account.getDisplayName());
             email.setText(account.getEmail());
             //Foto de perfil
-            Picasso.get().load(account.getPhotoUrl()).placeholder(R.mipmap.ic_launcher).into(fotoPerfilUser);
+            //Picasso.get().load(account.getPhotoUrl()).placeholder(R.mipmap.ic_launcher).into(fotoPerfilUser);
+            String fotoUser = db.recuperarFotoUser(account.getDisplayName());
+            mostrarImagen_guardada_o_no(fotoUser);
         }
+
     }
 
     public void cerrarSesionGoogle(){
@@ -313,26 +316,6 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
     protected void onStart() {
         super.onStart();
 
-        Bundle datos = this.getIntent().getExtras();
-        if (datos != null) {
-            nomb.setText(datos.getString("nombreUsuario"));
-            email.setText(datos.getString("emailUsuario"));
-
-            String fotoPerfil = db.recuperarFotoUser(nomb.getText().toString());
-
-            if (fotoPerfil!=null){
-                //Mostrar foto perfil accedido
-                Glide.with(this)
-                        .load(fotoPerfil) //conseguir fotoUsuario de BD
-                        .into(fotoPerfilUser);
-            }else{
-                Glide.with(this)
-                        .load(R.mipmap.ic_launcher_round)
-                        .into(fotoPerfilUser);
-            }
-
-        }
-
         //Mantener Cuenta de google conectada
         OptionalPendingResult<GoogleSignInResult> opr= Auth.GoogleSignInApi.silentSignIn(googleApiClient);
         if(opr.isDone()){
@@ -345,6 +328,16 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
                     handleSignInResult(googleSignInResult);
                 }
             });
+        }
+
+        Bundle datos = this.getIntent().getExtras();
+        if (datos != null) {
+            nomb.setText(datos.getString("nombreUsuario"));
+            email.setText(datos.getString("emailUsuario"));
+
+            String fotoPerfil = db.recuperarFotoUser(nomb.getText().toString());
+            mostrarImagen_guardada_o_no(fotoPerfil);
+
         }
     }
 
@@ -360,7 +353,7 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         super.onSaveInstanceState(outState);
         outState.putString("nomb", nomb.getText().toString());
         outState.putString("email" , email.getText().toString());
-        
+
     }
 
     @Override
@@ -370,10 +363,23 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         nomb.setText(savedInstanceState.getString("nomb"));
         email.setText(savedInstanceState.getString("email"));
 
-        Glide.with(this)
-                .load(db.recuperarFotoUser(savedInstanceState.getString("nomb")))
-                .into(fotoPerfilUser);
+        String fotoUser = db.recuperarFotoUser(savedInstanceState.getString("nomb"));
+        mostrarImagen_guardada_o_no(fotoUser);
+
     }
     //******************************************************
+
+    public void mostrarImagen_guardada_o_no(String fotoUser){
+        if (fotoUser!=null){
+            //Mostrar foto perfil accedido
+            Glide.with(this)
+                    .load(fotoUser) //conseguir fotoUsuario de BD
+                    .into(fotoPerfilUser);
+        }else{
+            Glide.with(this)
+                    .load(R.mipmap.ic_launcher_round)
+                    .into(fotoPerfilUser);
+        }
+    }
 
 }

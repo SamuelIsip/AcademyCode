@@ -17,6 +17,7 @@ import com.example.academycode.BaseDeDatos.SQLiteBaseDeDatos;
 import com.example.academycode.MenuPrincipal.MenuPrincipal;
 import com.example.academycode.R;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
@@ -116,14 +117,27 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
+        GoogleSignInAccount account;
 
         if (requestCode == SIGN_IN){
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
             if (result.isSuccess())
             {
+                //Guardar datos de la cuenta google en BD (guardar usuario, sin pw)
+                account=result.getSignInAccount();
+                try{
+                    if (db.checkEmail(account.getEmail()) == true){ //Si es la primera vez que se conecta con google, que se guarde en BD
+                        db.insertUsuario(account.getEmail(),"",account.getDisplayName(), "");
+                        db.insertarFotoUser(account.getPhotoUrl().toString(),account.getEmail(),account.getDisplayName());
+                    }
+                }catch (Exception e){
+                    //Capturamos error al volver a crear la activity (ya no tiene instancia de GoogleSignInAccount
+                }
+
                 startActivity(new Intent(IniciarSesion.this, MenuPrincipal.class));
                 finish();
+
             }else
                 Toast.makeText(this, "¡Login Failed!", Toast.LENGTH_SHORT).show();
         }
