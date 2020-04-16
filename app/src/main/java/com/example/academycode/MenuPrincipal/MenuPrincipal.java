@@ -11,7 +11,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -38,10 +37,8 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.material.navigation.NavigationView;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.squareup.picasso.Picasso;
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
+
 
 public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -239,9 +236,16 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
             case R.id.cerrar_sesion:
                 cerrarSesionGoogle();
                 break;
+            case R.id.ajustes:
+                accederAjustes();
+                break;
         }
         drawer.closeDrawer(GravityCompat.START);
         return true; //fue seleccionado
+    }
+
+    public void accederAjustes(){
+
     }
 
     @Override
