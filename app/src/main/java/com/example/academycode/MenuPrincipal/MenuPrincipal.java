@@ -24,8 +24,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.academycode.BaseDeDatos.SQLiteBaseDeDatos;
+import com.example.academycode.Ejercicios.EjerciciosPDF;
 import com.example.academycode.Login.IniciarSesion;
 import com.example.academycode.R;
+import com.example.academycode.Teoria.TeoriaPDF;
+import com.example.academycode.Tutoriales.TutorialesVideo;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -237,16 +240,25 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
                 cerrarSesionGoogle();
                 break;
             case R.id.ajustes:
-                accederAjustes();
+                //accederAjustes();
+                break;
+            case R.id.teoria:
+                abrirTeoria(null);
+                break;
+            case R.id.tutovid:
+                abrirVideoTuto(null);
+                break;
+            case R.id.ejercicios:
+                abrirEjercicios(null);
+                break;
+            case R.id.foro:
+
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
         return true; //fue seleccionado
     }
 
-    public void accederAjustes(){
-
-    }
 
     @Override
     public void onBackPressed(){
@@ -258,23 +270,28 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void salirAplicacion() {
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case DialogInterface.BUTTON_POSITIVE:
-                        startActivity(new Intent(MenuPrincipal.this, IniciarSesion.class));
-                        finish();
-                        break;
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        dialog.dismiss();
-                }
-            }
-        };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("¿Seguro que quieres salir de la aplicación?").setPositiveButton("SI", dialogClickListener)
-                .setNegativeButton("NO", dialogClickListener).show();
+        builder.setTitle("Salir");
+        builder.setMessage("¿Seguro que quieres salir de la aplicación?");
+
+        builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(MenuPrincipal.this, IniciarSesion.class));
+                finish();
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog ad = builder.create();
+        ad.show();
 
     }
 
@@ -386,4 +403,19 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
+    //******************************************************
+    //Abrir activityes de los cardview
+    public void abrirTeoria(View view) {
+        startActivity(new Intent(this, TeoriaPDF.class));
+    }
+
+    public void abrirEjercicios(View view) {
+        startActivity(new Intent(this, EjerciciosPDF.class));
+    }
+
+    public void abrirVideoTuto(View view) {
+        startActivity(new Intent(this, TutorialesVideo.class));
+    }
+
+    //******************************************************
 }

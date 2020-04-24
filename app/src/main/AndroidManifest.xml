@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Teoria.TutorialesPDF"></activity>
+        <activity android:name=".Ejercicios.EjerciciosPDF"></activity>
+        <activity android:name=".Teoria.TeoriaPDF" />
         <activity android:name=".Tutoriales.TutorialesVideo" />
         <activity
             android:name=".Login.SplashScreen"

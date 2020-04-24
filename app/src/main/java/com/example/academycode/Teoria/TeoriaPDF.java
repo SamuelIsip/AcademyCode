@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.example.academycode.R;
 
-public class TutorialesPDF extends AppCompatActivity {
+public class TeoriaPDF extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

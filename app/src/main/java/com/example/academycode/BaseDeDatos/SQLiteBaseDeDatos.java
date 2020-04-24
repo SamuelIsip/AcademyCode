@@ -2,15 +2,32 @@ package com.example.academycode.BaseDeDatos;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Base64;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.academycode.Login.IniciarSesion;
+import com.example.academycode.Login.RegistrarUsuario;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -20,6 +37,7 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
     //Constructor
     public SQLiteBaseDeDatos(Context context){
         super(context, "AcademyBD", null, 1); //Nombre y versión de la BD
+        this.context = context;
     }
 
     //Creación de las tablas de la BD
@@ -67,23 +85,52 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
     }
 
     //Insertar en tabla Usuario
-    public boolean insertUsuario(String email, String password, String nombreUsu, String telefUsu){
+    private static String URL_REGIST = "http://192.168.2.108:8282/register.php?";
+    public void insertUsuario(final String email, final String password, final String nombreUsu, final String telefUsu){
 
-        SQLiteDatabase baseDatos = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("email", encriptar(nombreUsu,email)); //se encripta email
-        contentValues.put("password",encriptar(nombreUsu,password)); //se encripta password
-        contentValues.put("nombreUsuario",nombreUsu);
-        contentValues.put("telefono",telefUsu);
-        contentValues.put("fechaCreacion",fechaSistema());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REGIST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try{
+                            JSONObject jsonObject = new JSONObject(response);
+                            String success = jsonObject.getString("success");
+                            
+                            if (success.equals("1")){
+                                Toast.makeText(context, "¡Registrado con éxito!", Toast.LENGTH_SHORT).show();
+                                context.startActivity(new Intent(context, IniciarSesion.class));
+                                RegistrarUsuario r = new RegistrarUsuario();
+                                r.finish();
+                            }
 
-        long insert = baseDatos.insertOrThrow("usuario", null, contentValues);
+                        }catch(JSONException e){
+                            e.printStackTrace();
+                            Toast.makeText(context, "Servidor No Conectado!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Servidor No Conectado!", Toast.LENGTH_SHORT).show();
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("email", encriptar(nombreUsu,email)); //se encripta email
+                params.put("password",encriptar(nombreUsu,password)); //se encripta password
+                params.put("nombre_usuario",nombreUsu);
+                params.put("telefono",telefUsu);
+                params.put("fecha",fechaSistema());
+                //params.put("foto_perfil", null);
 
-        if (insert == -1){
-            Toast.makeText(context, "NO SE HA GUARDADO", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        else return true;
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
 
     }
 

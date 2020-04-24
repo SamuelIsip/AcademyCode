@@ -16,6 +16,8 @@ import androidx.core.content.ContextCompat;
 import com.example.academycode.BaseDeDatos.SQLiteBaseDeDatos;
 import com.example.academycode.MenuPrincipal.MenuPrincipal;
 import com.example.academycode.R;
+import com.example.academycode.api.RetrofitClient;
+import com.example.academycode.model.LoginResponse;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -23,10 +25,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     SQLiteBaseDeDatos db;
-    EditText e1NUsuario, e2Pswrd;
+    EditText e1EUsuario, e2Pswrd;
     Button b1Registrar, b2Acceder, btnGoogle;
 
     //Variable para Google
@@ -42,7 +48,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
 
         db = new SQLiteBaseDeDatos(this);
 
-        e1NUsuario = findViewById(R.id.edTxtNUs);
+        e1EUsuario = findViewById(R.id.edTxtEmail);
         e2Pswrd = findViewById(R.id.edTxtPsw);
         b1Registrar = findViewById(R.id.btnRegistrar);
         b2Acceder = findViewById(R.id.btnAcceder);
@@ -60,21 +66,55 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onClick(View v) {
 
-                String nombreUsu = e1NUsuario.getText().toString();
+                String emailUsu = e1EUsuario.getText().toString();
                 String passwU = e2Pswrd.getText().toString();
 
-                //Comprobamos si los datos del login son correctos
-                if (!nombreUsu.equals("") || !passwU.equals("")) {
-                    if (db.checkUserPasswd(nombreUsu, passwU)) {
-                        Intent intent = new Intent(getApplicationContext(), MenuPrincipal.class);
-                        intent.putExtra("nombreUsuario", nombreUsu);
-                        intent.putExtra("emailUsuario", db.recuperarEmial(nombreUsu));
-                        startActivity(intent);
-                        finish();
-                    } else
-                        Toast.makeText(IniciarSesion.this, "¡Usuario/Contraseña incorrecto!", Toast.LENGTH_LONG).show();
-                }else
-                    Toast.makeText(IniciarSesion.this, "¡Debe rellenar todos los campos!", Toast.LENGTH_SHORT).show();
+                if (emailUsu.isEmpty()) {
+                    e1EUsuario.setError("Nombre Usuario requerido");
+                    e1EUsuario.requestFocus();
+                    return;
+                }
+
+                if (passwU.isEmpty()) {
+                    e2Pswrd.setError("Password requerido");
+                    e2Pswrd.requestFocus();
+                    return;
+                }
+
+                if (passwU.length() < 8) {
+                    e2Pswrd.setError("Password debe ser > 8");
+                    e2Pswrd.requestFocus();
+                    return;
+                }
+
+                Call<LoginResponse> call = RetrofitClient
+                        .getInstance().getApi().userLogin(emailUsu, passwU);
+
+                call.enqueue(new Callback<LoginResponse>() {
+                    @Override
+                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                        LoginResponse loginResponse = response.body();
+
+                        if (!loginResponse.isError()){
+                            Intent intent = new Intent(getApplicationContext(), MenuPrincipal.class);
+                            intent.putExtra("nombreUsuario", emailUsu);
+                            intent.putExtra("emailUsuario", db.recuperarEmial(emailUsu));
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+                        }else
+                            Toast.makeText(IniciarSesion.this, loginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<LoginResponse> call, Throwable t) {
+
+                    }
+                });
+
+
+
+
             }
         });
 

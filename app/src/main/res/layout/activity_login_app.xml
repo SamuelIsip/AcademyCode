@@ -27,7 +27,7 @@
             android:layout_marginBottom="30dp"></ImageView>
 
         <EditText
-            android:id="@+id/edTxtNUs"
+            android:id="@+id/edTxtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -35,7 +35,7 @@
             android:layout_marginBottom="15dp"
             android:background="@drawable/disenio_input"
             android:fontFamily="@font/amethysta"
-            android:hint="Nombre Usuario"
+            android:hint="Email"
             android:inputType="textPersonName"
             android:paddingLeft="20dp"
             android:paddingTop="10dp"

@@ -27,7 +27,7 @@
             android:layout_marginBottom="10dp"></ImageView>
 
         <EditText
-            android:id="@+id/edTxtNUs"
+            android:id="@+id/edTxtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
