@@ -1,9 +1,8 @@
 package com.example.academycode.Login;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -11,29 +10,44 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.academycode.BaseDeDatos.SQLiteBaseDeDatos;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.academycode.MenuPrincipal.MenuPrincipal;
 import com.example.academycode.R;
+import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.example.academycode.api.RetrofitClient;
 import com.example.academycode.model.DefaultResponse;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RegistrarUsuario extends AppCompatActivity {
+public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
-    private SQLiteBaseDeDatos db;
-    private Button btnRegistrarU, btnVolverInicioS;
+    private Button btnRegistrarU, btnVolverInicioS, btnRegitrarGoogle;
     private EditText edTextEmail, edTextNUs, edTxtPasw1, edTxtPasw2, edTxtTelef;
+
+    //Variable para Google
+    private GoogleApiClient googleApiClient;
+    private GoogleSignInOptions gso;
+    private static final int SIGN_IN = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar_usuario);
 
-        db = new SQLiteBaseDeDatos(this);
-
         btnRegistrarU = findViewById(R.id.btnRegistrarU);
+        btnRegitrarGoogle = findViewById(R.id.registrar_google);
         btnVolverInicioS = findViewById(R.id.btnVolverIniciarSesion);
         edTextEmail = findViewById(R.id.edTxtEmail);
         edTextNUs = findViewById(R.id.edTxtNomUs);
@@ -58,6 +72,80 @@ public class RegistrarUsuario extends AppCompatActivity {
             }
         });
 
+        //Declarar variables para acceso con Google
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
+
+        btnRegitrarGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cerrarSesionGoogle();
+                Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+                startActivityForResult(intent, SIGN_IN);
+                btnRegitrarGoogle.setBackgroundResource(R.drawable.btn_redondeado_rojo_deshabilitado);
+                btnRegitrarGoogle.setTextColor(Color.parseColor("#8E8686"));
+                btnRegitrarGoogle.setEnabled(false);
+            }
+        });
+
+    }
+
+    //******************************
+    //Métodos para Acceso con Google
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    public void cerrarSesionGoogle(){
+        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        if (status.isSuccess()){ //Si se cierra sesion
+
+                        }else{
+                            Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+    //Se selecciona cuenta, si el login es correcto se accede
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        GoogleSignInAccount account;
+
+        if (requestCode == SIGN_IN){
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
+            if (result.isSuccess())
+            {
+                account=result.getSignInAccount();
+                    final String emailUG = account.getEmail();
+                    final String nombUG = account.getDisplayName();
+
+                    edTextEmail.setText(emailUG);
+                    edTextNUs.setText(nombUG);
+                    edTxtTelef.setText("+34 ");
+
+                    cerrarSesionGoogle();
+            }else
+                Toast.makeText(this, "¡Login Failed!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    //******************************
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+        if (SharedPrefManager.getInstance(this).isLoggedIn()){
+            Intent intent = new Intent(this, MenuPrincipal.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
     }
 
     public void insertarUsuarioComprobado(){
@@ -82,22 +170,18 @@ public class RegistrarUsuario extends AppCompatActivity {
                         call.enqueue(new Callback<DefaultResponse>() {
                             @Override
                             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-                                DefaultResponse dr = response.body();
 
-                                if (!dr.isErr()) {
-                                    //if (response.code() == 201){
+                                if (response.code() == 201){
+                                    DefaultResponse dr = response.body();
                                     Toast.makeText(getApplicationContext(), dr.getMsg(), Toast.LENGTH_SHORT).show();
 
                                     Intent intent = new Intent(getApplicationContext(), IniciarSesion.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
-                                    finish();
 
-                                /*}else if(response.code() == 422){
+                                }else if(response.code() == 422){
                                     Toast.makeText(getApplicationContext(), "Email/Nombre ya existente", Toast.LENGTH_SHORT).show();
-                                }*/
-                                }else
-                                    Toast.makeText(RegistrarUsuario.this, dr.getMsg(), Toast.LENGTH_SHORT).show();
+                                }
                             }
 
                             @Override
@@ -114,7 +198,6 @@ public class RegistrarUsuario extends AppCompatActivity {
             }
 
         }
-
 
     public void passwNoCoinciden(){
         //edTxtPasw2.setBackgroundTintList(ColorStateList.valueOf(Color.RED));

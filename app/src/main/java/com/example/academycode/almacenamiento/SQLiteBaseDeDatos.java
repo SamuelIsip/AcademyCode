@@ -1,4 +1,4 @@
-package com.example.academycode.BaseDeDatos;
+package com.example.academycode.almacenamiento;
 
 import android.content.ContentValues;
 import android.content.Context;

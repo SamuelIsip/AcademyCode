@@ -138,6 +138,22 @@
             android:textSize="16dp"
             android:textStyle="bold" />
 
+        <Button
+            android:id="@+id/registrar_google"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/btn_redondeado_rojo"
+            android:elevation="5dp"
+            android:fontFamily="sans-serif"
+            android:text="REGISTRAR CON GOOGLE"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -23,19 +23,20 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
-import com.example.academycode.BaseDeDatos.SQLiteBaseDeDatos;
+import com.example.academycode.Login.RegistrarUsuario;
+import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
 import com.example.academycode.Ejercicios.EjerciciosPDF;
 import com.example.academycode.Login.IniciarSesion;
 import com.example.academycode.R;
 import com.example.academycode.Teoria.TeoriaPDF;
 import com.example.academycode.Tutoriales.TutorialesVideo;
+import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.material.navigation.NavigationView;
@@ -318,27 +319,36 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
     }
 
     public void cerrarSesionGoogle(){
+
+        SharedPrefManager.getInstance(this).clear();
+
+        Intent intent = new Intent(this, IniciarSesion.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
         Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
-            new ResultCallback<Status>() {
-                @Override
-                public void onResult(Status status) {
-                    if (status.isSuccess()){ //Si se cierra sesion
-                        startActivity(new Intent(MenuPrincipal.this, IniciarSesion.class));
-                        finish();
-                    }else{
-                        Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        if (status.isSuccess()){ //Si se cierra sesion
+                            Intent intent = new Intent(getApplicationContext(), IniciarSesion.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        }else{
+                            Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
+                        }
                     }
-                }
-            });
+                });
     }
     //************************************
+
 
     @Override
     protected void onStart() {
         super.onStart();
 
         //Mantener Cuenta de google conectada
-        OptionalPendingResult<GoogleSignInResult> opr= Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+        /*OptionalPendingResult<GoogleSignInResult> opr= Auth.GoogleSignInApi.silentSignIn(googleApiClient);
         if(opr.isDone()){
             GoogleSignInResult result=opr.get();
             handleSignInResult(result);
@@ -349,9 +359,15 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
                     handleSignInResult(googleSignInResult);
                 }
             });
+        }*/
+
+        if (!SharedPrefManager.getInstance(this).isLoggedIn()){
+            Intent intent = new Intent(this, RegistrarUsuario.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         }
 
-        Bundle datos = this.getIntent().getExtras();
+       /* Bundle datos = this.getIntent().getExtras();
         if (datos != null) {
             nomb.setText(datos.getString("nombreUsuario"));
             email.setText(datos.getString("emailUsuario"));
@@ -359,7 +375,7 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
             String fotoPerfil = db.recuperarFotoUser(nomb.getText().toString());
             mostrarImagen_guardada_o_no(fotoPerfil);
 
-        }
+        }*/
     }
 
 

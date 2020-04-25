@@ -3,6 +3,7 @@ package com.example.academycode.Login;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,10 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import com.example.academycode.BaseDeDatos.SQLiteBaseDeDatos;
+import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
 import com.example.academycode.MenuPrincipal.MenuPrincipal;
 import com.example.academycode.R;
+import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.example.academycode.api.RetrofitClient;
 import com.example.academycode.model.LoginResponse;
 import com.google.android.gms.auth.api.Auth;
@@ -24,6 +25,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,7 +35,7 @@ import retrofit2.Response;
 public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     SQLiteBaseDeDatos db;
-    EditText e1EUsuario, e2Pswrd;
+    EditText e1EmailU, e2Pswrd;
     Button b1Registrar, b2Acceder, btnGoogle;
 
     //Variable para Google
@@ -48,7 +51,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
 
         db = new SQLiteBaseDeDatos(this);
 
-        e1EUsuario = findViewById(R.id.edTxtEmail);
+        e1EmailU = findViewById(R.id.edTxtEmail);
         e2Pswrd = findViewById(R.id.edTxtPsw);
         b1Registrar = findViewById(R.id.btnRegistrar);
         b2Acceder = findViewById(R.id.btnAcceder);
@@ -66,12 +69,12 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onClick(View v) {
 
-                String emailUsu = e1EUsuario.getText().toString();
+                String emailUsu = e1EmailU.getText().toString();
                 String passwU = e2Pswrd.getText().toString();
 
                 if (emailUsu.isEmpty()) {
-                    e1EUsuario.setError("Nombre Usuario requerido");
-                    e1EUsuario.requestFocus();
+                    e1EmailU.setError("Nombre Usuario requerido");
+                    e1EmailU.requestFocus();
                     return;
                 }
 
@@ -96,14 +99,24 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                         LoginResponse loginResponse = response.body();
 
                         if (!loginResponse.isError()){
-                            Intent intent = new Intent(getApplicationContext(), MenuPrincipal.class);
-                            intent.putExtra("nombreUsuario", emailUsu);
-                            intent.putExtra("emailUsuario", db.recuperarEmial(emailUsu));
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                            //Si existe, loguearlo, guardarlo
+                            SharedPrefManager.getInstance(IniciarSesion.this)
+                                    .saveUser(loginResponse.getUser());
+                            Intent intent = new Intent(IniciarSesion.this, MenuPrincipal.class);
+                           /* intent.putExtra("nombreUsuario", emailUsu);
+                            intent.putExtra("emailUsuario", db.recuperarEmial(emailUsu));*/
                             startActivity(intent);
                             finish();
-                        }else
+
+                        }else{
+                            cerrarSesionGoogle();
+                            btnGoogle.setBackgroundResource(R.drawable.btn_redondeado_rojo);
+                            btnGoogle.setTextColor(Color.parseColor("#FFFFFF"));
+                            btnGoogle.setEnabled(true);
                             Toast.makeText(IniciarSesion.this, loginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
                     }
 
                     @Override
@@ -112,9 +125,6 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                     }
                 });
 
-
-
-
             }
         });
 
@@ -122,6 +132,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
         b1Registrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cerrarSesionGoogle();
                 Intent intent = new Intent(getApplicationContext(), RegistrarUsuario.class);
                 startActivity(intent);
                 finish();
@@ -153,6 +164,20 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
 
     }
 
+    public void cerrarSesionGoogle(){
+        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        if (status.isSuccess()){ //Si se cierra sesion
+
+                        }else{
+                            Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
     //Se selecciona cuenta, si el login es correcto se accede
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -164,24 +189,36 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
 
             if (result.isSuccess())
             {
-                //Guardar datos de la cuenta google en BD (guardar usuario, sin pw)
                 account=result.getSignInAccount();
-                try{
-                    if (db.checkEmail(account.getEmail()) == true){ //Si es la primera vez que se conecta con google, que se guarde en BD
-                        db.insertUsuario(account.getEmail(),String.valueOf((Math.random())),account.getDisplayName(), "");
-                        db.insertarFotoUser(account.getPhotoUrl().toString(),account.getEmail(),account.getDisplayName());
-                    }
-                }catch (Exception e){
-                    //Capturamos error al volver a crear la activity (ya no tiene instancia de GoogleSignInAccount
-                }
 
-                startActivity(new Intent(IniciarSesion.this, MenuPrincipal.class));
-                finish();
+                String emailUG = account.getEmail();
+                e1EmailU.setText(emailUG);
+
+                btnGoogle.setBackgroundResource(R.drawable.btn_redondeado_rojo_deshabilitado);
+                btnGoogle.setTextColor(Color.parseColor("#8E8686"));
+                btnGoogle.setEnabled(false);
 
             }else
                 Toast.makeText(this, "¡Login Failed!", Toast.LENGTH_SHORT).show();
         }
     }
     //******************************
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+        if (SharedPrefManager.getInstance(this).isLoggedIn()){
+            Intent intent = new Intent(this, MenuPrincipal.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onBackPressed(){
+        finish();
+        cerrarSesionGoogle();
+    }
 
 }

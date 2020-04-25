@@ -98,7 +98,7 @@
             android:background="@drawable/btn_redondeado_rojo"
             android:elevation="5dp"
             android:fontFamily="sans-serif"
-            android:text="Inciar con Google"
+            android:text="INICIAR CON GOOGLE"
             android:textAllCaps="false"
             android:textColor="#fff"
             android:textSize="16dp"
