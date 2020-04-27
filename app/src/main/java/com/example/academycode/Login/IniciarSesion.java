@@ -1,9 +1,15 @@
 package com.example.academycode.Login;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -42,6 +48,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions gso;
     private static final int SIGN_IN = 1;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +80,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                 String passwU = e2Pswrd.getText().toString();
 
                 if (emailUsu.isEmpty()) {
-                    e1EmailU.setError("Nombre Usuario requerido");
+                    e1EmailU.setError("Email requerido");
                     e1EmailU.requestFocus();
                     return;
                 }
@@ -89,6 +96,13 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                     e2Pswrd.requestFocus();
                     return;
                 }
+
+                if (!comprobarInternet()){
+                    Toast.makeText(IniciarSesion.this, "Debe conectarse a Internet", Toast.LENGTH_SHORT).show();
+                }
+
+                dialog = ProgressDialog.show(IniciarSesion.this, "",
+                        "Conectando con el servidor...", true);
 
                 Call<LoginResponse> call = RetrofitClient
                         .getInstance().getApi().userLogin(emailUsu, passwU);
@@ -107,9 +121,11 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                            /* intent.putExtra("nombreUsuario", emailUsu);
                             intent.putExtra("emailUsuario", db.recuperarEmial(emailUsu));*/
                             startActivity(intent);
+                            dialog.dismiss();
                             finish();
 
                         }else{
+                            dialog.dismiss();
                             cerrarSesionGoogle();
                             btnGoogle.setBackgroundResource(R.drawable.btn_redondeado_rojo);
                             btnGoogle.setTextColor(Color.parseColor("#FFFFFF"));
@@ -203,6 +219,18 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
         }
     }
     //******************************
+
+    private boolean comprobarInternet(){
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        Network activeNetwork = connectivityManager.getActiveNetwork();
+        if (activeNetwork == null) {
+            return false;
+        }
+
+        return true;
+    }
 
     @Override
     protected void onStart(){

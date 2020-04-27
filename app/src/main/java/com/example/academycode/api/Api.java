@@ -5,10 +5,12 @@ import com.example.academycode.model.LoginResponse;
 import com.example.academycode.model.UsuarioResponse;
 
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface Api {
@@ -32,6 +34,28 @@ public interface Api {
     @GET("existuser/{email}")
     Call<UsuarioResponse> getUser(
             @Path("email") String email
+    );
+
+    @FormUrlEncoded
+    @PUT("updateuser/{id_usuario}")
+    Call<LoginResponse> updateUser(
+            @Path("id_usuario") int id_usuario,
+            @Field("email") String email,
+            @Field("nombre_usuario") String nombre_usuario,
+            @Field("telefono") String telefono
+    );
+
+    @FormUrlEncoded
+    @PUT("updatepassword")
+    Call<DefaultResponse> updatePassword(
+            @Field("currentpassword") String currentpassword,
+            @Field("newpassword") String newpassword,
+            @Field("email") String email
+    );
+
+    @DELETE("deleteuser/{id_usuario}")
+    Call<DefaultResponse> deleteUser(
+            @Path("id_usuario") int id_usuario
     );
 
 }

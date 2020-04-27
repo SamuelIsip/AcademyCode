@@ -8,6 +8,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -241,7 +243,10 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
                 cerrarSesionGoogle();
                 break;
             case R.id.ajustes:
-                //accederAjustes();
+                Fragment fragment = new SettingsFragment();
+                if(fragment != null){
+                    displayFragment(fragment);
+                }
                 break;
             case R.id.teoria:
                 abrirTeoria(null);
@@ -258,6 +263,13 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         }
         drawer.closeDrawer(GravityCompat.START);
         return true; //fue seleccionado
+    }
+
+    private void displayFragment(Fragment fragment){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.drawer_layout, fragment)
+                .commit();
     }
 
 
@@ -379,10 +391,10 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
     }
 
 
-    @Override protected void onStop() {
+   /* @Override protected void onStop() {
         Auth.GoogleSignInApi.signOut(googleApiClient);
         super.onStop();
-    }
+    }*/
 
     //******************************************************
     @Override

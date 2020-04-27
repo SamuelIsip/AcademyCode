@@ -1,6 +1,7 @@
 package com.example.academycode.Login;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -40,6 +41,8 @@ public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClie
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions gso;
     private static final int SIGN_IN = 1;
+
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +165,9 @@ public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClie
             if (emailValido(emailU) && passValida(passwrdU)) {
                     if (passwrdU.equals(passwrdU2)) {
 
+                        dialog = ProgressDialog.show(RegistrarUsuario.this, "",
+                                "Conectando con el servidor...", true);
+
                         Call<DefaultResponse> call = RetrofitClient
                                 .getInstance()
                                 .getApi()
@@ -177,10 +183,12 @@ public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClie
 
                                     Intent intent = new Intent(getApplicationContext(), IniciarSesion.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    dialog.dismiss();
                                     startActivity(intent);
 
                                 }else if(response.code() == 422){
                                     Toast.makeText(getApplicationContext(), "Email/Nombre ya existente", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
                                 }
                             }
 
@@ -193,8 +201,8 @@ public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClie
 
                     }else
                         passwNoCoinciden();
-                }else
-                    Toast.makeText(RegistrarUsuario.this, "¡Nombre Usuario/Email ya existente!", Toast.LENGTH_SHORT).show();
+                }
+
             }
 
         }
