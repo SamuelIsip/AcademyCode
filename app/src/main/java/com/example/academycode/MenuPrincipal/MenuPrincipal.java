@@ -33,16 +33,20 @@ import com.example.academycode.R;
 import com.example.academycode.Teoria.TeoriaPDF;
 import com.example.academycode.Tutoriales.TutorialesVideo;
 import com.example.academycode.almacenamiento.SharedPrefManager;
+import com.example.academycode.model.Usuario;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.material.navigation.NavigationView;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
 
 
@@ -192,7 +196,7 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
             //Guardar uri en BD
             try {
                 rutaFoto = getRealPathFromURI(photoURI);
-                db.insertarFotoUser(rutaFoto, email.getText().toString(),nomb.getText().toString());
+                db.insertarFotoUser(rutaFoto,nomb.getText().toString());
             } catch (Exception e) {
                 System.out.println("ERROR AL GUARDAR FOTO SELECCIONADA EN BD");
                 e.printStackTrace();
@@ -209,13 +213,12 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
                         .load(path)
                         .into(fotoPerfilUser);
                 //Guardar path en BD
-                db.insertarFotoUser(path, email.getText().toString(), nomb.getText().toString());
+                db.insertarFotoUser(path, nomb.getText().toString());
             } catch (Exception e) {
                 System.out.println("ERROR EN CARGAR LA FOTO");
                 e.printStackTrace();
             }
-            /*Bitmap bitmap = BitmapFactory.decodeFile(path);
-            img.setImageBitmap(bitmap);*/
+
         }
     }
 
@@ -278,35 +281,10 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         if (drawer.isDrawerOpen(GravityCompat.START)){
             drawer.closeDrawer(GravityCompat.START);
         }else {
-            salirAplicacion();
+            cerrarSesionGoogle();
         }
     }
 
-    private void salirAplicacion() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Salir");
-        builder.setMessage("¿Seguro que quieres salir de la aplicación?");
-
-        builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(MenuPrincipal.this, IniciarSesion.class));
-                finish();
-            }
-        });
-
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        AlertDialog ad = builder.create();
-        ad.show();
-
-    }
 
     //************************************
     //Métodos para gestionar cuenta Google
@@ -320,37 +298,54 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
     private void handleSignInResult(GoogleSignInResult result){
         if(result.isSuccess()){
             account=result.getSignInAccount();
-            nomb.setText(account.getDisplayName());
-            email.setText(account.getEmail());
             //Foto de perfil
-            //Picasso.get().load(account.getPhotoUrl()).placeholder(R.mipmap.ic_launcher).into(fotoPerfilUser);
-            String fotoUser = db.recuperarFotoUser(account.getDisplayName());
-            mostrarImagen_guardada_o_no(fotoUser);
+            Picasso.get().load(account.getPhotoUrl()).placeholder(R.mipmap.ic_launcher).into(fotoPerfilUser);
         }
 
     }
 
     public void cerrarSesionGoogle(){
 
-        SharedPrefManager.getInstance(this).clear();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Salir");
+        builder.setMessage("¿Seguro que quieres salir de la aplicación?");
 
-        Intent intent = new Intent(this, IniciarSesion.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SharedPrefManager.getInstance(getApplicationContext()).clear();
 
-        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        if (status.isSuccess()){ //Si se cierra sesion
-                            Intent intent = new Intent(getApplicationContext(), IniciarSesion.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                        }else{
-                            Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+                Intent intent = new Intent(getApplicationContext(), IniciarSesion.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
+                Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(Status status) {
+                                if (status.isSuccess()){ //Si se cierra sesion
+                                    Intent intent = new Intent(getApplicationContext(), IniciarSesion.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog ad = builder.create();
+        ad.show();
+
+
     }
     //************************************
 
@@ -360,7 +355,7 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         super.onStart();
 
         //Mantener Cuenta de google conectada
-        /*OptionalPendingResult<GoogleSignInResult> opr= Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+        OptionalPendingResult<GoogleSignInResult> opr= Auth.GoogleSignInApi.silentSignIn(googleApiClient);
         if(opr.isDone()){
             GoogleSignInResult result=opr.get();
             handleSignInResult(result);
@@ -371,7 +366,7 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
                     handleSignInResult(googleSignInResult);
                 }
             });
-        }*/
+        }
 
         if (!SharedPrefManager.getInstance(this).isLoggedIn()){
             Intent intent = new Intent(this, RegistrarUsuario.class);
@@ -379,43 +374,16 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
             startActivity(intent);
         }
 
-       /* Bundle datos = this.getIntent().getExtras();
-        if (datos != null) {
-            nomb.setText(datos.getString("nombreUsuario"));
-            email.setText(datos.getString("emailUsuario"));
+        Usuario user = SharedPrefManager.getInstance(getApplicationContext()).getUser();
+        nomb.setText(user.getNombre_usuario());
+        email.setText(user.getEmail());
 
-            String fotoPerfil = db.recuperarFotoUser(nomb.getText().toString());
-            mostrarImagen_guardada_o_no(fotoPerfil);
-
-        }*/
-    }
-
-
-   /* @Override protected void onStop() {
-        Auth.GoogleSignInApi.signOut(googleApiClient);
-        super.onStop();
-    }*/
-
-    //******************************************************
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("nomb", nomb.getText().toString());
-        outState.putString("email" , email.getText().toString());
-
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        nomb.setText(savedInstanceState.getString("nomb"));
-        email.setText(savedInstanceState.getString("email"));
-
-        String fotoUser = db.recuperarFotoUser(savedInstanceState.getString("nomb"));
+        String fotoUser = db.recuperarFotoUser(user.getNombre_usuario());
         mostrarImagen_guardada_o_no(fotoUser);
 
     }
+
+
     //******************************************************
 
     public void mostrarImagen_guardada_o_no(String fotoUser){

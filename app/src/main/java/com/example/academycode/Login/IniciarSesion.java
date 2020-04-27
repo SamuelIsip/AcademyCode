@@ -118,8 +118,6 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                             SharedPrefManager.getInstance(IniciarSesion.this)
                                     .saveUser(loginResponse.getUser());
                             Intent intent = new Intent(IniciarSesion.this, MenuPrincipal.class);
-                           /* intent.putExtra("nombreUsuario", emailUsu);
-                            intent.putExtra("emailUsuario", db.recuperarEmial(emailUsu));*/
                             startActivity(intent);
                             dialog.dismiss();
                             finish();

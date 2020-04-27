@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.academycode.MenuPrincipal.MenuPrincipal;
 import com.example.academycode.R;
+import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
 import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.example.academycode.api.RetrofitClient;
 import com.example.academycode.model.DefaultResponse;
@@ -158,6 +159,10 @@ public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClie
         String telefono = edTxtTelef.getText().toString().trim();
         String passwrdU2 = edTxtPasw2.getText().toString().trim();
 
+        if (telefono.equals("")){
+            telefono = "+34 ";
+        }
+
         //Comprobar los datos introducidos, antes de guardar en BD
         if (emailU.equals("") || nombreUsu.equals("") || passwrdU.equals("") || passwrdU2.equals("")) {
             Toast.makeText(RegistrarUsuario.this, "¡Debe rellenar todos los campos!", Toast.LENGTH_SHORT).show();
@@ -180,6 +185,9 @@ public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClie
                                 if (response.code() == 201){
                                     DefaultResponse dr = response.body();
                                     Toast.makeText(getApplicationContext(), dr.getMsg(), Toast.LENGTH_SHORT).show();
+
+                                    SQLiteBaseDeDatos db = new SQLiteBaseDeDatos(getApplicationContext());
+                                    db.insertUsuario(nombreUsu);
 
                                     Intent intent = new Intent(getApplicationContext(), IniciarSesion.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

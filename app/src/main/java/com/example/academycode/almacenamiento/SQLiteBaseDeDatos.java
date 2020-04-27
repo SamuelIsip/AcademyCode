@@ -46,11 +46,7 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
 
         //USUARIO
         db.execSQL("create table usuario(" +
-                "email text primary key," +
-                "password text," +
-                "nombreUsuario text," +
-                "telefono text," +
-                "fechaCreacion text," +
+                "nombreUsuario text primary key," +
                 "fotoPerfil text)");
 
     }
@@ -58,18 +54,6 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists usuario");
-    }
-
-    public String recuperarEmial(String nombUsuario){
-        SQLiteDatabase baseDatos = this.getReadableDatabase();
-        Cursor cursor = baseDatos.rawQuery("Select email from usuario where nombreUsuario=?",new String[]{nombUsuario});
-
-        String email = "";
-        if (cursor.moveToFirst()){
-            email = cursor.getString(0);
-        }
-
-        return desencriptar(nombUsuario);
     }
 
     public String recuperarFotoUser(String nombUsuario){
@@ -84,63 +68,13 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
         return foto;
     }
 
-    //Insertar en tabla Usuario
-    private static String URL_REGIST = "http://192.168.2.108:8282/register.php?";
-    public void insertUsuario(final String email, final String password, final String nombreUsu, final String telefUsu){
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REGIST,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try{
-                            JSONObject jsonObject = new JSONObject(response);
-                            String success = jsonObject.getString("success");
-                            
-                            if (success.equals("1")){
-                                Toast.makeText(context, "¡Registrado con éxito!", Toast.LENGTH_SHORT).show();
-                                context.startActivity(new Intent(context, IniciarSesion.class));
-                                RegistrarUsuario r = new RegistrarUsuario();
-                                r.finish();
-                            }
-
-                        }catch(JSONException e){
-                            e.printStackTrace();
-                            Toast.makeText(context, "Servidor No Conectado!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Servidor No Conectado!", Toast.LENGTH_SHORT).show();
-            }
-        })
-        {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("email", encriptar(nombreUsu,email)); //se encripta email
-                params.put("password",encriptar(nombreUsu,password)); //se encripta password
-                params.put("nombre_usuario",nombreUsu);
-                params.put("telefono",telefUsu);
-                params.put("fecha",fechaSistema());
-                //params.put("foto_perfil", null);
-
-                return params;
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
-
-    }
-
     //Insertar foto perfil de usuario en bd
-    public void insertarFotoUser(String path_uri, String emailU, String nombreU){
+    public void insertarFotoUser(String path_uri, String nombreU){
         SQLiteDatabase baseDatos = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("fotoPerfil", path_uri);
 
-        int cantidad = baseDatos.update("usuario", contentValues,"email = ?",new String[]{encriptar(nombreU,emailU)});
+        int cantidad = baseDatos.update("usuario", contentValues,"nombreUsuario = ?",new String[]{nombreU});
 
         if (cantidad == 1){
             System.out.println("FOTO GUARDADA CORRECTAMENTE");
@@ -150,110 +84,19 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
 
     }
 
-    //Fecha del sistema
-    public String fechaSistema(){
-        Date fecha = new Date();
-        SimpleDateFormat objSDF = new SimpleDateFormat("dd-MM-yyyy");
-
-        return objSDF.format(fecha);
-    }
-
-    //Comprobar si el email existe
-    public boolean checkEmail(String email){
-        SQLiteDatabase baseDatos = this.getReadableDatabase();
-        Cursor cursor = baseDatos.rawQuery("Select nombreUsuario from usuario",null);
-
-        boolean encontrado = true;
-
-        //Aseguramos que exista el menos un registro
-        if (cursor.moveToFirst()){
-            do{
-                if (desencriptar(cursor.getString(0)).equals(email)){ //Compruebo si el email pasado es igual a los ya existentes desencriptados, pasando la key(nombreUsuario)
-                    encontrado = false;
-                }
-            }while(cursor.moveToNext());
-        }
-
-        return encontrado;
-
-    }
-
-    //Comprobar si el nombreUsuario existe
-    public boolean checkUserName(String nomUser){
-        SQLiteDatabase baseDatos = this.getReadableDatabase();
-        Cursor cursor = baseDatos.rawQuery("Select * from usuario where nombreUsuario=?",new String[]{nomUser});
-        if (cursor.getCount()>0)
-            return false;
-        else
-            return true;
-    }
-
-    //Comprobar si el usuario y la contraseña son correctos
-    public boolean checkUserPasswd (String nombreUsu, String passwd){
-        SQLiteDatabase baseDatos = this.getReadableDatabase();
-        Cursor cursor = baseDatos.rawQuery("Select * from usuario where nombreUsuario=? and password=?"
-                ,new String[]{nombreUsu,encriptar(nombreUsu,passwd)});
-
-        if (cursor.getCount()==1)
-            return true;
-        else
-            return false;
-    }
-
-    //Encriptar datos con método AES
-    private String encriptar(String nombreUsu, String datoAencriptar){
-        String datosEncriptadosString = "";
+    //Insertar en tabla Usuario
+    public void insertUsuario(String nombreUsu){
 
         try{
-           SecretKeySpec secretKey = generateKey(nombreUsu);
-           Cipher cipher = Cipher.getInstance("AES");
-           cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-           byte[] datosEncriptadosBytes = cipher.doFinal(datoAencriptar.getBytes());
-           datosEncriptadosString = Base64.encodeToString(datosEncriptadosBytes, Base64.DEFAULT);
+            SQLiteDatabase baseDatos = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("nombreUsuario",nombreUsu);
 
+            long insert = baseDatos.insertOrThrow("usuario", null, contentValues);
+        }catch (Exception e){
 
-        }catch (Exception c){
-            c.printStackTrace();
         }
 
-        return datosEncriptadosString;
-    }
-
-    //Crear la key de encriptación
-    private SecretKeySpec generateKey(String datoAencriptar) throws Exception{
-        MessageDigest sha = MessageDigest.getInstance("SHA-256");
-        byte[] key = datoAencriptar.getBytes("UTF-8");
-        key = sha.digest(key);
-        SecretKeySpec secretKey = new SecretKeySpec(key,"AES");
-
-        return secretKey;
-    }
-
-    //Desencriptar datos
-    private String desencriptar(String nombUserDesencript){
-        String datosDesencriptadosString = "";
-
-        SQLiteDatabase baseDatos = this.getReadableDatabase();
-        Cursor fila = baseDatos.rawQuery("Select email from usuario where nombreUsuario=?",new String[]{nombUserDesencript});
-
-        String datoAdesencriptar = "";
-
-        if (fila.moveToFirst()) {
-            datoAdesencriptar = fila.getString(0);
-        }
-
-        try{
-            SecretKeySpec secretKey = generateKey(nombUserDesencript);
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            byte[] datosDescodificados = Base64.decode(datoAdesencriptar, Base64.DEFAULT);
-            byte[] datosDesencriptadosByte = cipher.doFinal(datosDescodificados);
-            datosDesencriptadosString = new String(datosDesencriptadosByte);
-        }catch (Exception c){
-            c.printStackTrace();
-        }
-
-        return datosDesencriptadosString;
     }
 
 
