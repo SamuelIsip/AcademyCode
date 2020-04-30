@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true"
-    tools:context=".MenuPrincipal.MenuPrincipal"
-    tools:openDrawer="start">
+    tools:context=".menu_principal.MenuPrincipal">
+    <!--tools:openDrawer="start"-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,26 +15,16 @@
         android:orientation="vertical"
         android:background="@drawable/bgapps">
 
-        <!--<androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="#202F65"
-            android:id="@+id/toolbar"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            android:elevation="4dp"
-            />-->
-
         <!--Scroll para los elementos del menú-->
         <ScrollView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
             <!--Linear layout con el layput de titulo y el grid -->
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 >
 
                 <!--El LinearLayout con título de menú -->
@@ -107,9 +97,10 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="10dp"
-                                    android:text="TEORÍA"
+                                    android:fontFamily="@font/amethysta"
+                                    android:text="Teoría"
                                     android:textColor="#6f6f6f"
-                                    android:textSize="20sp"
+                                    android:textSize="30sp"
                                     android:textStyle="bold" />
 
                             </LinearLayout>
@@ -144,11 +135,11 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="10dp"
+                                    android:fontFamily="@font/amethysta"
+                                    android:text="Ejercicios"
                                     android:textColor="#6f6f6f"
-                                    android:textSize="20sp"
-                                    android:textStyle="bold"
-                                    android:text="EJERCICIOS"
-                                    />
+                                    android:textSize="30sp"
+                                    android:textStyle="bold" />
 
                             </LinearLayout>
 
@@ -182,11 +173,11 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="10dp"
+                                    android:fontFamily="@font/amethysta"
+                                    android:text="Tutoriales Video"
                                     android:textColor="#6f6f6f"
-                                    android:textSize="20sp"
-                                    android:textStyle="bold"
-                                    android:text="TUTORIALES VIDEO"
-                                    />
+                                    android:textSize="30sp"
+                                    android:textStyle="bold" />
 
                             </LinearLayout>
 
@@ -219,11 +210,11 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="12dp"
+                                    android:fontFamily="@font/amethysta"
+                                    android:text="Foro"
                                     android:textColor="#6f6f6f"
-                                    android:textStyle="bold"
-                                    android:textSize="20sp"
-                                    android:text="FORO"
-                                    />
+                                    android:textSize="30sp"
+                                    android:textStyle="bold" />
 
                             </LinearLayout>
 

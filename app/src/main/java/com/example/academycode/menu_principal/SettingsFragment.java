@@ -1,10 +1,9 @@
-package com.example.academycode.MenuPrincipal;
+package com.example.academycode.menu_principal;
 
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.app.AlertDialog;
@@ -13,14 +12,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.academycode.Login.IniciarSesion;
+import com.example.academycode.login.IniciarSesion;
 import com.example.academycode.R;
 import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.example.academycode.api.RetrofitClient;

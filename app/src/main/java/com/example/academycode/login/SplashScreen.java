@@ -1,4 +1,4 @@
-package com.example.academycode.Login;
+package com.example.academycode.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 
-import com.example.academycode.MenuPrincipal.MenuPrincipal;
 import com.example.academycode.R;
 
 public class SplashScreen extends AppCompatActivity {

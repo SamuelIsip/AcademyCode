@@ -1,4 +1,4 @@
-package com.example.academycode.Login;
+package com.example.academycode.login;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -8,8 +8,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
-import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
-import com.example.academycode.MenuPrincipal.MenuPrincipal;
+import com.example.academycode.menu_principal.MenuPrincipal;
 import com.example.academycode.R;
 import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.example.academycode.api.RetrofitClient;

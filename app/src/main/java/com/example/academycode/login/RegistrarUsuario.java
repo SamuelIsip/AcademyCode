@@ -1,4 +1,4 @@
-package com.example.academycode.Login;
+package com.example.academycode.login;
 
 
 import android.app.ProgressDialog;
@@ -14,7 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.academycode.MenuPrincipal.MenuPrincipal;
+import com.example.academycode.menu_principal.MenuPrincipal;
 import com.example.academycode.R;
 import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
 import com.example.academycode.almacenamiento.SharedPrefManager;

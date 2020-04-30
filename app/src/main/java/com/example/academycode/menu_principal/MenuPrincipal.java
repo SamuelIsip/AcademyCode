@@ -1,4 +1,4 @@
-package com.example.academycode.MenuPrincipal;
+package com.example.academycode.menu_principal;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,13 +25,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
-import com.example.academycode.Login.RegistrarUsuario;
+import com.example.academycode.login.RegistrarUsuario;
 import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
-import com.example.academycode.Ejercicios.EjerciciosPDF;
-import com.example.academycode.Login.IniciarSesion;
+import com.example.academycode.menu_principal.ejercicios.EjerciciosPDF;
+import com.example.academycode.login.IniciarSesion;
 import com.example.academycode.R;
-import com.example.academycode.Teoria.TeoriaPDF;
-import com.example.academycode.Tutoriales.TutorialesVideo;
+import com.example.academycode.menu_principal.teoria.TeoriaPDF;
+import com.example.academycode.menu_principal.tutoriales.TutorialesVideo;
 import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.example.academycode.model.Usuario;
 import com.google.android.gms.auth.api.Auth;

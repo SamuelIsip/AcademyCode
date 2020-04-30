@@ -19,11 +19,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Ejercicios.EjerciciosPDF"></activity>
-        <activity android:name=".Teoria.TeoriaPDF" />
-        <activity android:name=".Tutoriales.TutorialesVideo" />
+        <activity android:name=".menu_principal.ejercicios.EjerciciosPDF"></activity>
+        <activity android:name=".menu_principal.teoria.TeoriaPDF"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".menu_principal.tutoriales.TutorialesVideo" />
         <activity
-            android:name=".Login.SplashScreen"
+            android:name=".login.SplashScreen"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity">
@@ -34,12 +35,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Login.RegistrarUsuario"
+            android:name=".login.RegistrarUsuario"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Login.IniciarSesion"
+            android:name=".login.IniciarSesion"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity">
@@ -48,7 +49,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MenuPrincipal.MenuPrincipal"
+            android:name=".menu_principal.MenuPrincipal"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.example.academycode.Tutoriales;
+package com.example.academycode.menu_principal.ejercicios;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.example.academycode.R;
 
-public class TutorialesVideo extends AppCompatActivity {
+public class EjerciciosPDF extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutoriales_video);
+        setContentView(R.layout.activity_ejercicios_p_d_f);
     }
 }
