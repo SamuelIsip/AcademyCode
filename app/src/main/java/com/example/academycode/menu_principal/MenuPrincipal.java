@@ -25,6 +25,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.example.academycode.fragments.SettingsFragment;
 import com.example.academycode.login.RegistrarUsuario;
 import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
 import com.example.academycode.menu_principal.ejercicios.EjerciciosPDF;

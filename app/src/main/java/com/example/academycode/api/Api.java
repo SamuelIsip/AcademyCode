@@ -1,8 +1,9 @@
 package com.example.academycode.api;
 
 import com.example.academycode.model.DefaultResponse;
+import com.example.academycode.model.LibrosTResponse;
 import com.example.academycode.model.LoginResponse;
-import com.example.academycode.model.UsuarioResponse;
+import com.example.academycode.model.UsersResponse;
 
 import retrofit2.Call;
 import retrofit2.http.DELETE;
@@ -31,10 +32,6 @@ public interface Api {
             @Field("password") String password
     );
 
-    @GET("existuser/{email}")
-    Call<UsuarioResponse> getUser(
-            @Path("email") String email
-    );
 
     @FormUrlEncoded
     @PUT("updateuser/{id_usuario}")
@@ -57,5 +54,11 @@ public interface Api {
     Call<DefaultResponse> deleteUser(
             @Path("id_usuario") int id_usuario
     );
+
+    @GET("allusers")
+    Call<UsersResponse> getAllUsers();
+
+    @GET("librosteoria")
+    Call<LibrosTResponse> getAllLibrosT();
 
 }
