@@ -10,6 +10,7 @@
         android:layout_margin="3dp">
 
         <LinearLayout
+            android:id="@+id/linearLayoutPdf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"

@@ -58,7 +58,9 @@ public interface Api {
     @GET("allusers")
     Call<UsersResponse> getAllUsers();
 
-    @GET("librosteoria")
-    Call<LibrosTResponse> getAllLibrosT();
+    @GET("librosteoria/{tematica}")
+    Call<LibrosTResponse> getAllLibrosT(
+            @Path("tematica") String tematica
+    );
 
 }

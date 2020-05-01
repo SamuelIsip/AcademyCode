@@ -1,10 +1,14 @@
 package com.example.academycode.model.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +42,14 @@ public class LibrosTAdapter extends RecyclerView.Adapter<LibrosTAdapter.LibrosVi
         holder.textViewTitulo.setText(librosT.getTitulo());
         holder.textViewTematica.setText(librosT.getTematica());
         holder.textViewAutor.setText(librosT.getAutor());
+
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(librosT.getUrl_pdf()));
+                mCtx.startActivity(browserIntent);
+            }
+        });
     }
 
     @Override
@@ -48,7 +60,8 @@ public class LibrosTAdapter extends RecyclerView.Adapter<LibrosTAdapter.LibrosVi
 
     public class LibrosViewHolder extends RecyclerView.ViewHolder{
 
-        TextView textViewTitulo, textViewTematica, textViewAutor;
+        public TextView textViewTitulo, textViewTematica, textViewAutor;
+        public LinearLayout linearLayout;
 
         public LibrosViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -56,6 +69,7 @@ public class LibrosTAdapter extends RecyclerView.Adapter<LibrosTAdapter.LibrosVi
             textViewTitulo = itemView.findViewById(R.id.textViewTitulo);
             textViewTematica = itemView.findViewById(R.id.textViewTematica);
             textViewAutor = itemView.findViewById(R.id.textViewAutor);
+            linearLayout = itemView.findViewById(R.id.linearLayoutPdf);
 
         }
 

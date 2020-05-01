@@ -60,6 +60,7 @@
                                 android:src="@drawable/java"/>
 
                             <TextView
+                                android:id="@+id/tematicaJava"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="20dp"
@@ -103,6 +104,7 @@
                                 android:src="@drawable/python"/>
 
                             <TextView
+                                android:id="@+id/tematicaPython"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="20dp"
@@ -146,6 +148,7 @@
                                 android:src="@drawable/cplus"/>
 
                             <TextView
+                                android:id="@+id/tematicaCplus"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="20dp"
@@ -189,6 +192,7 @@
                                 android:src="@drawable/javascript"/>
 
                             <TextView
+                                android:id="@+id/tematicaJavaScript"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="20dp"
@@ -232,6 +236,7 @@
                                 android:src="@drawable/php"/>
 
                             <TextView
+                                android:id="@+id/tematicaPhp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="20dp"
