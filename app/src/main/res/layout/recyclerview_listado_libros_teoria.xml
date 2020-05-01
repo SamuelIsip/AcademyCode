@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -9,34 +11,50 @@
         android:layout_height="wrap_content"
         android:layout_margin="3dp">
 
+
+
         <LinearLayout
-            android:id="@+id/linearLayoutPdf"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="4dp">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textViewTitulo"
+            <ImageView
+                android:id="@+id/imagenPortada"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/codificacion" />
+
+            <LinearLayout
+                android:id="@+id/linearLayoutPdf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Título"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />
+                android:orientation="vertical"
+                android:padding="4dp">
 
-            <TextView
-                android:id="@+id/textViewTematica"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Temática"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+                <TextView
+                    android:id="@+id/textViewTitulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Título"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />
 
-            <TextView
-                android:id="@+id/textViewAutor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Autor"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+                <TextView
+                    android:id="@+id/textViewTematica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Temática"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
+                <TextView
+                    android:id="@+id/textViewAutor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Autor"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+
+            </LinearLayout>
 
         </LinearLayout>
 
