@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:scaleType="centerCrop"
     android:windowSoftInputMode="adjustResize"
-    android:background="#5499C7">
+    android:background="#fff">
 
     <ScrollView
         android:layout_width="match_parent"

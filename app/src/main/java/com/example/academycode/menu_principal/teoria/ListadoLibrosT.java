@@ -3,12 +3,15 @@ package com.example.academycode.menu_principal.teoria;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.academycode.R;
 import com.example.academycode.api.RetrofitClient;
+import com.example.academycode.login.IniciarSesion;
 import com.example.academycode.model.LibroTeoria;
 import com.example.academycode.model.LibrosTResponse;
 import com.example.academycode.model.UsersResponse;
@@ -29,16 +32,37 @@ public class ListadoLibrosT extends AppCompatActivity {
     private List<LibroTeoria> libroList;
     private String tematica;
 
+    private ProgressDialog dialog;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listado_libros_t);
+
+        swipeRefreshLayout = findViewById(R.id.loading);
 
         tematica = getIntent().getExtras().getString("tematica");
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        cargarListaLibros();
+
+       swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+           @Override
+           public void onRefresh() {
+               cargarListaLibros();
+               swipeRefreshLayout.setRefreshing(false);
+           }
+       });
+
+
+    }
+
+    private void cargarListaLibros() {
+        dialog = ProgressDialog.show(ListadoLibrosT.this, "",
+                "Conectando con el servidor...", true);
         Call<LibrosTResponse> call = RetrofitClient.getInstance().getApi().getAllLibrosT(tematica);
 
         call.enqueue(new Callback<LibrosTResponse>() {
@@ -47,6 +71,7 @@ public class ListadoLibrosT extends AppCompatActivity {
                 libroList = response.body().getLibros();
                 adapter = new LibrosTAdapter(getApplicationContext(), libroList);
                 recyclerView.setAdapter(adapter);
+                dialog.dismiss();
             }
 
             @Override
@@ -54,8 +79,6 @@ public class ListadoLibrosT extends AppCompatActivity {
 
             }
         });
-
-
     }
 
 

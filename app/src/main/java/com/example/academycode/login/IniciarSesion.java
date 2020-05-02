@@ -46,7 +46,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions gso;
     private static final int SIGN_IN = 1;
-    ProgressDialog dialog;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
