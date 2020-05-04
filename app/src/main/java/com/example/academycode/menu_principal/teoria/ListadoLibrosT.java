@@ -6,8 +6,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.academycode.R;
 import com.example.academycode.api.RetrofitClient;
@@ -31,7 +36,6 @@ public class ListadoLibrosT extends AppCompatActivity {
     private LibrosTAdapter adapter;
     private List<LibroTeoria> libroList;
     private String tematica;
-
     private ProgressDialog dialog;
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -47,7 +51,14 @@ public class ListadoLibrosT extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        cargarListaLibros();
+
+        if (!comprobarInternet()){
+            Toast.makeText(ListadoLibrosT.this, "Debe conectarse a Internet", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, TeoriaPDF.class));
+            finish();
+        }else{
+            cargarListaLibros();
+        }
 
        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
            @Override
@@ -58,6 +69,18 @@ public class ListadoLibrosT extends AppCompatActivity {
        });
 
 
+    }
+
+    private boolean comprobarInternet(){
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        Network activeNetwork = connectivityManager.getActiveNetwork();
+        if (activeNetwork == null) {
+            return false;
+        }
+
+        return true;
     }
 
     private void cargarListaLibros() {

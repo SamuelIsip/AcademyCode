@@ -21,7 +21,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".menu_principal.teoria.ListadoLibrosT"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".menu_principal.ejercicios.EjerciciosPDF" />
+        <activity android:name=".menu_principal.ejercicios.EjerciciosPDF"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".menu_principal.teoria.TeoriaPDF"
             android:theme="@style/AppTheme.NoActionBar" />
