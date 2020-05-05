@@ -68,6 +68,8 @@
                     android:columnOrderPreserved="false">
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/abrirJava"
+                        android:onClick="abrirJava"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:layout_columnWeight="1"
@@ -92,6 +94,7 @@
                                 android:src="@drawable/java"/>
 
                             <TextView
+                                android:id="@+id/tematicaJava"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
@@ -106,6 +109,8 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/abrirPython"
+                        android:onClick="abrirPython"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:layout_columnWeight="1"
@@ -130,6 +135,7 @@
                                 android:src="@drawable/python"/>
 
                             <TextView
+                                android:id="@+id/tematicaPython"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
@@ -144,11 +150,12 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/abrirC"
+                        android:onClick="abrirC"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
-
                         app:cardElevation="6dp"
                         app:cardCornerRadius="12dp"
                         android:layout_margin="12dp">
@@ -168,6 +175,7 @@
                                 android:src="@drawable/cplus"/>
 
                             <TextView
+                                android:id="@+id/tematicaCplus"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
@@ -182,6 +190,8 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/abrirjavaScript"
+                        android:onClick="abrirJavaScript"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:layout_columnWeight="1"
@@ -205,6 +215,7 @@
                                 android:src="@drawable/javascript"/>
 
                             <TextView
+                                android:id="@+id/tematicaJavaScript"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
@@ -231,6 +242,8 @@
                     android:columnOrderPreserved="false">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/abrirphp"
+                    android:onClick="abrirPhp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -247,13 +260,14 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="100dp"
                             android:scaleType="centerCrop"
                             android:adjustViewBounds="true"
                             android:src="@drawable/php"/>
 
                         <TextView
+                            android:id="@+id/tematicaPhp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"

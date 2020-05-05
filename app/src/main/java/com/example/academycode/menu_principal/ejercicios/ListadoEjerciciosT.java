@@ -1,48 +1,41 @@
-package com.example.academycode.menu_principal.teoria;
+package com.example.academycode.menu_principal.ejercicios;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Bundle;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.academycode.R;
 import com.example.academycode.api.RetrofitClient;
-import com.example.academycode.login.IniciarSesion;
-import com.example.academycode.model.LibroTeoria;
-import com.example.academycode.model.LibrosTResponse;
-import com.example.academycode.model.UsersResponse;
-import com.example.academycode.model.Usuario;
-import com.example.academycode.model.adapters.LibrosTAdapter;
-import com.example.academycode.model.adapters.UsersAdapter;
+import com.example.academycode.model.EjercicioTeoria;
+import com.example.academycode.model.EjerciciosTResponse;
+import com.example.academycode.model.adapters.EjerciciosTAdapter;
 
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ListadoLibrosT extends AppCompatActivity {
+public class ListadoEjerciciosT extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private LibrosTAdapter adapter;
-    private List<LibroTeoria> libroList;
+    private EjerciciosTAdapter adapter;
+    private List<EjercicioTeoria> ejercicioList;
     private String tematica;
-    private ProgressDialog dialog;
+
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listado_libros_t);
+        setContentView(R.layout.activity_listado_ejercicios_t);
 
         swipeRefreshLayout = findViewById(R.id.loading);
 
@@ -51,22 +44,22 @@ public class ListadoLibrosT extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
         if (!comprobarInternet()){
-            Toast.makeText(ListadoLibrosT.this, "Debe conectarse a Internet", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(this, TeoriaPDF.class));
+            Toast.makeText(ListadoEjerciciosT.this, "Debe conectarse a Internet", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, EjerciciosPDF.class));
             finish();
         }else{
-            cargarListaLibros();
+            cargarListaEjercicios();
         }
 
-       swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-           @Override
-           public void onRefresh() {
-               cargarListaLibros();
-               swipeRefreshLayout.setRefreshing(false);
-           }
-       });
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                cargarListaEjercicios();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
 
 
     }
@@ -83,24 +76,24 @@ public class ListadoLibrosT extends AppCompatActivity {
         return true;
     }
 
-    private void cargarListaLibros() {
 
-        dialog = ProgressDialog.show(ListadoLibrosT.this, "",
+    private void cargarListaEjercicios() {
+        dialog = ProgressDialog.show(ListadoEjerciciosT.this, "",
                 "Conectando con el servidor...", true);
 
-        Call<LibrosTResponse> call = RetrofitClient.getInstance().getApi().getAllLibrosT(tematica);
+        Call<EjerciciosTResponse> call = RetrofitClient.getInstance().getApi().getAllEjerciciosT(tematica);
 
-        call.enqueue(new Callback<LibrosTResponse>() {
+        call.enqueue(new Callback<EjerciciosTResponse>() {
             @Override
-            public void onResponse(Call<LibrosTResponse> call, Response<LibrosTResponse> response) {
-                libroList = response.body().getLibros();
-                adapter = new LibrosTAdapter(getApplicationContext(), libroList);
+            public void onResponse(Call<EjerciciosTResponse> call, Response<EjerciciosTResponse> response) {
+                ejercicioList = response.body().getEjercicios();
+                adapter = new EjerciciosTAdapter(getApplicationContext(), ejercicioList);
                 recyclerView.setAdapter(adapter);
                 dialog.dismiss();
             }
 
             @Override
-            public void onFailure(Call<LibrosTResponse> call, Throwable t) {
+            public void onFailure(Call<EjerciciosTResponse> call, Throwable t) {
 
             }
         });

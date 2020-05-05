@@ -1,6 +1,7 @@
 package com.example.academycode.api;
 
 import com.example.academycode.model.DefaultResponse;
+import com.example.academycode.model.EjerciciosTResponse;
 import com.example.academycode.model.LibrosTResponse;
 import com.example.academycode.model.LoginResponse;
 import com.example.academycode.model.UsersResponse;
@@ -60,6 +61,11 @@ public interface Api {
 
     @GET("librosteoria/{tematica}")
     Call<LibrosTResponse> getAllLibrosT(
+            @Path("tematica") String tematica
+    );
+
+    @GET("librosejercicios/{tematica}")
+    Call<EjerciciosTResponse> getAllEjerciciosT(
             @Path("tematica") String tematica
     );
 

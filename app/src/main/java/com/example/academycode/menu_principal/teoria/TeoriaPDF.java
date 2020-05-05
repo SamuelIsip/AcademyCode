@@ -44,7 +44,6 @@ public class TeoriaPDF extends AppCompatActivity {
 
     //**************************************************
     //Abrir cardview de teoría
-    //Fragment fragment = null;
     public void abrirJava(View view) {
         tematica = findViewById(R.id.tematicaJava);
         displayActivity(tematica.getText().toString().trim().toLowerCase());
