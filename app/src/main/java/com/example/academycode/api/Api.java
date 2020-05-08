@@ -5,6 +5,7 @@ import com.example.academycode.model.EjerciciosTResponse;
 import com.example.academycode.model.LibrosTResponse;
 import com.example.academycode.model.LoginResponse;
 import com.example.academycode.model.UsersResponse;
+import com.example.academycode.model.VideosTResponse;
 
 import retrofit2.Call;
 import retrofit2.http.DELETE;
@@ -66,6 +67,11 @@ public interface Api {
 
     @GET("librosejercicios/{tematica}")
     Call<EjerciciosTResponse> getAllEjerciciosT(
+            @Path("tematica") String tematica
+    );
+
+    @GET("videotutoriales/{tematica}")
+    Call<VideosTResponse> getAllVideosT(
             @Path("tematica") String tematica
     );
 

@@ -9,4 +9,6 @@
     <color name="green">#079B42</color>
     <color name="red_disabled">#A10000</color>
     <color name="botones">#244c6c</color>
+    <color name="colorPrmiaryTodo">#202F65</color>
+
 </resources>
