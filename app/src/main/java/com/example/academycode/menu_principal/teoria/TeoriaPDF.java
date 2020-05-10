@@ -56,7 +56,7 @@ public class TeoriaPDF extends AppCompatActivity {
 
     public void abrirC(View view) {
         tematica = findViewById(R.id.tematicaCplus);
-        displayActivity("cplusplus");
+        displayActivity("cplus");
     }
 
     public void abrirJavaScript(View view) {

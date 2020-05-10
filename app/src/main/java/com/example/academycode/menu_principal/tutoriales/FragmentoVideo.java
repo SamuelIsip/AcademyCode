@@ -81,12 +81,12 @@ public class FragmentoVideo extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                progressBar.setVisibility(View.VISIBLE);
                 cargarListaVideos();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
 
-        progressBar.setVisibility(View.VISIBLE);
 
     }
 
@@ -103,6 +103,8 @@ public class FragmentoVideo extends Fragment {
     }
 
     private void cargarListaVideos() {
+
+        progressBar.setVisibility(View.VISIBLE);
 
         Call<VideosTResponse> call = RetrofitClient.getInstance().getApi().getAllVideosT(tematica);
 

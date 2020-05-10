@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.example.academycode.R;
 import com.example.academycode.api.RetrofitClient;
@@ -30,7 +32,7 @@ public class ListadoEjerciciosT extends AppCompatActivity {
     private String tematica;
 
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ProgressDialog dialog;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class ListadoEjerciciosT extends AppCompatActivity {
         setContentView(R.layout.activity_listado_ejercicios_t);
 
         swipeRefreshLayout = findViewById(R.id.loading);
+        progressBar = findViewById(R.id.loading_progress_xml);
 
         tematica = getIntent().getExtras().getString("tematica");
 
@@ -55,11 +58,11 @@ public class ListadoEjerciciosT extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                progressBar.setVisibility(View.VISIBLE);
                 cargarListaEjercicios();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-
 
 
     }
@@ -78,8 +81,7 @@ public class ListadoEjerciciosT extends AppCompatActivity {
 
 
     private void cargarListaEjercicios() {
-        dialog = ProgressDialog.show(ListadoEjerciciosT.this, "",
-                "Conectando con el servidor...", true);
+        progressBar.setVisibility(View.VISIBLE);
 
         Call<EjerciciosTResponse> call = RetrofitClient.getInstance().getApi().getAllEjerciciosT(tematica);
 
@@ -89,7 +91,8 @@ public class ListadoEjerciciosT extends AppCompatActivity {
                 ejercicioList = response.body().getEjercicios();
                 adapter = new EjerciciosTAdapter(getApplicationContext(), ejercicioList);
                 recyclerView.setAdapter(adapter);
-                dialog.dismiss();
+                progressBar.clearAnimation();
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
