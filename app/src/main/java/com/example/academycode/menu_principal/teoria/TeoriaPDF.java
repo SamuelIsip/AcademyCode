@@ -16,7 +16,7 @@ import com.example.academycode.login.IniciarSesion;
 
 public class TeoriaPDF extends AppCompatActivity {
 
-    private TextView tematica;
+    private TextView tematica;cff
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
