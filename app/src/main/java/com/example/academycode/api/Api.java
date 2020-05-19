@@ -1,11 +1,11 @@
 package com.example.academycode.api;
 
-import com.example.academycode.model.DefaultResponse;
-import com.example.academycode.model.EjerciciosTResponse;
-import com.example.academycode.model.LibrosTResponse;
-import com.example.academycode.model.LoginResponse;
-import com.example.academycode.model.UsersResponse;
-import com.example.academycode.model.VideosTResponse;
+import com.example.academycode.model.response.DefaultResponse;
+import com.example.academycode.model.response.EjerciciosTResponse;
+import com.example.academycode.model.response.LibrosTResponse;
+import com.example.academycode.model.response.LoginResponse;
+import com.example.academycode.model.response.UsersResponse;
+import com.example.academycode.model.response.VideosTResponse;
 
 import retrofit2.Call;
 import retrofit2.http.DELETE;
@@ -73,6 +73,15 @@ public interface Api {
     @GET("videotutoriales/{tematica}")
     Call<VideosTResponse> getAllVideosT(
             @Path("tematica") String tematica
+    );
+
+    @FormUrlEncoded
+    @POST("guardarmensajes")
+    Call<DefaultResponse> saveMessage(
+            @Field("ip_usuario") String ip_usuario,
+            @Field("nombre_usuario") String nombre_usuario,
+            @Field("email") String email,
+            @Field("mensaje") String mensaje
     );
 
 }

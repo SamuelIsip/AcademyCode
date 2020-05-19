@@ -61,8 +61,8 @@
                 <!--El grid con cada CardView -->
                 <GridLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:columnCount="2"
+                    android:layout_height="wrap_content"
+                    android:columnCount="1"
                     android:rowCount="3"
                     android:alignmentMode="alignMargins"
                     android:columnOrderPreserved="false">
@@ -71,12 +71,12 @@
                         android:id="@+id/abrirJava"
                         android:onClick="abrirJava"
                         android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_height="170dp"
                         android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
                         app:cardElevation="6dp"
                         app:cardCornerRadius="12dp"
-                        android:layout_margin="12dp">
+                        android:layout_margin="15dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -87,17 +87,16 @@
                             >
 
                             <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
                                 android:adjustViewBounds="true"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/java"/>
+                                android:src="@drawable/java3"/>
 
                             <TextView
                                 android:id="@+id/tematicaJava"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
                                 android:fontFamily="@font/amethysta"
                                 android:text="Java"
                                 android:textColor="#6f6f6f"
@@ -112,13 +111,12 @@
                         android:id="@+id/abrirPython"
                         android:onClick="abrirPython"
                         android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_height="170dp"
                         android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
-
                         app:cardElevation="6dp"
                         app:cardCornerRadius="12dp"
-                        android:layout_margin="12dp">
+                        android:layout_margin="15dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -128,8 +126,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
                                 android:adjustViewBounds="true"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/python"/>
@@ -153,12 +151,12 @@
                         android:id="@+id/abrirC"
                         android:onClick="abrirC"
                         android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_height="170dp"
                         android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
                         app:cardElevation="6dp"
                         app:cardCornerRadius="12dp"
-                        android:layout_margin="12dp">
+                        android:layout_margin="15dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -168,11 +166,11 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
                                 android:adjustViewBounds="true"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/cplus"/>
+                                android:src="@drawable/logo2"/>
 
                             <TextView
                                 android:id="@+id/tematicaCplus"
@@ -193,12 +191,12 @@
                         android:id="@+id/abrirjavaScript"
                         android:onClick="abrirJavaScript"
                         android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_height="170dp"
                         android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
                         app:cardElevation="6dp"
                         app:cardCornerRadius="12dp"
-                        android:layout_margin="12dp">
+                        android:layout_margin="15dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -208,11 +206,11 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
                                 android:adjustViewBounds="true"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/javascript"/>
+                                android:src="@drawable/javabl"/>
 
                             <TextView
                                 android:id="@+id/tematicaJavaScript"
@@ -229,57 +227,46 @@
 
                     </androidx.cardview.widget.CardView>
 
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/abrirphp"
+                        android:onClick="abrirPhp"
+                        android:layout_width="150dp"
+                        android:layout_height="170dp"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        app:cardElevation="6dp"
+                        app:cardCornerRadius="12dp"
+                        android:layout_margin="15dp">
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:paddingBottom="10dp"
+                            android:orientation="vertical">
 
-                </GridLayout>
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:scaleType="centerCrop"
+                                android:adjustViewBounds="true"
+                                android:src="@drawable/php"/>
 
-                <GridLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:columnCount="1"
-                    android:rowCount="1"
-                    android:alignmentMode="alignMargins"
-                    android:columnOrderPreserved="false">
+                            <TextView
+                                android:id="@+id/tematicaPhp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:fontFamily="@font/amethysta"
+                                android:text="PHP"
+                                android:textColor="#6f6f6f"
+                                android:textSize="30sp"
+                                android:textStyle="bold" />
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/abrirphp"
-                    android:onClick="abrirPhp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    app:cardElevation="6dp"
-                    app:cardCornerRadius="12dp"
-                    android:layout_margin="12dp">
+                        </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:paddingBottom="10dp"
-                        android:orientation="vertical">
+                    </androidx.cardview.widget.CardView>
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="100dp"
-                            android:scaleType="centerCrop"
-                            android:adjustViewBounds="true"
-                            android:src="@drawable/php"/>
-
-                        <TextView
-                            android:id="@+id/tematicaPhp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:fontFamily="@font/amethysta"
-                            android:text="PHP"
-                            android:textColor="#6f6f6f"
-                            android:textSize="30sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
 
                 </GridLayout>
 

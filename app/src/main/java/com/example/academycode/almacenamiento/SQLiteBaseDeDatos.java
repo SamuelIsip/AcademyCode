@@ -9,17 +9,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
 
     Context context;
-    //Constructor
+
     public SQLiteBaseDeDatos(Context context){
         super(context, "AcademyBD", null, 1); //Nombre y versión de la BD
         this.context = context;
     }
 
-    //Creación de las tablas de la BD
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        //USUARIO
         db.execSQL("create table usuario(" +
                 "nombreUsuario text primary key," +
                 "fotoPerfil text)");
@@ -43,7 +41,6 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
         return foto;
     }
 
-    //Insertar foto perfil de usuario en bd
     public void insertarFotoUser(String path_uri, String nombreU){
         SQLiteDatabase baseDatos = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -59,7 +56,6 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
 
     }
 
-    //Insertar en tabla Usuario
     public void insertUsuario(String nombreUsu){
 
         try{

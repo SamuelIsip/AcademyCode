@@ -21,8 +21,8 @@ import com.example.academycode.login.IniciarSesion;
 import com.example.academycode.R;
 import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.example.academycode.api.RetrofitClient;
-import com.example.academycode.model.DefaultResponse;
-import com.example.academycode.model.LoginResponse;
+import com.example.academycode.model.response.DefaultResponse;
+import com.example.academycode.model.response.LoginResponse;
 import com.example.academycode.model.Usuario;
 
 import retrofit2.Call;

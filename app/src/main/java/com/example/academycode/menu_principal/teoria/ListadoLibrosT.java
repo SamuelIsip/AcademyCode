@@ -5,26 +5,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.academycode.R;
 import com.example.academycode.api.RetrofitClient;
-import com.example.academycode.login.IniciarSesion;
 import com.example.academycode.model.LibroTeoria;
-import com.example.academycode.model.LibrosTResponse;
-import com.example.academycode.model.UsersResponse;
-import com.example.academycode.model.Usuario;
+import com.example.academycode.model.response.LibrosTResponse;
 import com.example.academycode.model.adapters.LibrosTAdapter;
-import com.example.academycode.model.adapters.UsersAdapter;
 
 import java.util.List;
 
@@ -52,7 +46,8 @@ public class ListadoLibrosT extends AppCompatActivity {
         tematica = getIntent().getExtras().getString("tematica");
 
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager lnr = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(lnr);
 
 
         if (!comprobarInternet()){
@@ -76,15 +71,18 @@ public class ListadoLibrosT extends AppCompatActivity {
     }
 
     private boolean comprobarInternet(){
-        ConnectivityManager connectivityManager =
-                (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        Network activeNetwork = connectivityManager.getActiveNetwork();
-        if (activeNetwork == null) {
-            return false;
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            // connected to the internet
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
+                return true;
+            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+                return true;
+            }
         }
 
-        return true;
+        return false;
     }
 
     private void cargarListaLibros() {

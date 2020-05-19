@@ -1,6 +1,5 @@
 package com.example.academycode.menu_principal.tutoriales;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -18,16 +17,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.academycode.R;
 import com.example.academycode.api.RetrofitClient;
 import com.example.academycode.menu_principal.MenuPrincipal;
-import com.example.academycode.menu_principal.teoria.ListadoLibrosT;
-import com.example.academycode.menu_principal.teoria.TeoriaPDF;
 import com.example.academycode.model.VideoTeoria;
-import com.example.academycode.model.VideosTResponse;
+import com.example.academycode.model.response.VideosTResponse;
 import com.example.academycode.model.adapters.VideoAdapter;
 
 import java.util.List;

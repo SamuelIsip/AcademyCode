@@ -17,7 +17,7 @@
 
         <!--Scroll para los elementos del menú-->
         <ScrollView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <!--Linear layout con el layput de titulo y el grid -->
@@ -32,12 +32,13 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
 
                     <ImageButton
                         android:id="@+id/btnAbrirMenu"
                         android:layout_width="wrap_content"
-                        android:paddingRight="25dp"
+                        android:paddingRight="45dp"
                         android:layout_height="match_parent"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_menu_black_24dp" />
@@ -46,7 +47,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="ACTIVIDADES"
+                        android:text="AcademyCode"
                         android:textColor="#FFFFFF"
                         android:textSize="30dp"></TextView>
 
@@ -54,7 +55,7 @@
                         android:layout_width="62dp"
                         android:layout_height="62dp"
                         android:src="@drawable/academycode"
-                        android:layout_marginLeft="20dp">
+                        android:layout_marginLeft="15dp">
                     </ImageView>
 
                 </LinearLayout>
@@ -62,21 +63,21 @@
                 <!--El grid con cada CardView -->
                 <GridLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:columnCount="1"
+                        android:layout_height="match_parent"
+                        android:columnCount="2"
                         android:rowCount="3"
                         android:alignmentMode="alignMargins"
                         android:columnOrderPreserved="false">
 
                         <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="150dp"
+                            android:layout_height="250dp"
                             android:layout_columnWeight="1"
                             android:onClick="abrirTeoria"
                             android:layout_rowWeight="1"
                             app:cardElevation="6dp"
                             app:cardCornerRadius="12dp"
-                            android:layout_margin="12dp">
+                            android:layout_margin="10dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -96,7 +97,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
+                                    android:layout_marginTop="5dp"
                                     android:fontFamily="@font/amethysta"
                                     android:text="Teoría"
                                     android:textColor="#6f6f6f"
@@ -108,14 +109,14 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="150dp"
+                            android:layout_height="250dp"
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
                             android:onClick="abrirEjercicios"
                             app:cardElevation="6dp"
                             app:cardCornerRadius="12dp"
-                            android:layout_margin="12dp">
+                            android:layout_margin="10dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -134,7 +135,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
+                                    android:layout_marginTop="5dp"
                                     android:fontFamily="@font/amethysta"
                                     android:text="Ejercicios"
                                     android:textColor="#6f6f6f"
@@ -146,14 +147,14 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="150dp"
+                            android:layout_height="250dp"
+                            android:onClick="abrirForo"
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
-                            android:onClick="abrirVideoTuto"
                             app:cardElevation="6dp"
                             app:cardCornerRadius="12dp"
-                            android:layout_margin="12dp">
+                            android:layout_margin="10dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -164,44 +165,7 @@
 
                                 <ImageView
                                     android:layout_width="wrap_content"
-                                    android:layout_height="210dp"
-                                    android:adjustViewBounds="true"
-                                    android:scaleType="centerCrop"
-                                    android:src="@drawable/videotuto"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:fontFamily="@font/amethysta"
-                                    android:text="Tutoriales Video"
-                                    android:textColor="#6f6f6f"
-                                    android:textSize="30sp"
-                                    android:textStyle="bold" />
-
-                            </LinearLayout>
-
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:layout_rowWeight="1"
-                            app:cardElevation="6dp"
-                            app:cardCornerRadius="12dp"
-                            android:layout_margin="12dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:paddingBottom="10dp"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="210dp"
+                                    android:layout_height="200dp"
                                     android:adjustViewBounds="true"
                                     android:scaleType="centerCrop"
                                     android:src="@drawable/foro"/>
@@ -209,7 +173,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp"
+                                    android:layout_marginTop="5dp"
                                     android:fontFamily="@font/amethysta"
                                     android:text="Foro"
                                     android:textColor="#6f6f6f"
@@ -219,6 +183,45 @@
                             </LinearLayout>
 
                         </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                        android:layout_width="150dp"
+                        android:layout_height="250dp"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:onClick="abrirVideoTuto"
+                        app:cardElevation="6dp"
+                        app:cardCornerRadius="12dp"
+                        android:layout_margin="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:paddingBottom="10dp"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="200dp"
+                                android:adjustViewBounds="true"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/videotuto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="@font/amethysta"
+                                android:text="Tutoriales Video"
+                                android:textColor="#6f6f6f"
+                                android:textAlignment="center"
+                                android:textSize="30sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
 
                     </GridLayout>
 
@@ -237,5 +240,5 @@
         />
 
 
-   </androidx.drawerlayout.widget.DrawerLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
 

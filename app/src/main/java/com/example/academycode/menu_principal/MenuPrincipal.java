@@ -31,6 +31,7 @@ import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
 import com.example.academycode.menu_principal.ejercicios.EjerciciosPDF;
 import com.example.academycode.login.IniciarSesion;
 import com.example.academycode.R;
+import com.example.academycode.menu_principal.foro.ForoGeneral;
 import com.example.academycode.menu_principal.teoria.TeoriaPDF;
 import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.example.academycode.menu_principal.tutoriales.TutorialesVideo;
@@ -53,14 +54,12 @@ import java.io.File;
 
 public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, NavigationView.OnNavigationItemSelectedListener {
 
-    TextView nomb,email;
-    CircularImageView fotoPerfilUser;
+    private TextView nomb,email;
+    private CircularImageView fotoPerfilUser;
 
-    SQLiteBaseDeDatos db;
+    private SQLiteBaseDeDatos db;
+    private ImageButton btnAbrirMenu;
 
-    ImageButton btnAbrirMenu;
-
-    Toolbar toolbar;
     private DrawerLayout drawer;
     private NavigationView navigationView;
 
@@ -74,22 +73,14 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
 
         db =  new SQLiteBaseDeDatos(this);
 
-        //toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.menu_desplegable);
-        navigationView.setNavigationItemSelectedListener(this); //Para click en items del menu desplegable
+        navigationView.setNavigationItemSelectedListener(this);
 
-        //Acceder a los elementos de la cabecera del menu desplegable
         nomb = navigationView.getHeaderView(0).findViewById(R.id.nombre_user_menu);
         email = navigationView.getHeaderView(0).findViewById(R.id.email_user_menu);
         fotoPerfilUser = navigationView.getHeaderView(0).findViewById(R.id.imagen_usuario_menu);
 
-        //Para que aparezca el icono de menu en el toolbar
-        /*ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();*/
         btnAbrirMenu = findViewById(R.id.btnAbrirMenu);
         btnAbrirMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,10 +109,6 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
 
     }
 
-    //****************************************
-    //Controlar la foto de perfil del usuario
-
-    //MOSTRAR VENTANA CON OPCIONES
     private void mostrarOpciones() {
         final CharSequence[] option = {"Tomar foto", "Elegir de galeria", "Cancelar"};
         final AlertDialog.Builder builder = new AlertDialog.Builder(MenuPrincipal.this);
@@ -151,7 +138,6 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
     private static String path;
     private String nombreImagen = "";
 
-    //HACER FOTO
     public void tomarFoto() {
         File fileImagen = new File(Environment.getExternalStorageDirectory(), RUTA_IMAGEN);
         boolean isCreada = fileImagen.exists();
@@ -181,7 +167,6 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         startActivityForResult(intent, 100);
     }
 
-    //SELECCIONAR LA IMÁGEN DE LA GALERÍA
     public void seleccionarImagen() {
         Intent galeria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(galeria, 200);
@@ -223,11 +208,10 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
-    //Conseguir el path de la imagen pasándole la URI
     private String getRealPathFromURI(Uri contentURI) throws Exception{
         String result;
         Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) { // Source is Dropbox or other similar local file path
+        if (cursor == null) {
             result = contentURI.getPath();
         } else {
             cursor.moveToFirst();
@@ -237,9 +221,7 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         }
         return result;
     }
-    //**************************************
 
-    //Método seleccion del item del menu desplegable
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()){
@@ -266,7 +248,7 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
-        return true; //fue seleccionado
+        return true;
     }
 
     private void displayFragment(Fragment fragment){
@@ -287,25 +269,21 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
     }
 
 
-    //************************************
-    //Métodos para gestionar cuenta Google
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 
     GoogleSignInAccount account;
-    //Recoger datos de la cuenta google
     private void handleSignInResult(GoogleSignInResult result){
         if(result.isSuccess()){
             account=result.getSignInAccount();
-            //Foto de perfil
             Picasso.get().load(account.getPhotoUrl()).placeholder(R.mipmap.ic_launcher).into(fotoPerfilUser);
         }
 
     }
 
-    public void cerrarSesionGoogle(){
+    private void cerrarSesionGoogle(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Salir");
@@ -348,14 +326,12 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
 
 
     }
-    //************************************
 
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        //Mantener Cuenta de google conectada
         OptionalPendingResult<GoogleSignInResult> opr= Auth.GoogleSignInApi.silentSignIn(googleApiClient);
         if(opr.isDone()){
             GoogleSignInResult result=opr.get();
@@ -384,10 +360,7 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
 
     }
 
-
-    //******************************************************
-
-    public void mostrarImagen_guardada_o_no(String fotoUser){
+    private void mostrarImagen_guardada_o_no(String fotoUser){
         if (fotoUser!=null){
             //Mostrar foto perfil accedido
             Glide.with(this)
@@ -400,8 +373,6 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
-    //******************************************************
-    //Abrir activityes de los cardview
     public void abrirTeoria(View view) {
         startActivity(new Intent(this, TeoriaPDF.class));
     }
@@ -414,5 +385,7 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         startActivity(new Intent(this, TutorialesVideo.class));
     }
 
-    //******************************************************
+    public void abrirForo(View view) {
+        startActivity(new Intent(this, ForoGeneral.class));
+    }
 }

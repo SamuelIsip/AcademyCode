@@ -19,7 +19,7 @@ import com.example.academycode.R;
 import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
 import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.example.academycode.api.RetrofitClient;
-import com.example.academycode.model.DefaultResponse;
+import com.example.academycode.model.response.DefaultResponse;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -38,12 +38,11 @@ public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClie
     private Button btnRegistrarU, btnVolverInicioS, btnRegitrarGoogle;
     private EditText edTextEmail, edTextNUs, edTxtPasw1, edTxtPasw2, edTxtTelef;
 
-    //Variable para Google
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions gso;
     private static final int SIGN_IN = 1;
 
-    ProgressDialog dialog;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +58,6 @@ public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClie
         edTxtPasw2 = findViewById(R.id.edTxtPasw2);
         edTxtTelef = findViewById(R.id.edTxtTlf);
 
-        //Click botón registrar
         btnRegistrarU.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +65,6 @@ public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClie
             }
         });
 
-        //Botón volver a inicio
         btnVolverInicioS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +73,6 @@ public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClie
             }
         });
 
-        //Declarar variables para acceso con Google
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
@@ -95,8 +91,6 @@ public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClie
 
     }
 
-    //******************************
-    //Métodos para Acceso con Google
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
@@ -115,7 +109,8 @@ public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClie
                     }
                 });
     }
-    //Se selecciona cuenta, si el login es correcto se accede
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
@@ -139,7 +134,6 @@ public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClie
                 Toast.makeText(this, "¡Login Failed!", Toast.LENGTH_SHORT).show();
         }
     }
-    //******************************
 
     @Override
     protected void onStart(){
@@ -163,7 +157,6 @@ public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClie
             telefono = "+34 ";
         }
 
-        //Comprobar los datos introducidos, antes de guardar en BD
         if (emailU.equals("") || nombreUsu.equals("") || passwrdU.equals("") || passwrdU2.equals("")) {
             Toast.makeText(RegistrarUsuario.this, "¡Debe rellenar todos los campos!", Toast.LENGTH_SHORT).show();
         } else {
@@ -216,10 +209,8 @@ public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClie
         }
 
     public void passwNoCoinciden(){
-        //edTxtPasw2.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
         edTxtPasw2.setError("¡Las contraseñas no coinciden!");
         edTxtPasw2.requestFocus();
-        //Toast.makeText(RegistrarUsuario.this, "¡Las contraseñas no coinciden!", Toast.LENGTH_SHORT).show();
     }
 
     public boolean emailValido(String email){
@@ -245,7 +236,6 @@ public class RegistrarUsuario extends AppCompatActivity implements GoogleApiClie
             return false;
         }
     }
-    //*********************************
 
     @Override
     public void onBackPressed(){

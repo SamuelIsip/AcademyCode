@@ -11,7 +11,7 @@ public class RetrofitClient {
 
     private static final String AUTH = "Basic "+ Base64.encodeToString(("myusersamuel:123456").getBytes(), Base64.NO_WRAP);
 
-    private static final String BASE_URL = "http://192.168.2.108/AcademyApi/public/";
+    private static final String BASE_URL = "http://academycode.ddns.net/AcademyApi/public/";
     private static RetrofitClient mInstance;
     private Retrofit retrofit;
 
@@ -46,7 +46,6 @@ public class RetrofitClient {
         return mInstance;
     }
 
-    //GET API
     public Api getApi(){
         return retrofit.create(Api.class);
     }

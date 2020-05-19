@@ -8,21 +8,26 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
-import com.example.academycode.menu_principal.MenuPrincipal;
+
 import com.example.academycode.R;
+import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
 import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.example.academycode.api.RetrofitClient;
-import com.example.academycode.model.LoginResponse;
+import com.example.academycode.menu_principal.MenuPrincipal;
+import com.example.academycode.model.response.LoginResponse;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -42,7 +47,6 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
     EditText e1EmailU, e2Pswrd;
     Button b1Registrar, b2Acceder, btnGoogle;
 
-    //Variable para Google
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions gso;
     private static final int SIGN_IN = 1;
@@ -69,7 +73,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                             Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
         }
 
-        //Botón Iniciar Sesión normal
+
         b2Acceder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,27 +81,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                 String emailUsu = e1EmailU.getText().toString();
                 String passwU = e2Pswrd.getText().toString();
 
-                if (emailUsu.isEmpty()) {
-                    e1EmailU.setError("Email requerido");
-                    e1EmailU.requestFocus();
-                    return;
-                }
-
-                if (passwU.isEmpty()) {
-                    e2Pswrd.setError("Password requerido");
-                    e2Pswrd.requestFocus();
-                    return;
-                }
-
-                if (passwU.length() < 8) {
-                    e2Pswrd.setError("Password debe ser > 8");
-                    e2Pswrd.requestFocus();
-                    return;
-                }
-
-                if (!comprobarInternet()){
-                    Toast.makeText(IniciarSesion.this, "Debe conectarse a Internet", Toast.LENGTH_SHORT).show();
-                }
+                if (comprobarDatosLogin(emailUsu, passwU)) return;
 
                 dialog = ProgressDialog.show(IniciarSesion.this, "",
                         "Conectando con el servidor...", true);
@@ -112,7 +96,6 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
 
                         if (!loginResponse.isError()){
 
-                            //Si existe, loguearlo, guardarlo
                             SharedPrefManager.getInstance(IniciarSesion.this)
                                     .saveUser(loginResponse.getUser());
                             Intent intent = new Intent(IniciarSesion.this, MenuPrincipal.class);
@@ -140,7 +123,6 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
             }
         });
 
-        //Botón crear usuario
         b1Registrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,7 +138,6 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
         googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,this)
             .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
-        //Iniciar seión con Google
         btnGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,8 +150,31 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
 
     }
 
-    //******************************
-    //Métodos para Acceso con Google
+    private boolean comprobarDatosLogin(String emailUsu, String passwU) {
+        if (emailUsu.isEmpty()) {
+            e1EmailU.setError("Email requerido");
+            e1EmailU.requestFocus();
+            return true;
+        }
+
+        if (passwU.isEmpty()) {
+            e2Pswrd.setError("Password requerido");
+            e2Pswrd.requestFocus();
+            return true;
+        }
+
+        if (passwU.length() < 8) {
+            e2Pswrd.setError("Password debe ser > 8");
+            e2Pswrd.requestFocus();
+            return true;
+        }
+
+        if (!comprobarInternet()){
+            Toast.makeText(IniciarSesion.this, "Debe conectarse a Internet", Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
@@ -190,7 +194,6 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                 });
     }
 
-    //Se selecciona cuenta, si el login es correcto se accede
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
@@ -214,18 +217,22 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                 Toast.makeText(this, "¡Login Failed!", Toast.LENGTH_SHORT).show();
         }
     }
-    //******************************
 
     private boolean comprobarInternet(){
-        ConnectivityManager connectivityManager =
-                (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        Network activeNetwork = connectivityManager.getActiveNetwork();
-        if (activeNetwork == null) {
-            return false;
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            // connected to the internet
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
+                return true;
+            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+               return true;
+            }
         }
 
-        return true;
+        return false;
+
     }
 
     @Override
