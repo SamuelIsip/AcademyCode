@@ -24,7 +24,6 @@ public class SharedPrefManager {
         return mInstance;
     }
 
-    //GUARDAR USUARIO
     public void saveUser(Usuario user){
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -37,13 +36,11 @@ public class SharedPrefManager {
         editor.apply();
     }
 
-    //COMPROBAR SI ESTÁ LOGUEADO
     public boolean isLoggedIn(){
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getInt("id_usuario",-1) != -1;
     }
 
-    //RETORNAR USER DE SHAREDPREFERENCES
     public Usuario getUser(){
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
@@ -55,7 +52,6 @@ public class SharedPrefManager {
         );
     }
 
-    //LOG OUT
     public void clear(){
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

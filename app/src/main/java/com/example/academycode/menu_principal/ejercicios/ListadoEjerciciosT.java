@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import android.app.ProgressDialog;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.example.academycode.R;
 import com.example.academycode.api.RetrofitClient;
 import com.example.academycode.model.EjercicioTeoria;
-import com.example.academycode.model.EjerciciosTResponse;
+import com.example.academycode.model.response.EjerciciosTResponse;
 import com.example.academycode.model.adapters.EjerciciosTAdapter;
 
 import java.util.List;

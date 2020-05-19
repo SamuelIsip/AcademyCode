@@ -1,4 +1,6 @@
-package com.example.academycode.model;
+package com.example.academycode.model.response;
+
+import com.example.academycode.model.LibroTeoria;
 
 import java.util.List;
 
