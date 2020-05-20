@@ -4,6 +4,7 @@ import com.example.academycode.model.response.DefaultResponse;
 import com.example.academycode.model.response.EjerciciosTResponse;
 import com.example.academycode.model.response.LibrosTResponse;
 import com.example.academycode.model.response.LoginResponse;
+import com.example.academycode.model.response.MessagesResponse;
 import com.example.academycode.model.response.UsersResponse;
 import com.example.academycode.model.response.VideosTResponse;
 
@@ -83,5 +84,8 @@ public interface Api {
             @Field("email") String email,
             @Field("mensaje") String mensaje
     );
+
+    @GET("allmessages")
+    Call<MessagesResponse> getAllMessages();
 
 }

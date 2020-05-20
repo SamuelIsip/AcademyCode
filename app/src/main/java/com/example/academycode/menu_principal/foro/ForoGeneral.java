@@ -1,31 +1,27 @@
 package com.example.academycode.menu_principal.foro;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-
 import com.example.academycode.R;
-
-import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
 import com.example.academycode.almacenamiento.SharedPrefManager;
-import com.example.academycode.login.IniciarSesion;
 import com.example.academycode.login.RegistrarUsuario;
 import com.example.academycode.menu_principal.MenuPrincipal;
 
 import com.example.academycode.model.Usuario;
+import com.example.academycode.model.adapters.MessagesAdapter;
 import com.example.academycode.model.response.DefaultResponse;
 
 import com.example.academycode.api.RetrofitClient;
@@ -36,38 +32,28 @@ import retrofit2.Response;
 
 public class ForoGeneral extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
     private EditText mensajeDelUsuario;
+    private FragmentoMensajes fragmentoMensajes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foro_general);
 
-        recyclerView = findViewById(R.id.recyclerViewForo);
-        LinearLayoutManager lnr = new LinearLayoutManager(this);
-        lnr.setReverseLayout(true);
-        recyclerView.setLayoutManager(lnr);
-
         mensajeDelUsuario = findViewById(R.id.edTxtMensajeForo);
-
-
 
         if (!comprobarInternet()){
             Toast.makeText(ForoGeneral.this, "Debe conectarse a Internet", Toast.LENGTH_LONG).show();
             startActivity(new Intent(this, MenuPrincipal.class));
             finish();
         }else{
-            cargarMensajes();
+            fragmentoMensajes = new FragmentoMensajes();
+            getSupportFragmentManager().beginTransaction().add(R.id.contenedorFragmentForo,fragmentoMensajes).commit();
         }
 
-    }
-
-    private void cargarMensajes() {
-
-        //Aquí se recogen los datos del servidor
 
     }
+
 
 
     private boolean comprobarInternet(){
@@ -98,16 +84,25 @@ public class ForoGeneral extends AppCompatActivity {
 
         if (!mensaje.trim().equals("")){
             Call<DefaultResponse> call = RetrofitClient.getInstance()
-                    .getApi().saveMessage("12", nombre_usuario, email, mensaje);
+                    .getApi().saveMessage("192.168.1.x", nombre_usuario, email, mensaje);
 
             call.enqueue(new Callback<DefaultResponse>() {
                 @Override
                 public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
 
                     if (response.code() == 201){
-                        DefaultResponse dr = response.body();
-                        Toast.makeText(getApplicationContext(), dr.getMsg(), Toast.LENGTH_SHORT).show();
                         mensajeDelUsuario.setText("");
+
+                        closeTecladoMovil();
+
+                        /*getSupportFragmentManager().beginTransaction().
+                                remove(getSupportFragmentManager().findFragmentById(R.id.contenedorFragmentForo)).commit();*/
+                        //fragmentoMensajes = new FragmentoMensajes();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.contenedorFragmentForo,fragmentoMensajes)
+                                .addToBackStack(null)
+                                .commit();
+
                     }else if(response.code() == 422){
                         Toast.makeText(getApplicationContext(), "No se ha enviado el mensaje", Toast.LENGTH_SHORT).show();
                     }
@@ -119,6 +114,17 @@ public class ForoGeneral extends AppCompatActivity {
 
                 }
             });
+        }
+
+    }
+
+
+    private void closeTecladoMovil(){
+
+        View view = this.getCurrentFocus();
+        if (view != null){
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
         }
 
     }
@@ -136,6 +142,7 @@ public class ForoGeneral extends AppCompatActivity {
         }
 
     }
+
 
 
 }
