@@ -12,18 +12,30 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.academycode.R;
 import com.example.academycode.model.Mensaje;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MessagesViewHolder> {
 
     private Context mCtx;
-    private List<Mensaje> messageList;
+    private List<Mensaje> messageList = new ArrayList<>();
 
     public MessagesAdapter(Context mCtx, List<Mensaje> messageList) {
         this.mCtx = mCtx;
         this.messageList = messageList;
+
+    }
+
+    public MessagesAdapter(Context mCtx) {
+        this.mCtx = mCtx;
+    }
+
+
+    public void addItem(Mensaje item){
+        messageList.add(item);
         notifyDataSetChanged();
     }
+
 
     @NonNull
     @Override
