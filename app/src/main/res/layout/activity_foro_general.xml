@@ -9,48 +9,66 @@ android:orientation="vertical"
 tools:context=".menu_principal.foro.ForoGeneral">
 
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/contenedorFragmentForo"
-            android:layout_weight="1"/>
+            android:layout_weight="1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/edTxtMensajeForo"
-            android:layout_width="250dp"
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewForo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+               <!-- <ProgressBar
+                    android:id="@+id/loading_progress_xml"
+                    style="?android:attr/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true" /> -->
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/disenio_mensaje_foro"
-            android:fontFamily="@font/amethysta"
-            android:hint="Escribe un mensaje..."
-            android:inputType="textMultiLine"
-            android:maxLength="140"
-            android:maxLines="5"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="10dp"
-            android:scrollbars="vertical"
-            android:textColor="#fff"
-            android:textColorHint="#ccc" />
+            android:background="@android:color/transparent"
+            android:orientation="horizontal">
 
-        <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/ic_send_black_24dp"
-            android:onClick="enviarMensaje" />
+            <EditText
+                android:id="@+id/edTxtMensajeForo"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/disenio_mensaje_foro"
+                android:fontFamily="@font/amethysta"
+                android:hint="Escribe un mensaje..."
+                android:inputType="textMultiLine"
+                android:maxLength="140"
+                android:maxLines="5"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:scrollbars="vertical"
+                android:textColor="#fff"
+                android:textColorHint="#ccc" />
 
-    </LinearLayout>
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ic_send_black_24dp"
+                android:onClick="enviarMensaje" />
+
+        </LinearLayout>
 
 
 </LinearLayout>

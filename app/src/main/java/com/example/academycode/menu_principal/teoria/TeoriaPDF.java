@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.academycode.R;
-import com.example.academycode.login.IniciarSesion;
 
 public class TeoriaPDF extends AppCompatActivity {
 
@@ -25,6 +24,7 @@ public class TeoriaPDF extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutoriales_p_d_f);
+
 
         if (!comprobarInternet()){
             Toast.makeText(TeoriaPDF.this, "Debe conectarse a Internet", Toast.LENGTH_SHORT).show();
