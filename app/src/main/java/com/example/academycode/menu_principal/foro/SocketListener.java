@@ -1,15 +1,18 @@
 package com.example.academycode.menu_principal.foro;
 
 import android.widget.Toast;
-
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.academycode.model.Mensaje;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
@@ -27,12 +30,7 @@ public class SocketListener extends WebSocketListener {
     public void onOpen(WebSocket webSocket, Response response) {
         super.onOpen(webSocket, response);
 
-        foroGeneral.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(foroGeneral, "Conectado al chat!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        foroGeneral.runOnUiThread(() -> Toast.makeText(foroGeneral, "Conectado al chat!", Toast.LENGTH_SHORT).show());
 
     }
 
@@ -40,33 +38,24 @@ public class SocketListener extends WebSocketListener {
     public void onMessage(WebSocket webSocket, String text) {
         super.onMessage(webSocket, text);
 
-        foroGeneral.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+        foroGeneral.runOnUiThread(() -> {
 
-                Mensaje jsonObject = new Mensaje("", "USUARIO", "EMAIL", text, "27/05/2020");
+            JSONObject json = null;
 
-                foroGeneral.getAdapter().addItem(jsonObject);
+            try {
+
+                json = new JSONObject(text);
+
+                Mensaje mensajeObject = new Mensaje(ipPublica(), json.getString("nombre_usuario"), json.getString("email"), json.getString("mensaje"), foroGeneral.fecha_horaActual());
+
+                foroGeneral.getAdapter().addItem(mensajeObject);
 
                 foroGeneral.getRecyclerView().getLayoutManager().scrollToPosition(foroGeneral.getMensajeList().size()-1);
 
-               /* JSONObject jsonObject = new JSONObject();
-
-                try{
-
-                    jsonObject.put("message", text);
-                    jsonObject.put("usuario", "USUARIO");
-                    jsonObject.put("email", "EMAIL");
-                    jsonObject.put("fecha", "26/05/2020");
-                    jsonObject.put("byServer", true);
-
-                    foroGeneral.adapter2.addItem(jsonObject);
-
-                }catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
-
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+
         });
 
     }
@@ -85,4 +74,25 @@ public class SocketListener extends WebSocketListener {
     public void onFailure(WebSocket webSocket, Throwable t, @Nullable Response response) {
         super.onFailure(webSocket, t, response);
     }
+
+
+    private String ipPublica(){
+
+        String publica = "";
+
+        try{
+
+            URL mip = new URL("http://checkip.amazonaws.com");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(mip.openStream()));
+
+            publica = in.readLine();
+
+        } catch(IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return publica;
+    }
+
 }

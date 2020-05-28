@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -32,10 +34,19 @@ import com.example.academycode.model.response.DefaultResponse;
 
 import com.example.academycode.api.RetrofitClient;
 import com.example.academycode.model.response.MessagesResponse;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -61,6 +72,12 @@ public class ForoGeneral extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foro_general);
+
+        //Permitir acceder por http
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         recyclerView = findViewById(R.id.recyclerViewForo);
 
@@ -99,17 +116,28 @@ public class ForoGeneral extends AppCompatActivity {
 
         if (!mensaje.trim().equals("")){
 
-            webSocket.send(mensaje);
+            JSONObject jsonObject = new JSONObject();
+
+            try{
+            jsonObject.put("nombre_usuario", nombre_usuario);
+            jsonObject.put("email", email);
+            jsonObject.put("mensaje", mensaje);
+
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            webSocket.send(jsonObject.toString());
             mensajeDelUsuario.setText("");
 
-            Mensaje jsonObject = new Mensaje("", nombre_usuario, email, mensaje, "27/05/2020");
+            Mensaje mensajeObject = new Mensaje(ipPublica(), nombre_usuario, email, mensaje, fecha_horaActual());
 
-            adapter.addItem(jsonObject);
+            adapter.addItem(mensajeObject);
 
             recyclerView.getLayoutManager().scrollToPosition(mensajeList.size()-1);
 
             Call<DefaultResponse> call3 = RetrofitClient.getInstance()
-                    .getApi().saveMessage("192.168.1.x", nombre_usuario, email, mensaje);
+                    .getApi().saveMessage(ipPublica(), nombre_usuario, email, mensaje);
 
             call3.enqueue(new Callback<DefaultResponse>() {
                 @Override
@@ -126,21 +154,15 @@ public class ForoGeneral extends AppCompatActivity {
 
                 }
             });
-            /*try{
-
-                jsonObject.put("message", mensaje);
-                jsonObject.put("usuario", nombre_usuario);
-                jsonObject.put("email", email);
-                jsonObject.put("fecha", "26/05/2020");
-                jsonObject.put("byServer", false);
-
-                adapter2.addItem(jsonObject);
-
-            }catch (JSONException e) {
-                e.printStackTrace();
-            }*/
 
         }
+
+    }
+
+    public String fecha_horaActual(){
+        Date date = new Date();
+        DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+       return hourdateFormat.format(date);
 
     }
 
@@ -160,73 +182,6 @@ public class ForoGeneral extends AppCompatActivity {
         return false;
     }
 
-    /*public void enviarMensaje(View view) {
-
-        closeTecladoMovil();
-
-        String mensaje = mensajeDelUsuario.getText().toString().trim();
-
-        Usuario user = SharedPrefManager.getInstance(getApplicationContext()).getUser();
-        String nombre_usuario = user.getNombre_usuario();
-        String email = user.getEmail();
-
-        *//*String fotoUser = db.recuperarFotoUser(user.getNombre_usuario());
-        mostrarImagen_guardada_o_no(fotoUser);*//*
-
-        if (!mensaje.trim().equals("")){
-
-            Call<MessagesResponse> call2 = RetrofitClient.getInstance()
-                    .getApi().getAllMessages();
-
-            call2.enqueue(new Callback<MessagesResponse>() {
-                @Override
-                public void onResponse(Call<MessagesResponse> call, Response<MessagesResponse> response) {
-
-                    mensajeList = response.body().getMessages();
-
-                    adapter = new MessagesAdapter(getApplicationContext(),mensajeList);
-
-                    adapter.addMessage(new Mensaje("192.168.1.x", nombre_usuario, email, mensaje, ""));
-
-
-                    recyclerView.setAdapter(adapter);
-                    recyclerView.getLayoutManager().scrollToPosition(mensajeList.size()-1);
-
-                    mensajeDelUsuario.setText("");
-
-                    Call<DefaultResponse> call3 = RetrofitClient.getInstance()
-                            .getApi().saveMessage("192.168.1.x", nombre_usuario, email, mensaje);
-
-                    call3.enqueue(new Callback<DefaultResponse>() {
-                        @Override
-                        public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-
-                           if(response.code() == 422){
-                                Toast.makeText(getApplicationContext(), "No se ha enviado el mensaje", Toast.LENGTH_SHORT).show();
-                            }
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<DefaultResponse> call, Throwable t) {
-
-                        }
-                    });
-
-
-                }
-
-                @Override
-                public void onFailure(Call<MessagesResponse> call, Throwable t) {
-
-                }
-            });
-
-
-
-        }
-
-    }*/
 
     private void initiateWebSocket(){
 
@@ -286,6 +241,27 @@ public class ForoGeneral extends AppCompatActivity {
             startActivity(intent);
         }
 
+    }
+
+    private String ipPublica(){
+
+        String publica = "";
+
+        try{
+
+            URL mip = new URL("http://checkip.amazonaws.com");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(mip.openStream()));
+
+            publica = in.readLine();
+
+        }catch(MalformedURLException e) {
+            System.out.println(e.getMessage());
+        }catch( IOException e2){
+            System.out.println(e2.getMessage());
+        }
+
+        return publica;
     }
 
 

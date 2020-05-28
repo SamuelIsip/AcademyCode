@@ -9,8 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.academycode.R;
+import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
 import com.example.academycode.model.Mensaje;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
     private Context mCtx;
     private List<Mensaje> messageList = new ArrayList<>();
+    private SQLiteBaseDeDatos db;
 
     public MessagesAdapter(Context mCtx, List<Mensaje> messageList) {
         this.mCtx = mCtx;
@@ -54,8 +58,22 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         holder.mensaje.setText(mensaje.getMensaje());
         holder.fechaMensaje.setText(mensaje.getFecha());
 
-    }
+        db =  new SQLiteBaseDeDatos(mCtx);
 
+        String fotoUser = db.recuperarFotoUser(mensaje.getNombre_usuario());
+
+        if (fotoUser!=null){
+            //Mostrar foto perfil accedido
+            Glide.with(mCtx)
+                    .load(fotoUser) //conseguir fotoUsuario de BD
+                    .into(holder.imagen_usuario_foro);
+        }else{
+            Glide.with(mCtx)
+                    .load(R.mipmap.ic_launcher_round)
+                    .into(holder.imagen_usuario_foro);
+        }
+
+    }
 
     @Override
     public int getItemCount() {
@@ -65,6 +83,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
     class MessagesViewHolder extends RecyclerView.ViewHolder{
 
         TextView nombre_user_foro, email_user_foro, mensaje, fechaMensaje;
+        CircularImageView imagen_usuario_foro;
 
         public MessagesViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,6 +92,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
             email_user_foro = itemView.findViewById(R.id.email_user_foro);
             mensaje = itemView.findViewById(R.id.mensaje);
             fechaMensaje = itemView.findViewById(R.id.fechaMensaje);
+            imagen_usuario_foro = itemView.findViewById(R.id.imagen_usuario_foro);
 
         }
 
