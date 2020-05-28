@@ -1,6 +1,7 @@
 package com.example.academycode.model.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.academycode.R;
 import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
+import com.example.academycode.menu_principal.foro.Chat;
 import com.example.academycode.model.Mensaje;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -72,6 +74,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
                     .load(R.mipmap.ic_launcher_round)
                     .into(holder.imagen_usuario_foro);
         }
+
+        holder.imagen_usuario_foro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCtx.startActivity(new Intent(mCtx, Chat.class));
+            }
+        });
 
     }
 

@@ -276,4 +276,8 @@ public class ForoGeneral extends AppCompatActivity {
     public MessagesAdapter getAdapter() {
         return adapter;
     }
+
+    public void btnAtras(View view) {
+        startActivity(new Intent(this, MenuPrincipal.class));
+    }
 }
