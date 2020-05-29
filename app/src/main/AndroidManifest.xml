@@ -19,10 +19,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".menu_principal.foro.Chat"></activity>
+
+        <activity android:name=".menu_principal.foro.Chat" />
         <activity
             android:name=".menu_principal.foro.ForoGeneral"
             android:configChanges="screenSize|orientation"
+            android:parentActivityName=".menu_principal.MenuPrincipal"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity

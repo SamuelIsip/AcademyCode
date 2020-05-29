@@ -5,10 +5,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.FragmentTransaction;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -61,10 +66,10 @@ public class ForoGeneral extends AppCompatActivity {
 
     private EditText mensajeDelUsuario;
 
-    private List<Mensaje> mensajeList;
+    private static List<Mensaje> mensajeList;
 
-    private RecyclerView recyclerView;
-    private MessagesAdapter adapter;
+    private  static RecyclerView recyclerView;
+    private static MessagesAdapter adapter;
 
     private WebSocket webSocket;
 
@@ -92,16 +97,24 @@ public class ForoGeneral extends AppCompatActivity {
             finish();
         }else{
 
-            cargarMensjaes();
+            cargarMensjaes(this);
 
             initiateWebSocket();
 
             adapter = new MessagesAdapter(getApplicationContext());
             recyclerView.setAdapter(adapter);
+
+            try {
+                MyTask.getInstance(this).execute();
+            }catch (RuntimeException e){
+                e.printStackTrace();
+            }
+
         }
 
 
     }
+
 
     public void enviarMensaje(View view) {
 
@@ -195,7 +208,8 @@ public class ForoGeneral extends AppCompatActivity {
 
     }
 
-    public void cargarMensjaes(){
+
+    public static void cargarMensjaes(Context context){
 
         Call<MessagesResponse> call2 = RetrofitClient.getInstance()
                 .getApi().getAllMessages();
@@ -204,9 +218,18 @@ public class ForoGeneral extends AppCompatActivity {
             @Override
             public void onResponse(Call<MessagesResponse> call, Response<MessagesResponse> response) {
 
+                int tamanioMensajes = 0;
+
+                if (mensajeList!=null) {
+                    tamanioMensajes = mensajeList.size();
+                }
                 mensajeList = response.body().getMessages();
 
-                adapter = new MessagesAdapter(getApplicationContext(),mensajeList);
+                if (tamanioMensajes!=0 && tamanioMensajes<mensajeList.size()){
+                    mostrarNotificacion(context);
+                }
+
+                adapter = new MessagesAdapter(context,mensajeList);
 
                 recyclerView.setAdapter(adapter);
                 recyclerView.getLayoutManager().scrollToPosition(mensajeList.size()-1);
@@ -217,6 +240,34 @@ public class ForoGeneral extends AppCompatActivity {
 
             }
         });
+    }
+
+    static Notification.Builder notificacion;
+    private static final int idUnica = 51623;
+
+    private static void mostrarNotificacion(Context context){
+
+        notificacion = new Notification.Builder(context);
+        notificacion.setAutoCancel(true);
+
+        notificacion.setSmallIcon(R.mipmap.ic_launcher);
+        notificacion.setTicker("Nueva notificacion");
+        notificacion.setPriority(Notification.PRIORITY_HIGH);
+        notificacion.setWhen(System.currentTimeMillis());
+        notificacion.setContentTitle("Atención");
+        notificacion.setContentText("¡Hay un nuevo mensaje en el foro!");
+
+        Intent intent = new Intent(context,ForoGeneral.class);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntentWithParentStack(intent);
+
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+        notificacion.setContentIntent(pendingIntent);
+
+        NotificationManager nm = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        nm.notify(idUnica,notificacion.build());
+
     }
 
 
@@ -280,4 +331,61 @@ public class ForoGeneral extends AppCompatActivity {
     public void btnAtras(View view) {
         startActivity(new Intent(this, MenuPrincipal.class));
     }
+
+}
+
+
+class MyTask extends AsyncTask<String, String, String> {
+
+    private boolean aux;
+
+    private static final String MYTASK_NAME = "my_task";
+    private static MyTask mInstance;
+    private Context mCtx;
+
+    private MyTask(Context mCtx){
+        this.mCtx = mCtx;
+    }
+
+    public static synchronized  MyTask getInstance(Context mCtx){
+        if (mInstance == null){
+            mInstance = new MyTask(mCtx);
+        }
+
+        return mInstance;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        aux = true;
+    }
+
+    @Override
+    protected void onProgressUpdate(String... values) {
+        Toast.makeText(mCtx, "CARGADO", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onCancelled(String s) {
+        super.onCancelled(s);
+        aux = false;
+    }
+
+    @Override
+    protected String doInBackground(String... strings) {
+
+        while (aux) {
+            try {
+                ForoGeneral.cargarMensjaes(mCtx);
+                publishProgress();
+                Thread.sleep(20000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
 }
