@@ -53,35 +53,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
     public void addItem(Mensaje item){
         messageList.add(item);
         notifyDataSetChanged();
-
-        mostrarNotificacion();
-    }
-
-
-
-    private void mostrarNotificacion(){
-
-        notificacion = new Notification.Builder(mCtx);
-        notificacion.setAutoCancel(true);
-
-        notificacion.setSmallIcon(R.mipmap.ic_launcher);
-        notificacion.setTicker("Nueva notificacion");
-        notificacion.setPriority(Notification.PRIORITY_HIGH);
-        notificacion.setWhen(System.currentTimeMillis());
-        notificacion.setContentTitle("Atención");
-        notificacion.setContentText("¡Hay un nuevo mensaje en el foro!");
-
-        Intent intent = new Intent(mCtx,ForoGeneral.class);
-
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(mCtx);
-        stackBuilder.addNextIntentWithParentStack(intent);
-
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
-        notificacion.setContentIntent(pendingIntent);
-
-        NotificationManager nm = (NotificationManager) mCtx.getSystemService(NOTIFICATION_SERVICE);
-        nm.notify(idUnica,notificacion.build());
-
     }
 
     @NonNull

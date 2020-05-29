@@ -50,6 +50,8 @@ public class SocketListener extends WebSocketListener {
 
                 foroGeneral.getAdapter().addItem(mensajeObject);
 
+                ForoGeneral.mostrarNotificacion(foroGeneral.getApplicationContext());
+
                 foroGeneral.getRecyclerView().getLayoutManager().scrollToPosition(foroGeneral.getMensajeList().size()-1);
 
             } catch (JSONException e) {

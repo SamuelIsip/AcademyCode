@@ -245,7 +245,7 @@ public class ForoGeneral extends AppCompatActivity {
     static Notification.Builder notificacion;
     private static final int idUnica = 51623;
 
-    private static void mostrarNotificacion(Context context){
+    public static void mostrarNotificacion(Context context){
 
         notificacion = new Notification.Builder(context);
         notificacion.setAutoCancel(true);
