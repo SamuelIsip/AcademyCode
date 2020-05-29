@@ -340,8 +340,8 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
 
     private void mostrarImagen_guardada_o_no(String fotoUser){
 
-
-        if (fotoUser!=null){
+        File archivo = new File(fotoUser);
+        if (fotoUser!=null && archivo.exists()){
             //Mostrar foto perfil accedido
             Glide.with(this)
                     .load(fotoUser) //conseguir fotoUsuario de BD

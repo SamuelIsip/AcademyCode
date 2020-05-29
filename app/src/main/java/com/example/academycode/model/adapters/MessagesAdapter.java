@@ -1,22 +1,34 @@
 package com.example.academycode.model.adapters;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.academycode.R;
 import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
+import com.example.academycode.menu_principal.foro.Chat;
+import com.example.academycode.menu_principal.foro.ForoGeneral;
 import com.example.academycode.model.Mensaje;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MessagesViewHolder> {
 
@@ -24,10 +36,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
     private List<Mensaje> messageList = new ArrayList<>();
     private SQLiteBaseDeDatos db;
 
+    Notification.Builder notificacion;
+    private static final int idUnica = 51623;
+
+
     public MessagesAdapter(Context mCtx, List<Mensaje> messageList) {
         this.mCtx = mCtx;
         this.messageList = messageList;
-
     }
 
     public MessagesAdapter(Context mCtx) {
@@ -39,7 +54,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         messageList.add(item);
         notifyDataSetChanged();
     }
-
 
     @NonNull
     @Override
@@ -61,17 +75,24 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         db =  new SQLiteBaseDeDatos(mCtx);
 
         String fotoUser = db.recuperarFotoUser(mensaje.getNombre_usuario());
-
-        if (fotoUser!=null){
+        File archivo = new File(fotoUser);
+        if (fotoUser!=null && archivo.exists()){
             //Mostrar foto perfil accedido
-            Glide.with(mCtx)
+            Glide.with(mCtx.getApplicationContext())
                     .load(fotoUser) //conseguir fotoUsuario de BD
                     .into(holder.imagen_usuario_foro);
         }else{
-            Glide.with(mCtx)
+            Glide.with(mCtx.getApplicationContext())
                     .load(R.mipmap.ic_launcher_round)
                     .into(holder.imagen_usuario_foro);
         }
+
+        holder.imagen_usuario_foro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCtx.startActivity(new Intent(mCtx, Chat.class));
+            }
+        });
 
     }
 
