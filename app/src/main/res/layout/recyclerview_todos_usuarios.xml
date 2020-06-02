@@ -20,21 +20,21 @@
                 android:id="@+id/textViewName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Samuel"
+                android:text="Nombre"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />
 
             <TextView
                 android:id="@+id/textViewEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Niculita"
+                android:text="Email"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
             <TextView
                 android:id="@+id/textViewTelefono"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Isip"
+                android:text="Tlf"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
 

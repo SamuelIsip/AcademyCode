@@ -29,6 +29,7 @@ import com.bumptech.glide.Glide;
 import com.example.academycode.fragments.SettingsFragment;
 import com.example.academycode.login.RegistrarUsuario;
 import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
+import com.example.academycode.menu_principal.amigos.AmigosUsers;
 import com.example.academycode.menu_principal.ejercicios.EjerciciosPDF;
 import com.example.academycode.login.IniciarSesion;
 import com.example.academycode.R;
@@ -235,6 +236,9 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
             case R.id.foro:
                 abrirForo(null);
                 break;
+            case R.id.amigo:
+                abrirAmigos(null);
+                break;
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -367,5 +371,9 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
 
     public void abrirForo(View view) {
         startActivity(new Intent(this, ForoGeneral.class));
+    }
+
+    public void abrirAmigos(View view) {
+        startActivity(new Intent(this, AmigosUsers.class));
     }
 }

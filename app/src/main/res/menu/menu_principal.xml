@@ -24,6 +24,9 @@
             android:icon="@drawable/ic_forum_black_24dp"
             android:title="Foro"></item>
 
+        <item android:id="@+id/amigo"
+            android:icon="@drawable/ic_people_black_24dp"
+            android:title="Amigos"></item>
 
 
     </group>
