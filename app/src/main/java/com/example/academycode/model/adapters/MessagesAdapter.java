@@ -1,34 +1,35 @@
 package com.example.academycode.model.adapters;
 
 import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.academycode.R;
 import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
-import com.example.academycode.menu_principal.foro.Chat;
-import com.example.academycode.menu_principal.foro.ForoGeneral;
+import com.example.academycode.almacenamiento.SharedPrefManager;
+import com.example.academycode.api.RetrofitClient;
+import com.example.academycode.menu_principal.foro.UserInfo;
 import com.example.academycode.model.Mensaje;
+import com.example.academycode.model.Usuario;
+import com.example.academycode.model.response.LoginResponse;
+import com.example.academycode.model.response.UsersResponse;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.Context.NOTIFICATION_SERVICE;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MessagesViewHolder> {
 
@@ -90,7 +91,33 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         holder.imagen_usuario_foro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCtx.startActivity(new Intent(mCtx, Chat.class));
+
+                Call<UsersResponse> call = RetrofitClient.getInstance().getApi().getOneUser(mensaje.getEmail());
+
+                call.enqueue(new Callback<UsersResponse>() {
+                    @Override
+                    public void onResponse(Call<UsersResponse> call, Response<UsersResponse> response) {
+                        UsersResponse usersResponse = response.body();
+
+                        if (!usersResponse.isError()){
+                            List<Usuario> user = usersResponse.getUsers();
+
+                            Intent intent = new Intent(mCtx, UserInfo.class);
+                            intent.putExtra("username", user.get(0).getNombre_usuario());
+                            intent.putExtra("useremail", user.get(0).getEmail());
+                            intent.putExtra("usertlf", user.get(0).getTelefono());
+                            intent.putExtra("userfecha", user.get(0).getFecha());
+                            mCtx.startActivity(intent);
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<UsersResponse> call, Throwable t) {
+
+                    }
+                });
+
             }
         });
 

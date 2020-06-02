@@ -1,4 +1,4 @@
-package com.example.academycode.menu_principal.ejercicios;
+package com.example.academycode.menu_principal.amigos;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,63 +8,55 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import com.example.academycode.R;
+import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.example.academycode.api.RetrofitClient;
-import com.example.academycode.model.EjercicioTeoria;
-import com.example.academycode.model.response.EjerciciosTResponse;
+import com.example.academycode.menu_principal.MenuPrincipal;
+import com.example.academycode.menu_principal.ejercicios.EjerciciosPDF;
+import com.example.academycode.menu_principal.ejercicios.ListadoEjerciciosT;
+import com.example.academycode.model.Usuario;
 import com.example.academycode.model.adapters.EjerciciosTAdapter;
+import com.example.academycode.model.adapters.UsersAdapter;
+import com.example.academycode.model.response.UsersResponse;
 
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ListadoEjerciciosT extends AppCompatActivity {
+public class AmigosUsers extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private EjerciciosTAdapter adapter;
-    private List<EjercicioTeoria> ejercicioList;
-    private String tematica;
+    private UsersAdapter adapter;
+    private List<Usuario> amigosList;
 
-    private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listado_ejercicios_t);
+        setContentView(R.layout.activity_amigos_users);
 
-        swipeRefreshLayout = findViewById(R.id.loading);
         progressBar = findViewById(R.id.loading_progress_xml);
 
-        tematica = getIntent().getExtras().getString("tematica");
-
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recycler_view_amigos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         if (!comprobarInternet()){
-            Toast.makeText(ListadoEjerciciosT.this, "Debe conectarse a Internet", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(this, EjerciciosPDF.class));
+            Toast.makeText(AmigosUsers.this, "Debe conectarse a Internet", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, MenuPrincipal.class));
             finish();
         }else{
-            cargarListaEjercicios();
+            cargarListaAmigos();
         }
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                progressBar.setVisibility(View.VISIBLE);
-                cargarListaEjercicios();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
-
 
     }
 
@@ -83,29 +75,34 @@ public class ListadoEjerciciosT extends AppCompatActivity {
         return false;
     }
 
+    private void cargarListaAmigos() {
 
-    private void cargarListaEjercicios() {
         progressBar.setVisibility(View.VISIBLE);
 
-        Call<EjerciciosTResponse> call = RetrofitClient.getInstance().getApi().getAllEjerciciosT(tematica);
+        Usuario usuario = SharedPrefManager.getInstance(this).getUser();
+        String usuario_nomb = usuario.getNombre_usuario();
 
-        call.enqueue(new Callback<EjerciciosTResponse>() {
+        Call<UsersResponse> call = RetrofitClient.getInstance()
+                .getApi().getAllFriends(usuario_nomb);
+
+        call.enqueue(new Callback<UsersResponse>() {
             @Override
-            public void onResponse(Call<EjerciciosTResponse> call, Response<EjerciciosTResponse> response) {
-                ejercicioList = response.body().getEjercicios();
-                adapter = new EjerciciosTAdapter(getApplicationContext(), ejercicioList);
+            public void onResponse(Call<UsersResponse> call, Response<UsersResponse> response) {
+
+                amigosList = response.body().getUsers();
+                adapter = new UsersAdapter(getApplicationContext(), amigosList);
                 recyclerView.setAdapter(adapter);
                 progressBar.clearAnimation();
                 progressBar.setVisibility(View.GONE);
+
             }
 
             @Override
-            public void onFailure(Call<EjerciciosTResponse> call, Throwable t) {
+            public void onFailure(Call<UsersResponse> call, Throwable t) {
 
             }
         });
 
     }
-
 
 }

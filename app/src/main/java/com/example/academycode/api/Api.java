@@ -61,6 +61,11 @@ public interface Api {
     @GET("allusers")
     Call<UsersResponse> getAllUsers();
 
+    @GET("oneuser/{email}")
+    Call<UsersResponse> getOneUser(
+            @Path("email") String email
+    );
+
     @GET("librosteoria/{tematica}")
     Call<LibrosTResponse> getAllLibrosT(
             @Path("tematica") String tematica
@@ -87,5 +92,17 @@ public interface Api {
 
     @GET("allmessages")
     Call<MessagesResponse> getAllMessages();
+
+    @GET("allamigos/{nombre_user}")
+    Call<UsersResponse> getAllFriends(
+            @Path("nombre_user") String nombre_user
+    );
+
+    @FormUrlEncoded
+    @POST("guardaramigo")
+    Call<DefaultResponse> saveFriend(
+            @Field("nombre_user") String nombre_user,
+            @Field("nombre_user_amigo") String nombre_user_amigo
+    );
 
 }

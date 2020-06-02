@@ -115,7 +115,6 @@ public class ForoGeneral extends AppCompatActivity {
 
     }
 
-
     public void enviarMensaje(View view) {
 
         closeTecladoMovil();
@@ -339,7 +338,6 @@ class MyTask extends AsyncTask<String, String, String> {
 
     private boolean aux;
 
-    private static final String MYTASK_NAME = "my_task";
     private static MyTask mInstance;
     private Context mCtx;
 
@@ -363,7 +361,7 @@ class MyTask extends AsyncTask<String, String, String> {
 
     @Override
     protected void onProgressUpdate(String... values) {
-        Toast.makeText(mCtx, "CARGADO", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
