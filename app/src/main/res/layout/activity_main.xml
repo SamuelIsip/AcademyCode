@@ -225,7 +225,7 @@
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="150dp"
-                        android:layout_height="255dp"
+                        android:layout_height="250dp"
                         android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
                         app:cardElevation="6dp"
@@ -240,7 +240,7 @@
 
                             <ImageView
                                 android:layout_width="wrap_content"
-                                android:layout_height="200dp"
+                                android:layout_height="210dp"
                                 android:adjustViewBounds="true"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/mapa"/>
@@ -248,7 +248,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
                                 android:fontFamily="@font/amethysta"
                                 android:text="Mapa"
                                 android:textColor="#6f6f6f"
@@ -277,7 +276,7 @@
 
                             <ImageView
                                 android:layout_width="wrap_content"
-                                android:layout_height="200dp"
+                                android:layout_height="210dp"
                                 android:adjustViewBounds="true"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/friends"/>
@@ -285,7 +284,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
+
                                 android:fontFamily="@font/amethysta"
                                 android:text="Amigos"
                                 android:layout_marginBottom="5dp"

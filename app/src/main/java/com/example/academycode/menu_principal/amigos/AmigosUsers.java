@@ -1,6 +1,7 @@
 package com.example.academycode.menu_principal.amigos;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -48,7 +49,15 @@ public class AmigosUsers extends AppCompatActivity {
         progressBar = findViewById(R.id.loading_progress_xml);
 
         recyclerView = findViewById(R.id.recycler_view_amigos);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+        recyclerView.setLayoutManager(layoutManager);
+
 
         if (!comprobarInternet()){
             Toast.makeText(AmigosUsers.this, "Debe conectarse a Internet", Toast.LENGTH_LONG).show();
@@ -58,6 +67,12 @@ public class AmigosUsers extends AppCompatActivity {
             cargarListaAmigos();
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), MenuPrincipal.class));
+        finish();
     }
 
     private boolean comprobarInternet(){

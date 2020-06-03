@@ -74,8 +74,8 @@ public class UserInfo extends AppCompatActivity {
     }
 
     public void verAmigos(View view) {
-
-        startActivity(new Intent(this, AmigosUsers.class));
-
+        Intent intent = new Intent(this, AmigosUsers.class);
+        startActivity(intent);
+        finish();
     }
 }
