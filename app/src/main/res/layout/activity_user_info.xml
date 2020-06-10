@@ -81,7 +81,7 @@
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="#fff"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="10dp"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -89,10 +89,17 @@
             android:id="@+id/containedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:text="¡Añadir como Amigo!"
+            android:textColor="#fff"
             android:onClick="aniadirAmigo"
-            style="@style/Widget.MaterialComponents.Button.Icon"></Button>
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:background="@drawable/btn_redondeado_green"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp">
+
+        </Button>
 
         <Button
             android:layout_width="wrap_content"
@@ -100,7 +107,10 @@
             android:text="VER AMIGOS"
             android:onClick="verAmigos"
             android:textSize="13dp"
-            style="@style/Widget.MaterialComponents.Button.Icon"/>
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:background="@drawable/btn_redondeado_rojo"
+            />
 
     </LinearLayout>
 

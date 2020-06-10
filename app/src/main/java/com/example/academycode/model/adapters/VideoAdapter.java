@@ -15,12 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.academycode.R;
 import com.example.academycode.menu_principal.tutoriales.FullScreenVideo;
-import com.example.academycode.model.Usuario;
 import com.example.academycode.model.VideoTeoria;
 
 import java.util.List;
 
-public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder>{
+public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
     private Context mCtx;
     private List<VideoTeoria> videoList;
@@ -33,7 +32,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     @NonNull
     @Override
     public VideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mCtx).inflate(R.layout.video_tutoriales_cardview,parent,false);
+        View view = LayoutInflater.from(mCtx).inflate(R.layout.video_tutoriales_cardview, parent, false);
         return new VideoViewHolder(view);
     }
 
@@ -67,7 +66,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     }
 
 
-    class VideoViewHolder extends RecyclerView.ViewHolder{
+    class VideoViewHolder extends RecyclerView.ViewHolder {
 
         public WebView webView;
         public Button fullscreen;

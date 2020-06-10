@@ -44,8 +44,8 @@ public class EjerciciosTAdapter extends RecyclerView.Adapter<EjerciciosTAdapter.
         EjercicioTeoria ejerT = ejerciciosList.get(position);
 
         holder.textViewTitulo.setText(ejerT.getTitulo());
-        holder.textViewAutor.setText("Autor: "+ejerT.getAutor());
-        holder.textViewFecha.setText("Actualización: "+ejerT.getFecha());
+        holder.textViewAutor.setText("Autor: " + ejerT.getAutor());
+        holder.textViewFecha.setText("Actualización: " + ejerT.getFecha());
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +53,7 @@ public class EjerciciosTAdapter extends RecyclerView.Adapter<EjerciciosTAdapter.
                 try {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ejerT.getUrl_pdf()));
                     mCtx.startActivity(browserIntent);
-                }catch(Exception e){
+                } catch (Exception e) {
                     Toast.makeText(mCtx, "¡El ejercicio ya no está disponible!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -70,7 +70,7 @@ public class EjerciciosTAdapter extends RecyclerView.Adapter<EjerciciosTAdapter.
         return ejerciciosList.size();
     }
 
-    class EjerciciosViewHolder extends  RecyclerView.ViewHolder{
+    class EjerciciosViewHolder extends RecyclerView.ViewHolder {
 
         public TextView textViewTitulo, textViewFecha, textViewAutor;
         public LinearLayout linearLayout;

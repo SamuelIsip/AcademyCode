@@ -1,10 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/flecha3"
+    android:orientation="vertical"
     tools:context=".menu_principal.amigos.AmigosUsers">
+
+    <LinearLayout
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/btnAtras"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="btnAtras"
+            android:background="@android:color/transparent"
+            android:padding="5dp"
+            android:src="@drawable/ic_keyboard_backspace_black_24dp" />
+
+        <ImageView
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_gravity="center"
+            android:src="@drawable/academycode"
+            android:layout_marginLeft="20dp">
+        </ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="  Amigos"
+            android:textColor="#FFFFFF"
+            android:textSize="30dp"></TextView>
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,4 +60,4 @@
 
     </RelativeLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +15,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -67,7 +64,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
         btnGoogle = findViewById(R.id.inicar_google);
 
         //permiso de escritura en memoria
-        if(ContextCompat.checkSelfPermission(IniciarSesion.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(IniciarSesion.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(IniciarSesion.this,
                     new String[]{Manifest.permission.CAMERA,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
@@ -94,7 +91,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                         LoginResponse loginResponse = response.body();
 
-                        if (!loginResponse.isError()){
+                        if (!loginResponse.isError()) {
 
                             SharedPrefManager.getInstance(IniciarSesion.this)
                                     .saveUser(loginResponse.getUser());
@@ -103,7 +100,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                             dialog.dismiss();
                             finish();
 
-                        }else{
+                        } else {
                             dialog.dismiss();
                             cerrarSesionGoogle();
                             btnGoogle.setBackgroundResource(R.drawable.btn_redondeado_rojo);
@@ -135,8 +132,8 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
 
         //Declarar variables para acceso con Google
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,this)
-            .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
+        googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
         btnGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +142,6 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                 startActivityForResult(intent, SIGN_IN);
             }
         });
-
 
 
     }
@@ -169,7 +165,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
             return true;
         }
 
-        if (!comprobarInternet()){
+        if (!comprobarInternet()) {
             Toast.makeText(IniciarSesion.this, "Debe conectarse a Internet", Toast.LENGTH_SHORT).show();
         }
         return false;
@@ -180,31 +176,35 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
 
     }
 
-    public void cerrarSesionGoogle(){
-        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        if (status.isSuccess()){ //Si se cierra sesion
+    public void cerrarSesionGoogle() {
+        try {
+            Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            if (status.isSuccess()) { //Si se cierra sesion
 
-                        }else{
-                            Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Session not close", Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
-                });
+                    });
+        } catch (IllegalStateException e) {
+            Toast.makeText(this, "No está conectado a Google", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         GoogleSignInAccount account;
 
-        if (requestCode == SIGN_IN){
+        if (requestCode == SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
-            if (result.isSuccess())
-            {
-                account=result.getSignInAccount();
+            if (result.isSuccess()) {
+                account = result.getSignInAccount();
 
                 String emailUG = account.getEmail();
                 e1EmailU.setText(emailUG);
@@ -213,12 +213,12 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
                 btnGoogle.setTextColor(Color.parseColor("#8E8686"));
                 btnGoogle.setEnabled(false);
 
-            }else
+            } else
                 Toast.makeText(this, "¡Login Failed!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private boolean comprobarInternet(){
+    private boolean comprobarInternet() {
 
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -226,9 +226,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
             // connected to the internet
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 return true;
-            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-               return true;
-            }
+            } else return activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
         }
 
         return false;
@@ -236,10 +234,10 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
 
-        if (SharedPrefManager.getInstance(this).isLoggedIn()){
+        if (SharedPrefManager.getInstance(this).isLoggedIn()) {
             Intent intent = new Intent(this, MenuPrincipal.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -247,7 +245,7 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         finish();
         cerrarSesionGoogle();
     }

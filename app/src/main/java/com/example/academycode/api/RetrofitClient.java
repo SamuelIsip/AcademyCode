@@ -2,6 +2,9 @@ package com.example.academycode.api;
 
 import android.util.Base64;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
@@ -9,13 +12,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-    private static final String AUTH = "Basic "+ Base64.encodeToString(("myusersamuel:123456").getBytes(), Base64.NO_WRAP);
+    private static final String AUTH = "Basic " + Base64.encodeToString(("myusersamuel:123456").getBytes(), Base64.NO_WRAP);
 
-    private static final String BASE_URL = "http://academycode.ddns.net/AcademyApi/public/";
+    private static final String BASE_URL = "http://192.168.1.2/AcademyApi/public/";
     private static RetrofitClient mInstance;
     private Retrofit retrofit;
 
-    private RetrofitClient(){
+    private RetrofitClient() {
 
         //Dar seguridad a la API con user y pass
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -28,25 +31,30 @@ public class RetrofitClient {
                             Request request = requestBuilder.build();
                             return chain.proceed(request);
                         }
+
                 ).build();
 
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
         retrofit = new Retrofit.Builder()
-                            .baseUrl(BASE_URL)
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .client(okHttpClient)
-                            .build();
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(okHttpClient)
+                .build();
 
 
     }
 
-    public static synchronized RetrofitClient getInstance(){
-        if (mInstance == null){
+    public static synchronized RetrofitClient getInstance() {
+        if (mInstance == null) {
             mInstance = new RetrofitClient();
         }
         return mInstance;
     }
 
-    public Api getApi(){
+    public Api getApi() {
         return retrofit.create(Api.class);
     }
 

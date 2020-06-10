@@ -1,10 +1,5 @@
 package com.example.academycode.menu_principal.foro;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.FragmentTransaction;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,30 +11,25 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Adapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.academycode.R;
 import com.example.academycode.almacenamiento.SharedPrefManager;
+import com.example.academycode.api.RetrofitClient;
 import com.example.academycode.login.RegistrarUsuario;
 import com.example.academycode.menu_principal.MenuPrincipal;
-
 import com.example.academycode.model.Mensaje;
 import com.example.academycode.model.Usuario;
 import com.example.academycode.model.adapters.MessagesAdapter;
 import com.example.academycode.model.response.DefaultResponse;
-
-import com.example.academycode.api.RetrofitClient;
 import com.example.academycode.model.response.MessagesResponse;
-import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,14 +51,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
 public class ForoGeneral extends AppCompatActivity {
 
     private EditText mensajeDelUsuario;
 
     private static List<Mensaje> mensajeList;
 
-    private  static RecyclerView recyclerView;
+    private static RecyclerView recyclerView;
     private static MessagesAdapter adapter;
 
     private WebSocket webSocket;
@@ -91,11 +80,11 @@ public class ForoGeneral extends AppCompatActivity {
 
         mensajeDelUsuario = findViewById(R.id.edTxtMensajeForo);
 
-        if (!comprobarInternet()){
+        if (!comprobarInternet()) {
             Toast.makeText(ForoGeneral.this, "Debe conectarse a Internet", Toast.LENGTH_LONG).show();
             startActivity(new Intent(this, MenuPrincipal.class));
             finish();
-        }else{
+        } else {
 
             cargarMensjaes(this);
 
@@ -106,7 +95,7 @@ public class ForoGeneral extends AppCompatActivity {
 
             try {
                 MyTask.getInstance(this).execute();
-            }catch (RuntimeException e){
+            } catch (RuntimeException e) {
                 e.printStackTrace();
             }
 
@@ -126,16 +115,16 @@ public class ForoGeneral extends AppCompatActivity {
         String nombre_usuario = user.getNombre_usuario();
         String email = user.getEmail();
 
-        if (!mensaje.trim().equals("")){
+        if (!mensaje.trim().equals("")) {
 
             JSONObject jsonObject = new JSONObject();
 
-            try{
-            jsonObject.put("nombre_usuario", nombre_usuario);
-            jsonObject.put("email", email);
-            jsonObject.put("mensaje", mensaje);
+            try {
+                jsonObject.put("nombre_usuario", nombre_usuario);
+                jsonObject.put("email", email);
+                jsonObject.put("mensaje", mensaje);
 
-            }catch (JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
@@ -146,7 +135,7 @@ public class ForoGeneral extends AppCompatActivity {
 
             adapter.addItem(mensajeObject);
 
-            recyclerView.getLayoutManager().scrollToPosition(mensajeList.size()-1);
+            recyclerView.getLayoutManager().scrollToPosition(mensajeList.size() - 1);
 
             Call<DefaultResponse> call3 = RetrofitClient.getInstance()
                     .getApi().saveMessage(ipPublica(), nombre_usuario, email, mensaje);
@@ -155,8 +144,18 @@ public class ForoGeneral extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
 
-                    if(response.code() == 422){
-                        Toast.makeText(getApplicationContext(), "No se ha enviado el mensaje", Toast.LENGTH_SHORT).show();
+
+                    if (response.code() == 424) {
+                        Toast.makeText(getApplicationContext(), "Debe haber algun error", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                    if (response.code() == 422) {
+                        Toast.makeText(getApplicationContext(), "Debe haber algun error", Toast.LENGTH_SHORT).show();
+                    }
+
+                    if (response.code() == 423) {
+                        Toast.makeText(getApplicationContext(), "Usuario no existe", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -171,35 +170,33 @@ public class ForoGeneral extends AppCompatActivity {
 
     }
 
-    public String fecha_horaActual(){
+    public String fecha_horaActual() {
         Date date = new Date();
         DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-       return hourdateFormat.format(date);
+        return hourdateFormat.format(date);
 
     }
 
 
-    private boolean comprobarInternet(){
+    private boolean comprobarInternet() {
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork != null) {
             // connected to the internet
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 return true;
-            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                return true;
-            }
+            } else return activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
         }
 
         return false;
     }
 
 
-    private void initiateWebSocket(){
+    private void initiateWebSocket() {
 
         OkHttpClient client = new OkHttpClient();
 
-        Request request = new Request.Builder().url("ws://academycode.ddns.net:8080").build();
+        Request request = new Request.Builder().url("ws://192.168.1.2:8080").build();
 
         SocketListener socketListener = new SocketListener(this);
 
@@ -208,7 +205,7 @@ public class ForoGeneral extends AppCompatActivity {
     }
 
 
-    public static void cargarMensjaes(Context context){
+    public static void cargarMensjaes(Context context) {
 
         Call<MessagesResponse> call2 = RetrofitClient.getInstance()
                 .getApi().getAllMessages();
@@ -219,19 +216,19 @@ public class ForoGeneral extends AppCompatActivity {
 
                 int tamanioMensajes = 0;
 
-                if (mensajeList!=null) {
+                if (mensajeList != null) {
                     tamanioMensajes = mensajeList.size();
                 }
                 mensajeList = response.body().getMessages();
 
-                if (tamanioMensajes!=0 && tamanioMensajes<mensajeList.size()){
+                if (tamanioMensajes != 0 && tamanioMensajes < mensajeList.size()) {
                     mostrarNotificacion(context);
                 }
 
-                adapter = new MessagesAdapter(context,mensajeList);
+                adapter = new MessagesAdapter(context, mensajeList);
 
                 recyclerView.setAdapter(adapter);
-                recyclerView.getLayoutManager().scrollToPosition(mensajeList.size()-1);
+                recyclerView.getLayoutManager().scrollToPosition(mensajeList.size() - 1);
             }
 
             @Override
@@ -244,7 +241,7 @@ public class ForoGeneral extends AppCompatActivity {
     static Notification.Builder notificacion;
     private static final int idUnica = 51623;
 
-    public static void mostrarNotificacion(Context context){
+    public static void mostrarNotificacion(Context context) {
 
         notificacion = new Notification.Builder(context);
         notificacion.setAutoCancel(true);
@@ -256,26 +253,26 @@ public class ForoGeneral extends AppCompatActivity {
         notificacion.setContentTitle("Atención");
         notificacion.setContentText("¡Hay un nuevo mensaje en el foro!");
 
-        Intent intent = new Intent(context,ForoGeneral.class);
+        Intent intent = new Intent(context, ForoGeneral.class);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntentWithParentStack(intent);
 
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         notificacion.setContentIntent(pendingIntent);
 
         NotificationManager nm = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-        nm.notify(idUnica,notificacion.build());
+        nm.notify(idUnica, notificacion.build());
 
     }
 
 
-    private void closeTecladoMovil(){
+    private void closeTecladoMovil() {
 
         View view = this.getCurrentFocus();
-        if (view != null){
+        if (view != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
     }
@@ -285,7 +282,7 @@ public class ForoGeneral extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if (!SharedPrefManager.getInstance(this).isLoggedIn()){
+        if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
             Intent intent = new Intent(this, RegistrarUsuario.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -293,11 +290,11 @@ public class ForoGeneral extends AppCompatActivity {
 
     }
 
-    private String ipPublica(){
+    private String ipPublica() {
 
         String publica = "";
 
-        try{
+        try {
 
             URL mip = new URL("http://checkip.amazonaws.com");
 
@@ -305,9 +302,9 @@ public class ForoGeneral extends AppCompatActivity {
 
             publica = in.readLine();
 
-        }catch(MalformedURLException e) {
+        } catch (MalformedURLException e) {
             System.out.println(e.getMessage());
-        }catch( IOException e2){
+        } catch (IOException e2) {
             System.out.println(e2.getMessage());
         }
 
@@ -341,12 +338,12 @@ class MyTask extends AsyncTask<String, String, String> {
     private static MyTask mInstance;
     private Context mCtx;
 
-    private MyTask(Context mCtx){
+    private MyTask(Context mCtx) {
         this.mCtx = mCtx;
     }
 
-    public static synchronized  MyTask getInstance(Context mCtx){
-        if (mInstance == null){
+    public static synchronized MyTask getInstance(Context mCtx) {
+        if (mInstance == null) {
             mInstance = new MyTask(mCtx);
         }
 

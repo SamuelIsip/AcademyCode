@@ -1,9 +1,9 @@
 package com.example.academycode.menu_principal.tutoriales;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
-
-import android.os.Bundle;
 
 import com.example.academycode.R;
 import com.google.android.material.tabs.TabItem;
@@ -13,7 +13,7 @@ public class TutorialesVideo extends AppCompatActivity {
 
     TabLayout tabLayout;
     ViewPager viewPager;
-    TabItem tabj,tabp,tabc,tabjs,tabph;
+    TabItem tabj, tabp, tabc, tabjs, tabph;
 
     PaginaAdapter pagerAdapter;
 

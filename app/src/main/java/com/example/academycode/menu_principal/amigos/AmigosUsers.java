@@ -1,28 +1,24 @@
 package com.example.academycode.menu_principal.amigos;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.academycode.R;
 import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.example.academycode.api.RetrofitClient;
 import com.example.academycode.menu_principal.MenuPrincipal;
-import com.example.academycode.menu_principal.ejercicios.EjerciciosPDF;
-import com.example.academycode.menu_principal.ejercicios.ListadoEjerciciosT;
 import com.example.academycode.model.Usuario;
-import com.example.academycode.model.adapters.EjerciciosTAdapter;
 import com.example.academycode.model.adapters.UsersAdapter;
 import com.example.academycode.model.response.UsersResponse;
 
@@ -48,28 +44,40 @@ public class AmigosUsers extends AppCompatActivity {
         progressBar = findViewById(R.id.loading_progress_xml);
 
         recyclerView = findViewById(R.id.recycler_view_amigos);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        if (!comprobarInternet()){
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        if (!comprobarInternet()) {
             Toast.makeText(AmigosUsers.this, "Debe conectarse a Internet", Toast.LENGTH_LONG).show();
             startActivity(new Intent(this, MenuPrincipal.class));
             finish();
-        }else{
+        } else {
             cargarListaAmigos();
         }
 
     }
 
-    private boolean comprobarInternet(){
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), MenuPrincipal.class));
+        finish();
+    }
+
+    private boolean comprobarInternet() {
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork != null) {
             // connected to the internet
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 return true;
-            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                return true;
-            }
+            } else return activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
         }
 
         return false;
@@ -105,4 +113,8 @@ public class AmigosUsers extends AppCompatActivity {
 
     }
 
+    public void btnAtras(View view) {
+        startActivity(new Intent(getApplicationContext(), MenuPrincipal.class));
+        finish();
+    }
 }
