@@ -15,12 +15,12 @@ Ante tal cantidad de usuarios y de aplicaciones, por desgracia, son pocas las pe
 
 Ante esta necesidad, me dispongo a realizar una aplicación que ayude a todos aquellas personas que están comenzando en el mundo de la programación, para facilitarles el trabajo de búsqueda de información y permitirles un aprendizaje más rápido y efectivo.
 
-DEFINICIÓN DEL PROYECTO {#definición-del-proyecto .list-paragraph}
+DEFINICIÓN DEL PROYECTO 
 =======================
 
 A continuación, se explicará brevemente el porqué de esta aplicación, cual es el contexto, la motivación y el objetivo de este proyecto. Debo aclarar que esta aplicación forma parte del proyecto de fin de grado del curso de Desarrollo de Aplicaciones Multiplataforma, para el cual también se ha elaborado un plan de empresa (documento adjunto con explicación extensa), en el que se indica que se crea una academia para formación de personas de todas las edades interesadas iniciarse en el mundo de la programación. Esta academia, **AcademyCode,** dispondrá de una aplicación que es la que se desarrolla en este proyecto, pero no estará disponible únicamente para los alumnos de la academia sino para todo el mundo que desee utilizarla, pagando la suscripción que esta incluye.
 
-Objetivos del proyecto  {#objetivos-del-proyecto .list-paragraph}
+Objetivos del proyecto  
 ----------------------
 
 La aplicación Android a resultar a partir de este proyecto, proporciona a los alumnos de la academia ***AcademyCode*** un entorno de formación relacionado con los distintos lenguajes de programación más utilizados en la actualidad.
@@ -38,14 +38,14 @@ Está comprobado que la mayoría de las personas que quieren iniciarse en este m
 
 De ahí surge la idea de utilizar las tecnologías móviles para solucionar el problema mencionado y poner a disposición del público en general la posibilidad de tener un conjunto de documentación, tutoriales y ejercicios bien estructurados y pensados para una fácil iniciación en el mundo de la programación.
 
-Fases del proyecto  {#fases-del-proyecto .list-paragraph}
+Fases del proyecto  
 ------------------
 
 **Diagrama de Gantt**
 
 ![][2]
 
-LENGUAJES INCLUIDOS {#lenguajes-incluidos .list-paragraph}
+LENGUAJES INCLUIDOS
 ===================
 
 El lenguaje de programación principal y más utilizado en el proyecto es **Java**, que a día de hoy es el segundo más utilizado a nivel mundial según el índice de Tiobe. Es un lenguaje orientado a objetos y utilizado en las aplicaciones Android.
@@ -54,7 +54,7 @@ El segundo lenguaje utilizado en el proyecto es **PHP** "Hypertext Preprocessor"
 
 Para la parte de las interfaces gráficas se utiliza **XML** \"Lenguaje de Marcado Extensible\", es muy utilizado para el intercambio de información estructurada entre diferentes plataformas. En el caso de Android, la IDE Android Studio lo utiliza a la hora de diseñar las interfaces de cada actividad.
 
-Sistema Operativo {#sistema-operativo .list-paragraph}
+Sistema Operativo
 -----------------
 
 Android es un sistema operativo inicialmente pensado para teléfonos móviles, al igual que iOS, Symbian y Blackberry OS. Lo que lo hace diferente es que está basado en Linux, **un núcleo de sistema operativo libre, gratuito y multiplataforma**.
@@ -117,12 +117,12 @@ En esta aplicación los datos más sensibles de los usuarios (email, password, m
 >
 > ![][9] ![][10]
 
-Casos De Uso {#casos-de-uso .list-paragraph}
+Casos De Uso 
 ------------
 
 ![][11]
 
-Diseño Técnico {#diseño-técnico .list-paragraph}
+Diseño Técnico 
 --------------
 
 La arquitectura del proyecto es un modelo cliente-servidor, en la que el cliente es la propia aplicación y el usuario que la utiliza, mientras que el servidor es el servicio que proporciona XAMPP (multiplataforma, Apache, MySQL, PHP, Perl).
@@ -131,7 +131,7 @@ También se cuenta con un hosting de NoIp.
 
 ![][12]
 
-### **Arquitectura Del Servicio** {#arquitectura-del-servicio .list-paragraph}
+### **Arquitectura Del Servicio**
 
 Apache es el servidor que se utiliza tanto para la API como para la BBDD.
 
@@ -139,13 +139,13 @@ La aplicación se conecta desde internet al servidor Apache, en el que está alo
 
 ![API REST \| Aprendiendo Arduino]
 
-### **Arquitectura Física** {#arquitectura-física .list-paragraph}
+### **Arquitectura Física** 
 
 Esta arquitectura es la común para la mayoría de aplicaciones básicas que no necesitan una gran cantidad de recursos.
 
 El servidor y la BBDD se puede alojar en el propio portátil ya que la cantidad de información almacenada no necesita de más espacio. Aunque es recomendable que el dispositivo donde estos se alojen tenga suficiente memoria RAM para manejar los datos y la capacidad de estar siempre en funcionamiento.
 
-### **Arquitectura Lógica** {#arquitectura-lógica .list-paragraph}
+### **Arquitectura Lógica**
 
 La aplicación tiene una arquitectura por presentación, la capa negocio y la capa de datos. La capa de negocio tiene todas las clases que permiten la ejecución de la aplicación en el dispositivo. La capa de presentación contiene todas las interfaces gráficas, con las que el usuario puede interactuar. Por último, la capa de datos es la que gestiona las peticiones al servidor y a la BBDD, se comunica directamente con la capa modelo.
 
@@ -157,7 +157,7 @@ Utilizar una arquitectura por capas tiene muchas ventajas, algunas de ellas son:
 
 ![Patrones Arquitectónicos en Android - Luis Vespa - Medium]
 
-### **Capa De Presentación** {#capa-de-presentación .list-paragraph}
+### **Capa De Presentación** 
 
 **Interfaces gráficas**
 
@@ -253,9 +253,7 @@ Al pulsar en cada usuario, se abrirá la interfaz en la que se detalla más la i
 
 ![][28]
 
-###  {#section .list-paragraph}
-
-### **Arquitectura De Bases De Datos** {#arquitectura-de-bases-de-datos .list-paragraph}
+### **Arquitectura De Bases De Datos**
 
 **Diagrama E/R de la base de datos/Relacional**
 
