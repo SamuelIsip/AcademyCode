@@ -120,8 +120,6 @@ Apache es el servidor que se utiliza tanto para la API como para la BBDD.
 
 La aplicación se conecta desde internet al servidor Apache, en el que está alojada la API y la BBDD. Através de la API (programada en PHP) se gestionan todas las peticiones hechas al servidor y a mysql. La explicaicón más sencilla para entender la funcionalidad de la API es compararla con un camarero, esta informa a la BBDD de las peticiones hechas por el cliente y le proporciona a este lo que la BBDD le envíe.
 
-![API REST \| Aprendiendo Arduino]
-
 ### **Arquitectura Física** 
 
 Esta arquitectura es la común para la mayoría de aplicaciones básicas que no necesitan una gran cantidad de recursos.
@@ -138,7 +136,6 @@ Utilizar una arquitectura por capas tiene muchas ventajas, algunas de ellas son:
 
 -Permite probar los componentes de forma independiente.
 
-![Patrones Arquitectónicos en Android - Luis Vespa - Medium]
 
 ### **Arquitectura De Bases De Datos** 
 
