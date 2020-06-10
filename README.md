@@ -1,4 +1,4 @@
-INTRODUCCIÓN {#introducción .list-paragraph}
+INTRODUCCIÓN
 ============
 
 Estamos viviendo en un proceso de evolución y desarrollo de las nuevas tecnologías, que comenzó con la *Revolución de la información y las telecomunicaciones* (1985-2000) y el impacto que tuvo sobre la sociedad se sigue viendo incluso 20 años después. Aunque esta revolución quedó en el pasado, vemos como hoy en día el conocimiento y la información son cada vez mayores, lo que facilita mucho más la capacidad de innovación de las tecnologías que ya disponemos.
@@ -260,35 +260,3 @@ Al pulsar en cada usuario, se abrirá la interfaz en la que se detalla más la i
 **Diagrama E/R de la base de datos/Relacional**
 
 ![][29]
-
-  [1]: media/image1.jpeg {width="5.197916666666667in" height="4.645138888888889in"}
-  [2]: media/image2.png {width="6.791666666666667in" height="5.1875in"}
-  [3]: media/image3.png {width="5.905555555555556in" height="5.4847222222222225in"}
-  [4]: media/image4.png {width="2.6666666666666665in" height="2.6666666666666665in"}
-  [5]: media/image5.png {width="2.6041666666666665in" height="2.2604166666666665in"}
-  [6]: media/image6.png {width="4.989583333333333in" height="1.3294050743657042in"}
-  [7]: media/image7.png {width="2.2690758967629048in" height="1.1770833333333333in"}
-  [8]: media/image8.png {width="2.969187445319335in" height="1.1041666666666667in"}
-  [9]: media/image9.png {width="2.1176465441819774in" height="1.125in"}
-  [10]: media/image10.png {width="1.96875in" height="1.5319335083114611in"}
-  [11]: media/image11.png {width="5.427083333333333in" height="7.332638888888889in"}
-  [12]: media/image12.png {width="4.502352362204724in" height="2.53125in"}
-  [API REST \| Aprendiendo Arduino]: media/image13.png {width="4.947916666666667in" height="1.9916174540682414in"}
-  [Patrones Arquitectónicos en Android - Luis Vespa - Medium]: media/image14.png {width="3.6041666666666665in" height="3.3645833333333335in"}
-  [13]: media/image15.png {width="1.7604166666666667in" height="3.1493055555555554in"}
-  [14]: media/image16.png {width="1.7756944444444445in" height="3.1493055555555554in"}
-  [15]: media/image17.png {width="1.76875in" height="3.1493055555555554in"}
-  [16]: media/image18.jpeg {width="1.8388888888888888in" height="3.1493055555555554in"}
-  [17]: media/image19.png {width="1.7763888888888888in" height="3.1493055555555554in"}
-  [18]: media/image20.png {width="1.7604166666666667in" height="3.1493055555555554in"}
-  [19]: media/image21.jpeg {width="1.6145833333333333in" height="2.7555555555555555in"}
-  [20]: media/image22.jpeg {width="1.6111111111111112in" height="2.7555555555555555in"}
-  [21]: media/image23.jpeg {width="1.60625in" height="2.75625in"}
-  [22]: media/image24.jpeg {width="1.6090277777777777in" height="2.7555555555555555in"}
-  [23]: media/image25.jpeg {width="1.620120297462817in" height="2.7559055118110236in"}
-  [24]: media/image26.jpeg {width="1.6034722222222222in" height="2.7555555555555555in"}
-  [25]: media/image27.jpeg {width="2.7555555555555555in" height="1.4361111111111111in"}
-  [26]: media/image28.jpeg {width="1.9270833333333333in" height="3.2958333333333334in"}
-  [27]: media/image29.png {width="1.54415791776028in" height="2.7559055118110236in"}
-  [28]: media/image30.jpeg {width="1.6004975940507438in" height="2.7559055118110236in"}
-  [29]: media/image31.png {width="6.5in" height="5.754762685914261in"}
