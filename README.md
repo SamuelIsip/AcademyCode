@@ -86,7 +86,8 @@ Antes la situación dada, está claro que debemos estar preparados para poder es
 
 Uno de los sectores tecnológicos más avanzados en la actualidad, son los dispositivos móviles. En toda familia hay por lo menos un dispositivo móvil por persona, pero si pensamos en las aplicaciones que contienen cada uno de estos, llegamos a ver cifras gigantescas del número de usuarios que utilizan determinadas aplicaciones. Hoy en día las aplicaciones más utilizadas cuentan con cientos de millones de usuarios.
 
-![][2]
+![aplicaciones](https://user-images.githubusercontent.com/61310905/84297457-dbff6200-ab4d-11ea-84bc-9cdb93161535.jpg)
+
 
 Ante tal cantidad de usuarios y de aplicaciones, por desgracia, son pocas las personas que además de utilizarlas, se interesen por saber ¡cómo crearlas! Los programadores son pocos comparados con la gran cantidad de trabajo que conlleva crear y mantener todas esas aplicaciones y sistemas. Aunque cada vez se ve más gente interesada en aprender a programar, por eso cada vez hay más gente que necesite una correcta formación.
 
