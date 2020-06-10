@@ -1,13 +1,12 @@
 package com.example.academycode.menu_principal.foro;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.academycode.R;
 import com.example.academycode.almacenamiento.SharedPrefManager;
@@ -55,11 +54,11 @@ public class UserInfo extends AppCompatActivity {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
 
-                if (response.code() == 201){
+                if (response.code() == 201) {
                     DefaultResponse defaultResponse = response.body();
 
-                    Toast.makeText(UserInfo.this, defaultResponse.getMsg(), Toast.LENGTH_SHORT).show();
-                }else if(response.code() == 422){
+                    Toast.makeText(UserInfo.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 422) {
                     Toast.makeText(getApplicationContext(), "¡Ya sois amigos!", Toast.LENGTH_SHORT).show();
                 }
 

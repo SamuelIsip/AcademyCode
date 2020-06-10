@@ -10,8 +10,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.academycode.R;
 import com.example.academycode.model.LibroTeoria;
@@ -40,8 +42,8 @@ public class LibrosTAdapter extends RecyclerView.Adapter<LibrosTAdapter.LibrosVi
         LibroTeoria librosT = librosList.get(position);
 
         holder.textViewTitulo.setText(librosT.getTitulo());
-        holder.textViewAutor.setText("Autor: "+librosT.getAutor());
-        holder.textViewFecha.setText("Actualización: "+librosT.getFecha());
+        holder.textViewAutor.setText("Autor: " + librosT.getAutor());
+        holder.textViewFecha.setText("Actualización: " + librosT.getFecha());
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +51,7 @@ public class LibrosTAdapter extends RecyclerView.Adapter<LibrosTAdapter.LibrosVi
                 try {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(librosT.getUrl_pdf()));
                     mCtx.startActivity(browserIntent);
-                }catch(Exception e){
+                } catch (Exception e) {
                     Toast.makeText(mCtx, "¡El libro ya no está disponible!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -67,7 +69,7 @@ public class LibrosTAdapter extends RecyclerView.Adapter<LibrosTAdapter.LibrosVi
     }
 
 
-    class LibrosViewHolder extends RecyclerView.ViewHolder{
+    class LibrosViewHolder extends RecyclerView.ViewHolder {
 
         public TextView textViewTitulo, textViewFecha, textViewAutor;
         public LinearLayout linearLayout;

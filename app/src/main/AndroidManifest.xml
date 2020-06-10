@@ -16,10 +16,14 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".menu_principal.amigos.AmigosUsers"></activity>
+        <activity android:name=".prueba.prueba_subir_imagen"></activity>
+        <activity
+            android:name=".menu_principal.amigos.AmigosUsers"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".menu_principal.foro.UserInfo"
             android:theme="@style/AppTheme.NoActionBar" />

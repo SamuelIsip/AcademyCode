@@ -1,18 +1,15 @@
 package com.example.academycode.menu_principal.teoria;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.academycode.R;
 
@@ -26,23 +23,21 @@ public class TeoriaPDF extends AppCompatActivity {
         setContentView(R.layout.activity_tutoriales_p_d_f);
 
 
-        if (!comprobarInternet()){
+        if (!comprobarInternet()) {
             Toast.makeText(TeoriaPDF.this, "Debe conectarse a Internet", Toast.LENGTH_SHORT).show();
         }
 
     }
 
 
-    private boolean comprobarInternet(){
+    private boolean comprobarInternet() {
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork != null) {
             // connected to the internet
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 return true;
-            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                return true;
-            }
+            } else return activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
         }
 
         return false;
@@ -75,9 +70,9 @@ public class TeoriaPDF extends AppCompatActivity {
         displayActivity(tematica.getText().toString().trim().toLowerCase());
     }
 
-    public void displayActivity(String tematica){
-        Intent intent = new Intent(this,ListadoLibrosT.class);
-        intent.putExtra("tematica",tematica);
+    public void displayActivity(String tematica) {
+        Intent intent = new Intent(this, ListadoLibrosT.class);
+        intent.putExtra("tematica", tematica);
         startActivity(intent);
     }
 

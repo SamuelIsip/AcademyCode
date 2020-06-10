@@ -1,26 +1,22 @@
 package com.example.academycode.model.response;
 
-import com.google.gson.annotations.SerializedName;
 
 public class DefaultResponse {
 
     //se puede poner mismo nombre que lo que devuelve el json o se puede ponder anotación
-    @SerializedName("error")
-    private boolean err;
-    @SerializedName("message")
-    private String msg;
+    private boolean error;
+    private String message;
 
-    public DefaultResponse(boolean err, String msg) {
-        this.err = err;
-        this.msg = msg;
+    public DefaultResponse(boolean error, String message) {
+        this.error = error;
+        this.message = message;
     }
 
-    public boolean isErr() {
-        return err;
+    public boolean isError() {
+        return error;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
-
 }

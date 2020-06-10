@@ -7,7 +7,6 @@
     android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true"
     tools:context=".menu_principal.MenuPrincipal">
-    <!--tools:openDrawer="start"-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,17 +14,6 @@
         android:orientation="vertical"
         android:background="@drawable/bgapps">
 
-        <!--<androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="#202F65"
-            android:id="@+id/toolbar"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            android:elevation="4dp"
-            />-->
-
-        <!--Scroll para los elementos del menú-->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -84,6 +72,7 @@
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
+                            android:onClick="abrirTeoria"
                             app:cardElevation="6dp"
                             app:cardCornerRadius="12dp"
                             android:layout_margin="12dp">
@@ -121,6 +110,7 @@
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
+                            android:onClick="abrirEjercicios"
                             app:cardElevation="6dp"
                             app:cardCornerRadius="12dp"
                             android:layout_margin="12dp">
@@ -137,7 +127,7 @@
                                     android:layout_height="200dp"
                                     android:adjustViewBounds="true"
                                     android:scaleType="centerCrop"
-                                    android:src="@drawable/ejercicios"/>
+                                    android:src="@drawable/aprender"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -159,6 +149,7 @@
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
                             app:cardElevation="6dp"
+                            android:onClick="abrirVideoTuto"
                             app:cardCornerRadius="12dp"
                             android:layout_margin="12dp">
 
@@ -171,7 +162,7 @@
 
                                 <ImageView
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="200dp"
                                     android:adjustViewBounds="true"
                                     android:scaleType="centerCrop"
                                     android:src="@drawable/videotuto"/>
@@ -190,11 +181,51 @@
 
                         </androidx.cardview.widget.CardView>
 
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:onClick="abrirAmigos"
+                        app:cardElevation="6dp"
+                        app:cardCornerRadius="12dp"
+                        android:layout_margin="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:paddingBottom="10dp"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="200dp"
+                                android:adjustViewBounds="true"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/amigosfacu"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/amethysta"
+                                android:text="AMIGOS"
+                                android:layout_marginBottom="5dp"
+                                android:textColor="#6f6f6f"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+
                         <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
                             android:layout_rowWeight="1"
+                            android:onClick="abrirForo"
                             app:cardElevation="6dp"
                             app:cardCornerRadius="12dp"
                             android:layout_margin="12dp">
@@ -208,7 +239,7 @@
 
                                 <ImageView
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="200dp"
                                     android:adjustViewBounds="true"
                                     android:scaleType="centerCrop"
                                     android:src="@drawable/foro"/>

@@ -1,10 +1,5 @@
 package com.example.academycode.menu_principal.teoria;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -14,11 +9,16 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.academycode.R;
 import com.example.academycode.api.RetrofitClient;
 import com.example.academycode.model.LibroTeoria;
-import com.example.academycode.model.response.LibrosTResponse;
 import com.example.academycode.model.adapters.LibrosTAdapter;
+import com.example.academycode.model.response.LibrosTResponse;
 
 import java.util.List;
 
@@ -50,36 +50,34 @@ public class ListadoLibrosT extends AppCompatActivity {
         recyclerView.setLayoutManager(lnr);
 
 
-        if (!comprobarInternet()){
+        if (!comprobarInternet()) {
             Toast.makeText(ListadoLibrosT.this, "Debe conectarse a Internet", Toast.LENGTH_LONG).show();
             startActivity(new Intent(this, TeoriaPDF.class));
             finish();
-        }else{
+        } else {
             cargarListaLibros();
         }
 
-       swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-           @Override
-           public void onRefresh() {
-               progressBar.setVisibility(View.VISIBLE);
-               cargarListaLibros();
-               swipeRefreshLayout.setRefreshing(false);
-           }
-       });
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                progressBar.setVisibility(View.VISIBLE);
+                cargarListaLibros();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
 
     }
 
-    private boolean comprobarInternet(){
+    private boolean comprobarInternet() {
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork != null) {
             // connected to the internet
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 return true;
-            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                return true;
-            }
+            } else return activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
         }
 
         return false;

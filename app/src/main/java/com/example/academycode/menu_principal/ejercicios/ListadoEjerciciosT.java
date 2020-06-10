@@ -1,26 +1,27 @@
 package com.example.academycode.menu_principal.ejercicios;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.academycode.R;
 import com.example.academycode.api.RetrofitClient;
 import com.example.academycode.model.EjercicioTeoria;
-import com.example.academycode.model.response.EjerciciosTResponse;
 import com.example.academycode.model.adapters.EjerciciosTAdapter;
+import com.example.academycode.model.response.EjerciciosTResponse;
 
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,11 +49,11 @@ public class ListadoEjerciciosT extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        if (!comprobarInternet()){
+        if (!comprobarInternet()) {
             Toast.makeText(ListadoEjerciciosT.this, "Debe conectarse a Internet", Toast.LENGTH_LONG).show();
             startActivity(new Intent(this, EjerciciosPDF.class));
             finish();
-        }else{
+        } else {
             cargarListaEjercicios();
         }
 
@@ -68,16 +69,14 @@ public class ListadoEjerciciosT extends AppCompatActivity {
 
     }
 
-    private boolean comprobarInternet(){
+    private boolean comprobarInternet() {
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork != null) {
             // connected to the internet
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 return true;
-            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                return true;
-            }
+            } else return activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
         }
 
         return false;

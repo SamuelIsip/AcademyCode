@@ -1,11 +1,6 @@
 package com.example.academycode.fragments;
 
 
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,13 +12,17 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.academycode.login.IniciarSesion;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.academycode.R;
 import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.example.academycode.api.RetrofitClient;
+import com.example.academycode.login.IniciarSesion;
+import com.example.academycode.model.Usuario;
 import com.example.academycode.model.response.DefaultResponse;
 import com.example.academycode.model.response.LoginResponse;
-import com.example.academycode.model.Usuario;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -80,13 +79,13 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         String currentpassword = editTextCurrentPassword.getText().toString().trim();
         String newpassword = editTextNewPassword.getText().toString().trim();
 
-        if (currentpassword.isEmpty()){
+        if (currentpassword.isEmpty()) {
             editTextCurrentPassword.setError("Password necesaria");
             editTextCurrentPassword.requestFocus();
             return;
         }
 
-        if (newpassword.isEmpty()){
+        if (newpassword.isEmpty()) {
             editTextNewPassword.setError("Introduce nueva password");
             editTextNewPassword.requestFocus();
             return;
@@ -95,12 +94,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         Usuario user = SharedPrefManager.getInstance(getActivity()).getUser();
 
         Call<DefaultResponse> call = RetrofitClient.getInstance().getApi()
-                .updatePassword(currentpassword,newpassword ,user.getEmail());
+                .updatePassword(currentpassword, newpassword, user.getEmail());
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-                Toast.makeText(getActivity(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -183,13 +182,13 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 call.enqueue(new Callback<DefaultResponse>() {
                     @Override
                     public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-                        if (!response.body().isErr()){
+                        if (!response.body().isError()) {
                             SharedPrefManager.getInstance(getActivity()).clear();
                             Intent intent = new Intent(getActivity(), IniciarSesion.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                         }
-                        Toast.makeText(getActivity(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
 
@@ -213,7 +212,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    public void onBackPressed(){
+    public void onBackPressed() {
         getFragmentManager().beginTransaction().remove(this).commit();
     }
 

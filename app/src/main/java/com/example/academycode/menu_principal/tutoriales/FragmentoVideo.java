@@ -3,9 +3,13 @@ package com.example.academycode.menu_principal.tutoriales;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,18 +18,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
 import com.example.academycode.R;
 import com.example.academycode.api.RetrofitClient;
 import com.example.academycode.menu_principal.MenuPrincipal;
 import com.example.academycode.model.VideoTeoria;
-import com.example.academycode.model.response.VideosTResponse;
 import com.example.academycode.model.adapters.VideoAdapter;
+import com.example.academycode.model.response.VideosTResponse;
 
 import java.util.List;
 
@@ -68,10 +66,10 @@ public class FragmentoVideo extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewvideos);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        if (!comprobarInternet()){
+        if (!comprobarInternet()) {
             Toast.makeText(getContext(), "Debe conectarse a Internet", Toast.LENGTH_LONG).show();
             startActivity(new Intent(getContext(), MenuPrincipal.class));
-        }else{
+        } else {
             cargarListaVideos();
         }
 
@@ -87,7 +85,7 @@ public class FragmentoVideo extends Fragment {
 
     }
 
-    private boolean comprobarInternet(){
+    private boolean comprobarInternet() {
 
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -95,9 +93,7 @@ public class FragmentoVideo extends Fragment {
             // connected to the internet
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 return true;
-            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                return true;
-            }
+            } else return activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
         }
 
         return false;

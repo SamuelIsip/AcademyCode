@@ -16,33 +16,33 @@ public class SharedPrefManager {
         this.mCtx = mCtx;
     }
 
-    public static synchronized SharedPrefManager getInstance(Context mCtx){
-        if (mInstance == null){
+    public static synchronized SharedPrefManager getInstance(Context mCtx) {
+        if (mInstance == null) {
             mInstance = new SharedPrefManager(mCtx);
         }
 
         return mInstance;
     }
 
-    public void saveUser(Usuario user){
+    public void saveUser(Usuario user) {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putInt("id_usuario", user.getId_usuario());
         editor.putString("email", user.getEmail());
-        editor.putString("nombre_usuario",user.getNombre_usuario());
-        editor.putString("telefono",user.getTelefono());
-        editor.putString("fecha",user.getFecha());
+        editor.putString("nombre_usuario", user.getNombre_usuario());
+        editor.putString("telefono", user.getTelefono());
+        editor.putString("fecha", user.getFecha());
 
         editor.apply();
     }
 
-    public boolean isLoggedIn(){
+    public boolean isLoggedIn() {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getInt("id_usuario",-1) != -1;
+        return sharedPreferences.getInt("id_usuario", -1) != -1;
     }
 
-    public Usuario getUser(){
+    public Usuario getUser() {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
         return new Usuario(
@@ -54,7 +54,7 @@ public class SharedPrefManager {
         );
     }
 
-    public void clear(){
+    public void clear() {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();

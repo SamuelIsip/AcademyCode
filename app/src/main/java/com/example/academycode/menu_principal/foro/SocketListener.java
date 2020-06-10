@@ -1,9 +1,8 @@
 package com.example.academycode.menu_principal.foro;
 
 import android.widget.Toast;
+
 import com.example.academycode.model.Mensaje;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
@@ -13,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
@@ -52,7 +52,7 @@ public class SocketListener extends WebSocketListener {
 
                 ForoGeneral.mostrarNotificacion(foroGeneral.getApplicationContext());
 
-                foroGeneral.getRecyclerView().getLayoutManager().scrollToPosition(foroGeneral.getMensajeList().size()-1);
+                foroGeneral.getRecyclerView().getLayoutManager().scrollToPosition(foroGeneral.getMensajeList().size() - 1);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -78,11 +78,11 @@ public class SocketListener extends WebSocketListener {
     }
 
 
-    private String ipPublica(){
+    private String ipPublica() {
 
         String publica = "";
 
-        try{
+        try {
 
             URL mip = new URL("http://checkip.amazonaws.com");
 
@@ -90,7 +90,7 @@ public class SocketListener extends WebSocketListener {
 
             publica = in.readLine();
 
-        } catch(IOException e) {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 

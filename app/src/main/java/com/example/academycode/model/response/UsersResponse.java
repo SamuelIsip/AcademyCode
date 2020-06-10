@@ -5,7 +5,7 @@ import com.example.academycode.model.Usuario;
 import java.util.List;
 
 public class UsersResponse {
-//AQUÍ, EL NOMBRE DE LIST, IGUAL QUE EN PHP
+    //AQUÍ, EL NOMBRE DE LIST, IGUAL QUE EN PHP
     private boolean error;
     private List<Usuario> users;
 

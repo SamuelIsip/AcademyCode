@@ -14,12 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.academycode.R;
 import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
-import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.example.academycode.api.RetrofitClient;
 import com.example.academycode.menu_principal.foro.UserInfo;
 import com.example.academycode.model.Mensaje;
 import com.example.academycode.model.Usuario;
-import com.example.academycode.model.response.LoginResponse;
 import com.example.academycode.model.response.UsersResponse;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -51,7 +49,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
     }
 
 
-    public void addItem(Mensaje item){
+    public void addItem(Mensaje item) {
         messageList.add(item);
         notifyDataSetChanged();
     }
@@ -68,21 +66,21 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
         Mensaje mensaje = messageList.get(position);
 
-        holder.nombre_user_foro.setText("Usuario: "+mensaje.getNombre_usuario());
-        holder.email_user_foro.setText("Email: "+mensaje.getEmail());
+        holder.nombre_user_foro.setText("Usuario: " + mensaje.getNombre_usuario());
+        holder.email_user_foro.setText("Email: " + mensaje.getEmail());
         holder.mensaje.setText(mensaje.getMensaje());
         holder.fechaMensaje.setText(mensaje.getFecha());
 
-        db =  new SQLiteBaseDeDatos(mCtx);
+        db = new SQLiteBaseDeDatos(mCtx);
 
         String fotoUser = db.recuperarFotoUser(mensaje.getNombre_usuario());
         File archivo = new File(fotoUser);
-        if (fotoUser!=null && archivo.exists()){
+        if (fotoUser != null && archivo.exists()) {
             //Mostrar foto perfil accedido
             Glide.with(mCtx.getApplicationContext())
                     .load(fotoUser) //conseguir fotoUsuario de BD
                     .into(holder.imagen_usuario_foro);
-        }else{
+        } else {
             Glide.with(mCtx.getApplicationContext())
                     .load(R.mipmap.ic_launcher_round)
                     .into(holder.imagen_usuario_foro);
@@ -99,7 +97,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
                     public void onResponse(Call<UsersResponse> call, Response<UsersResponse> response) {
                         UsersResponse usersResponse = response.body();
 
-                        if (!usersResponse.isError()){
+                        if (!usersResponse.isError()) {
                             List<Usuario> user = usersResponse.getUsers();
 
                             Intent intent = new Intent(mCtx, UserInfo.class);
@@ -128,7 +126,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         return messageList.size();
     }
 
-    class MessagesViewHolder extends RecyclerView.ViewHolder{
+    class MessagesViewHolder extends RecyclerView.ViewHolder {
 
         TextView nombre_user_foro, email_user_foro, mensaje, fechaMensaje;
         CircularImageView imagen_usuario_foro;

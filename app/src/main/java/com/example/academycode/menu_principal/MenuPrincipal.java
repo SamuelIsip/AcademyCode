@@ -1,15 +1,5 @@
 package com.example.academycode.menu_principal;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.FileProvider;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,23 +9,32 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
-import com.example.academycode.fragments.SettingsFragment;
-import com.example.academycode.login.RegistrarUsuario;
+import com.example.academycode.R;
 import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
+import com.example.academycode.almacenamiento.SharedPrefManager;
+import com.example.academycode.fragments.SettingsFragment;
+import com.example.academycode.login.IniciarSesion;
+import com.example.academycode.login.RegistrarUsuario;
 import com.example.academycode.menu_principal.amigos.AmigosUsers;
 import com.example.academycode.menu_principal.ejercicios.EjerciciosPDF;
-import com.example.academycode.login.IniciarSesion;
-import com.example.academycode.R;
 import com.example.academycode.menu_principal.foro.ForoGeneral;
 import com.example.academycode.menu_principal.teoria.TeoriaPDF;
-import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.example.academycode.menu_principal.tutoriales.TutorialesVideo;
 import com.example.academycode.model.Usuario;
 import com.google.android.gms.auth.api.Auth;
@@ -45,20 +44,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.material.navigation.NavigationView;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
 
 public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, NavigationView.OnNavigationItemSelectedListener {
 
-    private TextView nomb,email;
+    private TextView nomb, email;
     private CircularImageView fotoPerfilUser;
 
     private SQLiteBaseDeDatos db;
@@ -75,7 +70,7 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db =  new SQLiteBaseDeDatos(this);
+        db = new SQLiteBaseDeDatos(this);
 
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.menu_desplegable);
@@ -89,13 +84,13 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         btnAbrirMenu.setOnClickListener(v -> drawer.openDrawer(GravityCompat.START));
 
         //Solicitamos cuenta con email
-        gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
-        googleApiClient=new GoogleApiClient.Builder(this)
-                .enableAutoManage(this,this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
         fotoPerfilUser.setOnClickListener(v -> mostrarOpciones());
@@ -108,11 +103,11 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         final AlertDialog.Builder builder = new AlertDialog.Builder(MenuPrincipal.this);
         builder.setTitle("Eleige una opción");
         builder.setItems(option, (dialog, which) -> {
-            if(option[which] == "Tomar foto"){
+            if (option[which] == "Tomar foto") {
                 tomarFoto();
-            }else if(option[which] == "Elegir de galeria"){
+            } else if (option[which] == "Elegir de galeria") {
                 seleccionarImagen();
-            }else {
+            } else {
                 dialog.dismiss();
             }
         });
@@ -133,22 +128,22 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         File fileImagen = new File(Environment.getExternalStorageDirectory(), RUTA_IMAGEN);
         boolean isCreada = fileImagen.exists();
 
-        if(!isCreada) {
+        if (!isCreada) {
             isCreada = fileImagen.mkdirs();
         }
 
-        if(isCreada) {
+        if (isCreada) {
             nombreImagen = (System.currentTimeMillis() / 1000) + ".jpg";
         }
 
-        path = Environment.getExternalStorageDirectory()+File.separator+RUTA_IMAGEN+File.separator+nombreImagen;
+        path = Environment.getExternalStorageDirectory() + File.separator + RUTA_IMAGEN + File.separator + nombreImagen;
         File imagen = new File(path);
 
         Intent intent;
         intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            String authorities = this.getPackageName()+".provider";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            String authorities = this.getPackageName() + ".provider";
             Uri imageUri = FileProvider.getUriForFile(this, authorities, imagen);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         } else {
@@ -164,10 +159,10 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK && requestCode == 200) {//Para seleccionar foto
+        if (resultCode == RESULT_OK && requestCode == 200) {//Para seleccionar foto
             if (data != null) {
                 photoURI = data.getData();
             }
@@ -175,13 +170,13 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
             //Guardar uri en BD
             try {
                 rutaFoto = getRealPathFromURI(photoURI);
-                db.insertarFotoUser(rutaFoto,nomb.getText().toString());
+                db.insertarFotoUser(rutaFoto, nomb.getText().toString());
             } catch (Exception e) {
                 System.out.println("ERROR AL GUARDAR FOTO SELECCIONADA EN BD");
                 e.printStackTrace();
             }
-        } else if(resultCode == RESULT_OK && requestCode == 100) {//Para hacer foto
-            try{
+        } else if (resultCode == RESULT_OK && requestCode == 100) {//Para hacer foto
+            try {
                 MediaScannerConnection.scanFile(MenuPrincipal.this, new String[]{path}, null, (s, uri) -> {
                 });
 
@@ -198,7 +193,7 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
-    private String getRealPathFromURI(Uri contentURI){
+    private String getRealPathFromURI(Uri contentURI) {
         String result;
         Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
         if (cursor == null) {
@@ -214,13 +209,13 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()){
+        switch (menuItem.getItemId()) {
             case R.id.cerrar_sesion:
                 cerrarSesionGoogle();
                 break;
             case R.id.ajustes:
                 Fragment fragment = new SettingsFragment();
-                if(fragment != null){
+                if (fragment != null) {
                     displayFragment(fragment);
                 }
                 break;
@@ -244,7 +239,7 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
         return true;
     }
 
-    private void displayFragment(Fragment fragment){
+    private void displayFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.drawer_layout, fragment)
@@ -253,10 +248,10 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
 
 
     @Override
-    public void onBackPressed(){
-        if (drawer.isDrawerOpen(GravityCompat.START)){
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }else {
+        } else {
             cerrarSesionGoogle();
         }
     }
@@ -268,15 +263,16 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
     }
 
     GoogleSignInAccount account;
-    private void handleSignInResult(GoogleSignInResult result){
-        if(result.isSuccess()){
-            account=result.getSignInAccount();
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        if (result.isSuccess()) {
+            account = result.getSignInAccount();
             Picasso.get().load(account.getPhotoUrl()).placeholder(R.mipmap.ic_launcher).into(fotoPerfilUser);
         }
 
     }
 
-    private void cerrarSesionGoogle(){
+    private void cerrarSesionGoogle() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Salir");
@@ -291,12 +287,12 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
 
             Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
                     status -> {
-                        if (status.isSuccess()){ //Si se cierra sesion
+                        if (status.isSuccess()) { //Si se cierra sesion
                             Intent intent1 = new Intent(getApplicationContext(), IniciarSesion.class);
                             intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent1);
-                        }else{
-                            Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Session not close", Toast.LENGTH_LONG).show();
                         }
                     });
         });
@@ -319,15 +315,15 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
     protected void onStart() {
         super.onStart();
 
-        OptionalPendingResult<GoogleSignInResult> opr= Auth.GoogleSignInApi.silentSignIn(googleApiClient);
-        if(opr.isDone()){
-            GoogleSignInResult result=opr.get();
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+        if (opr.isDone()) {
+            GoogleSignInResult result = opr.get();
             handleSignInResult(result);
-        }else{
+        } else {
             opr.setResultCallback(googleSignInResult -> handleSignInResult(googleSignInResult));
         }
 
-        if (!SharedPrefManager.getInstance(this).isLoggedIn()){
+        if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
             Intent intent = new Intent(this, RegistrarUsuario.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -342,15 +338,15 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
 
     }
 
-    private void mostrarImagen_guardada_o_no(String fotoUser){
+    private void mostrarImagen_guardada_o_no(String fotoUser) {
 
         File archivo = new File(fotoUser);
-        if (fotoUser!=null && archivo.exists()){
+        if (fotoUser != null && archivo.exists()) {
             //Mostrar foto perfil accedido
             Glide.with(this)
                     .load(fotoUser) //conseguir fotoUsuario de BD
                     .into(fotoPerfilUser);
-        }else{
+        } else {
             Glide.with(this)
                     .load(R.mipmap.ic_launcher_round)
                     .into(fotoPerfilUser);
@@ -376,4 +372,5 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
     public void abrirAmigos(View view) {
         startActivity(new Intent(this, AmigosUsers.class));
     }
+
 }

@@ -1,20 +1,17 @@
 package com.example.academycode.menu_principal.ejercicios;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.academycode.R;
-import com.example.academycode.menu_principal.teoria.ListadoLibrosT;
-import com.example.academycode.menu_principal.teoria.TeoriaPDF;
 
 public class EjerciciosPDF extends AppCompatActivity {
 
@@ -25,21 +22,19 @@ public class EjerciciosPDF extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ejercicios_p_d_f);
 
-        if (!comprobarInternet()){
+        if (!comprobarInternet()) {
             Toast.makeText(EjerciciosPDF.this, "Debe conectarse a Internet", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private boolean comprobarInternet(){
+    private boolean comprobarInternet() {
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork != null) {
             // connected to the internet
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 return true;
-            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                return true;
-            }
+            } else return activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
         }
 
         return false;
@@ -72,9 +67,9 @@ public class EjerciciosPDF extends AppCompatActivity {
         displayActivity(tematica.getText().toString().trim().toLowerCase());
     }
 
-    public void displayActivity(String tematica){
+    public void displayActivity(String tematica) {
         Intent intent = new Intent(this, ListadoEjerciciosT.class);
-        intent.putExtra("tematica",tematica);
+        intent.putExtra("tematica", tematica);
         startActivity(intent);
     }
 

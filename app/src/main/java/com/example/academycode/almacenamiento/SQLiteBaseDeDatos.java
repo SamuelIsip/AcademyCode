@@ -10,7 +10,7 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
 
     Context context;
 
-    public SQLiteBaseDeDatos(Context context){
+    public SQLiteBaseDeDatos(Context context) {
         super(context, "AcademyBD", null, 1); //Nombre y versión de la BD
         this.context = context;
     }
@@ -29,48 +29,46 @@ public class SQLiteBaseDeDatos extends SQLiteOpenHelper {
         db.execSQL("drop table if exists usuario");
     }
 
-    public String recuperarFotoUser(String nombUsuario){
+    public String recuperarFotoUser(String nombUsuario) {
         SQLiteDatabase baseDatos = this.getReadableDatabase();
-        Cursor cursor = baseDatos.rawQuery("Select fotoPerfil from usuario where nombreUsuario=?",new String[]{nombUsuario});
+        Cursor cursor = baseDatos.rawQuery("Select fotoPerfil from usuario where nombreUsuario=?", new String[]{nombUsuario});
 
         String foto = "";
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             foto = cursor.getString(0);
         }
 
         return foto;
     }
 
-    public void insertarFotoUser(String path_uri, String nombreU){
+    public void insertarFotoUser(String path_uri, String nombreU) {
         SQLiteDatabase baseDatos = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("fotoPerfil", path_uri);
 
-        int cantidad = baseDatos.update("usuario", contentValues,"nombreUsuario = ?",new String[]{nombreU});
+        int cantidad = baseDatos.update("usuario", contentValues, "nombreUsuario = ?", new String[]{nombreU});
 
-        if (cantidad == 1){
+        if (cantidad == 1) {
             System.out.println("FOTO GUARDADA CORRECTAMENTE");
-        }else{
+        } else {
             System.out.println("FOTO NO GUARDADA CORRECTAMENTE");
         }
 
     }
 
-    public void insertUsuario(String nombreUsu){
+    public void insertUsuario(String nombreUsu) {
 
-        try{
+        try {
             SQLiteDatabase baseDatos = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
-            contentValues.put("nombreUsuario",nombreUsu);
+            contentValues.put("nombreUsuario", nombreUsu);
 
             long insert = baseDatos.insertOrThrow("usuario", null, contentValues);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
     }
-
-
 
 
 }
