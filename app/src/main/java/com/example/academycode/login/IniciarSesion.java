@@ -24,6 +24,8 @@ import com.example.academycode.almacenamiento.SQLiteBaseDeDatos;
 import com.example.academycode.almacenamiento.SharedPrefManager;
 import com.example.academycode.api.RetrofitClient;
 import com.example.academycode.menu_principal.MenuPrincipal;
+import com.example.academycode.model.Usuario;
+import com.example.academycode.model.response.DefaultResponse;
 import com.example.academycode.model.response.LoginResponse;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -33,6 +35,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+
+import org.apache.commons.lang3.RandomStringUtils;
+
+import java.security.SecureRandom;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -249,5 +255,51 @@ public class IniciarSesion extends AppCompatActivity implements GoogleApiClient.
         finish();
         cerrarSesionGoogle();
     }
+
+    public void enviarcorreoPass(View view) {
+
+        String emailto = e1EmailU.getText().toString().trim();
+
+        if (emailto.isEmpty()) {
+            e1EmailU.setError("Email requerido");
+            e1EmailU.requestFocus();
+
+        }else{
+            String subject = "¡Restablecer Contraseña!";
+
+            int randomStrLength = (int)(Math.random()*10+9);
+
+            char[] possibleCharacters = (new String("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:\'\",<.>/?")).toCharArray();
+            String randomStr = RandomStringUtils.random( randomStrLength, 0, possibleCharacters.length-1, false, false, possibleCharacters, new SecureRandom() );
+
+            String message = "Tu nueva contraseña es: "+ randomStr;
+
+            new SimpleMail().sendEmail(emailto, subject, message);
+
+            updatePassword(emailto, randomStr);
+        }
+
+
+
+    }
+
+    private void updatePassword(String emailto, String password) {
+
+        Call<DefaultResponse> call = RetrofitClient.getInstance().getApi()
+                .restorePassword(password, emailto);
+
+        call.enqueue(new Callback<DefaultResponse>() {
+            @Override
+            public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+                Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<DefaultResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
 
 }

@@ -53,6 +53,13 @@ public interface Api {
             @Field("email") String email
     );
 
+    @FormUrlEncoded
+    @PUT("restorepassword")
+    Call<DefaultResponse> restorePassword(
+            @Field("newpassword") String newpassword,
+            @Field("email") String email
+    );
+
     @DELETE("deleteuser/{id_usuario}")
     Call<DefaultResponse> deleteUser(
             @Path("id_usuario") int id_usuario
