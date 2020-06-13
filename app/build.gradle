@@ -62,5 +62,9 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation 'org.jetbrains:annotations:15.0'
 
+    implementation 'com.sun.mail:android-mail:1.6.0'
+    implementation 'com.sun.mail:android-activation:1.6.0'
+
+    implementation 'org.apache.commons:commons-lang3:3.9'
 
 }
