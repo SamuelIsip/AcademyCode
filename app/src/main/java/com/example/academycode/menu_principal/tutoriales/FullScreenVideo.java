@@ -1,12 +1,15 @@
 package com.example.academycode.menu_principal.tutoriales;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 
 import com.example.academycode.R;
+import com.example.academycode.menu_principal.MenuPrincipal;
 
 public class FullScreenVideo extends AppCompatActivity {
 
@@ -27,6 +30,12 @@ public class FullScreenVideo extends AppCompatActivity {
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), TutorialesVideo.class));
+        finish();
     }
 
 

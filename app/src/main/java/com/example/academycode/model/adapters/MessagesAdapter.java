@@ -74,17 +74,23 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         db = new SQLiteBaseDeDatos(mCtx);
 
         String fotoUser = db.recuperarFotoUser(mensaje.getNombre_usuario());
-        File archivo = new File(fotoUser);
+        File archivo = null;
+        try {
+            archivo = new File(fotoUser);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         if (fotoUser != null && archivo.exists()) {
             //Mostrar foto perfil accedido
             Glide.with(mCtx.getApplicationContext())
                     .load(fotoUser) //conseguir fotoUsuario de BD
                     .into(holder.imagen_usuario_foro);
         } else {
-            Glide.with(mCtx.getApplicationContext())
+           /* Glide.with(mCtx.getApplicationContext())
                     .load(R.mipmap.ic_launcher_round)
-                    .into(holder.imagen_usuario_foro);
+                    .into(holder.imagen_usuario_foro);*/
         }
+        db.close();
 
         holder.imagen_usuario_foro.setOnClickListener(new View.OnClickListener() {
             @Override
