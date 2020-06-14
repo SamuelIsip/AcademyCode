@@ -24,8 +24,6 @@ public class SimpleMail {
 
 
     public static void sendEmail(String to, String subject, String msg){
-        // Recipient's email ID needs to be mentioned.
-
         // Sender's email ID needs to be mentioned
         String from = "academycodemail@gmail.com"; //from
 
@@ -52,58 +50,38 @@ public class SimpleMail {
         try {
             // Create a default MimeMessage object.
             message = new MimeMessage(session);
-
             // Set From: header field of the header.
             message.setFrom(new InternetAddress(from));
-
             // Set To: header field of the header.
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(to));
-
             // Set Subject: header field
             message.setSubject(subject);
-
             // Create the message part
             BodyPart messageBodyPart = new MimeBodyPart();
-
             // Now set the actual message
             messageBodyPart.setContent(msg, "text/html");
-
             // Create a multipar message
             Multipart multipart = new MimeMultipart();
-
             // Set text message part
             multipart.addBodyPart(messageBodyPart);
-
-//            // Part two is attachment
-//            messageBodyPart = new MimeBodyPart();
-//            String filename = Context.;
-//            DataSource source = new FileDataSource(filename);
-//            messageBodyPart.setDataHandler(new DataHandler(source));
-//            messageBodyPart.setFileName(filename);
-//            multipart.addBodyPart(messageBodyPart);
-
             // Send the complete message parts
             message.setContent(multipart);
 
             Thread thread = new Thread(new Runnable() {
-
                 @Override
                 public void run() {
                     try  {
-
                         // Send message
                         Transport.send(message);
-                        System.out.println("Sent message successfully....");
+                        System.out.println("Mensage enviado correctamente....");
                     } catch (Exception e) {
                         e.printStackTrace();
 
                     }
                 }
             });
-
             thread.start();
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

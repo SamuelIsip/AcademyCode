@@ -335,21 +335,27 @@ public class MenuPrincipal extends AppCompatActivity implements GoogleApiClient.
 
         String fotoUser = db.recuperarFotoUser(user.getNombre_usuario());
         mostrarImagen_guardada_o_no(fotoUser);
+        db.close();
 
     }
 
     private void mostrarImagen_guardada_o_no(String fotoUser) {
+        File archivo = null;
+        try {
+            archivo = new File(fotoUser);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
-        File archivo = new File(fotoUser);
         if (fotoUser != null && archivo.exists()) {
             //Mostrar foto perfil accedido
             Glide.with(this)
                     .load(fotoUser) //conseguir fotoUsuario de BD
                     .into(fotoPerfilUser);
         } else {
-            Glide.with(this)
+            /*Glide.with(this)
                     .load(R.mipmap.ic_launcher_round)
-                    .into(fotoPerfilUser);
+                    .into(fotoPerfilUser);*/
         }
     }
 

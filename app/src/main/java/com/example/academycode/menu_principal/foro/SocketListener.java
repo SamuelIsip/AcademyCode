@@ -25,39 +25,34 @@ public class SocketListener extends WebSocketListener {
         this.foroGeneral = foroGeneral;
     }
 
-
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
         super.onOpen(webSocket, response);
 
         foroGeneral.runOnUiThread(() -> Toast.makeText(foroGeneral, "Conectado al chat!", Toast.LENGTH_SHORT).show());
-
     }
 
     @Override
     public void onMessage(WebSocket webSocket, String text) {
         super.onMessage(webSocket, text);
 
-        foroGeneral.runOnUiThread(() -> {
+        foroGeneral.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
 
-            JSONObject json = null;
+                JSONObject json = null;
 
-            try {
+                try {
+                    json = new JSONObject(text);
+                    Mensaje mensajeObject = new Mensaje(SocketListener.this.ipPublica(), json.getString("nombre_usuario"), json.getString("email"), json.getString("mensaje"), foroGeneral.fecha_horaActual());
+                    foroGeneral.getAdapter().addItem(mensajeObject);
+                    ForoGeneral.mostrarNotificacion(foroGeneral.getApplicationContext());
+                    foroGeneral.getRecyclerView().getLayoutManager().scrollToPosition(foroGeneral.getMensajeList().size() - 1);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                json = new JSONObject(text);
-
-                Mensaje mensajeObject = new Mensaje(ipPublica(), json.getString("nombre_usuario"), json.getString("email"), json.getString("mensaje"), foroGeneral.fecha_horaActual());
-
-                foroGeneral.getAdapter().addItem(mensajeObject);
-
-                ForoGeneral.mostrarNotificacion(foroGeneral.getApplicationContext());
-
-                foroGeneral.getRecyclerView().getLayoutManager().scrollToPosition(foroGeneral.getMensajeList().size() - 1);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-
         });
 
     }
