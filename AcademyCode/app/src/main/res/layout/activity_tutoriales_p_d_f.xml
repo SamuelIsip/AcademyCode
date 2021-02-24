@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/linearlayTeoria"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context=".menu_principal.teoria.TeoriaPDF"
+        android:orientation="vertical"
+        >
+        <!--Scroll para los elementos del menú-->
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/flecha2">
+
+        <!--Linear layout con el layput de titulo y el grid -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--El grid con cada CardView -->
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alignmentMode="alignMargins"
+                android:columnCount="5"
+                android:columnOrderPreserved="false"
+                android:rowCount="1">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/abrirJava"
+                    android:layout_width="300dp"
+                    android:layout_height="200dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="40dp"
+                    android:layout_marginLeft="30dp"
+                    android:onClick="abrirJava"
+                    app:cardBackgroundColor="#2E4053"
+                    app:cardCornerRadius="40dp"
+                    app:cardElevation="20dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="420dp"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/java" />
+
+                        <TextView
+                            android:id="@+id/tematicaJava"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:fontFamily="@font/amethysta"
+                            android:text="Java"
+                            android:textColor="#fff"
+                            android:textSize="50sp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/abrirPython"
+                    android:layout_width="300dp"
+                    android:layout_height="200dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="40dp"
+                    android:onClick="abrirPython"
+                    app:cardBackgroundColor="#2E4053"
+                    app:cardCornerRadius="40dp"
+                    app:cardElevation="6dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="420dp"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/python" />
+
+                        <TextView
+                            android:id="@+id/tematicaPython"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:fontFamily="@font/amethysta"
+                            android:text="Python"
+                            android:textColor="#fff"
+                            android:textSize="50sp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/abrirC"
+                    android:layout_width="300dp"
+                    android:layout_height="200dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="40dp"
+                    android:onClick="abrirC"
+                    app:cardBackgroundColor="#2E4053"
+                    app:cardCornerRadius="40dp"
+                    app:cardElevation="6dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="420dp"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/cplus" />
+
+                        <TextView
+                            android:id="@+id/tematicaCplus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:fontFamily="@font/amethysta"
+                            android:text="C++"
+                            android:textColor="#fff"
+                            android:textSize="50sp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/abrirjavaScript"
+                    android:layout_width="300dp"
+                    android:layout_height="200dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="40dp"
+                    android:onClick="abrirJavaScript"
+                    app:cardBackgroundColor="#2E4053"
+                    app:cardCornerRadius="40dp"
+                    app:cardElevation="6dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="420dp"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/javascript" />
+
+                        <TextView
+                            android:id="@+id/tematicaJavaScript"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:fontFamily="@font/amethysta"
+                            android:text="JavaScript"
+                            android:textColor="#fff"
+                            android:textSize="50sp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/abrirphp"
+                    android:layout_width="300dp"
+                    android:layout_height="200dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="40dp"
+                    android:onClick="abrirPhp"
+                    app:cardBackgroundColor="#2E4053"
+                    app:cardCornerRadius="40dp"
+                    app:cardElevation="6dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="420dp"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/php" />
+
+                        <TextView
+                            android:id="@+id/tematicaPhp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:fontFamily="@font/amethysta"
+                            android:text="PHP"
+                            android:textColor="#fff"
+                            android:textSize="50sp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </GridLayout>
+
+        </LinearLayout>
+    </HorizontalScrollView>
+</LinearLayout>

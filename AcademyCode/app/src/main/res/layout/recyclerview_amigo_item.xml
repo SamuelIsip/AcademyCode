@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:scaleType="centerCrop"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:orientation="horizontal">
+
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    app:civ_border_color="#EEEEEE"
+                    app:civ_border_width="1dp"
+                    app:civ_shadow="true"
+                    app:civ_shadow_radius="8"
+                    app:civ_shadow_color="#000"
+                    android:id="@+id/imagen_usuario_foro"
+                    android:src="@mipmap/ic_launcher_round" />
+
+                <LinearLayout
+                    android:id="@+id/linearlayoutamigo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:id="@+id/textViewName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="20dp"
+                        android:paddingTop="8dp"
+                        android:text="Nombre Usuario"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textViewEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="20dp"
+                        android:text="Email Usuario"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textViewTelefono"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="20dp"
+                        android:text="Teléfono Usuario"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+        </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+    android:background="@drawable/bgapps"
+tools:context=".menu_principal.foro.ForoGeneral">
+
+    <LinearLayout
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <ImageButton
+            android:id="@+id/btnAtras"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="btnAtras"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_keyboard_backspace_black_24dp" />
+
+        <ImageView
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_gravity="center"
+            android:src="@drawable/academycode"
+            android:layout_marginLeft="20dp">
+        </ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="  AcademyForo"
+            android:textColor="#FFFFFF"
+            android:textSize="30dp"></TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_weight="1">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewForo"
+                android:layout_width="match_parent"
+                android:layout_height="520dp"
+                />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edTxtMensajeForo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/disenio_mensaje_foro"
+            android:fontFamily="@font/amethysta"
+            android:hint="Escribe un mensaje..."
+            android:inputType="textMultiLine"
+            android:maxLength="140"
+            android:maxLines="5"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:scrollbars="vertical"
+            android:textColor="#fff"
+            android:textColorHint="#ccc" />
+
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/animaboton"
+            android:onClick="enviarMensaje" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
